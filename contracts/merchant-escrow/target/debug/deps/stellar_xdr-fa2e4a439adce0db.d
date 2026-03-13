@@ -1,0 +1,16 @@
+/Users/macbook/Desktop/Safe deal/contracts/merchant-escrow/target/debug/deps/stellar_xdr-fa2e4a439adce0db.d: /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/lib.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/mod.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/generated.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/str.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scval_conversions.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scval_validations.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scmap.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/../xdr/curr-version /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/../xdr/next-version
+
+/Users/macbook/Desktop/Safe deal/contracts/merchant-escrow/target/debug/deps/libstellar_xdr-fa2e4a439adce0db.rmeta: /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/lib.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/mod.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/generated.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/str.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scval_conversions.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scval_validations.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scmap.rs /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/../xdr/curr-version /Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/../xdr/next-version
+
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/lib.rs:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/mod.rs:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/generated.rs:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/str.rs:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scval_conversions.rs:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scval_validations.rs:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/curr/scmap.rs:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/../xdr/curr-version:
+/Users/macbook/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/stellar-xdr-20.1.0/src/../xdr/next-version:
+
+# env-dep:CARGO_PKG_VERSION=20.1.0
+# env-dep:GIT_REVISION=8b9d623ef40423a8462442b86997155f2c04d3a1
