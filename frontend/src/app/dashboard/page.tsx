@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
+import { CreateDealModal } from "@/components/deal/CreateDealModal";
 import {
   ResponsiveContainer,
   BarChart,
@@ -524,86 +525,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Create Deal Modal */}
-      {showCreate && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-3xl bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-              <h2 className="text-lg font-semibold text-[#0f172a]">
-                Create New Deal
-              </h2>
-              <button
-                onClick={() => setShowCreate(false)}
-                className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-            <div className="space-y-4 px-6 py-5 text-sm">
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700">
-                  Item Title
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Handmade Silver Earrings"
-                  className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-[#0f172a] focus:outline-none focus:ring-1 focus:ring-[#0f172a]"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700">
-                  Amount (USDC)
-                </label>
-                <input
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  placeholder="2400"
-                  className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-[#0f172a] focus:outline-none focus:ring-1 focus:ring-[#0f172a]"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700">
-                  Buyer wallet (optional)
-                </label>
-                <input
-                  type="text"
-                  placeholder="GCKF...WXQR"
-                  className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-[#0f172a] focus:outline-none focus:ring-1 focus:ring-[#0f172a]"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-700">
-                  Shipping window
-                </label>
-                <select className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-900 focus:border-[#0f172a] focus:outline-none focus:ring-1 focus:ring-[#0f172a]">
-                  <option>3 days</option>
-                  <option>5 days</option>
-                  <option>7 days</option>
-                </select>
-              </div>
-              <div className="rounded-xl bg-slate-50 px-4 py-3 text-xs text-slate-600">
-                <p>
-                  SafeDeal will create an escrow vault on Stellar testnet.
-                  Share the generated link with your buyer in chat.
-                </p>
-              </div>
-              <div className="flex gap-3 pt-1">
-                <button
-                  onClick={() => setShowCreate(false)}
-                  className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                >
-                  Cancel
-                </button>
-                <GradientButton className="flex-1 justify-center text-sm">
-                  <ChevronRight className="mr-1 size-4" />
-                  Create Deal
-                </GradientButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <CreateDealModal open={showCreate} onClose={() => setShowCreate(false)} />
     </div>
   );
 }

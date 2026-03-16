@@ -15,11 +15,14 @@ import {
   Copy,
   Smartphone,
   ShieldCheck,
+  ShieldAlert,
   Undo2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { cn } from "@/lib/utils";
+import { useWallet } from "@/context/WalletContext";
+import { WalletConnect } from "@/components/wallet/WalletConnect";
 
 // Types
 type PageStep = "pay" | "locking" | "success" | "confirm_delivery" | "dispute_opened" | "released";
@@ -45,33 +48,9 @@ const DEAL_DATA = {
 
 export default function DealPage({ params }: { params: { id: string } }) {
   const dealId = params.id;
+  const { connected, address, balance, inrEquivalent, isBlocked, riskScore, hasUsdcTrustline } = useWallet();
   const [step, setStep] = useState<PageStep>("pay");
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [balance] = useState(150.00);
-  const [fraudScore, setFraudScore] = useState<number | null>(null);
-  const [isBlocking, setIsBlocking] = useState(false);
-  const [showCaution, setShowCaution] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  // Simulate wallet connection and fraud check
-  const connectWallet = () => {
-    // In a real app, this would use Stellar SDK/Wallets
-    const mockAddress = "GCKF...WXQR";
-    setWalletAddress(mockAddress);
-    setWalletConnected(true);
-    
-    // Simulate silent fraud check
-    // For demo purposes, we'll let the user choose or just random it
-    const score = Math.floor(Math.random() * 100);
-    setFraudScore(score);
-    
-    if (score > 85) {
-      setIsBlocking(true);
-    } else if (score > 61) {
-      setShowCaution(true);
-    }
-  };
 
   const handlePay = () => {
     setStep("locking");
@@ -119,30 +98,7 @@ export default function DealPage({ params }: { params: { id: string } }) {
 
       <main className="mx-auto max-w-lg px-6 pb-24 pt-8">
         <AnimatePresence mode="wait">
-          {/* BLOCKED SCREEN */}
-          {isBlocking ? (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="mt-10 rounded-3xl bg-white border-2 border-red-500 p-8 text-center shadow-2xl shadow-red-500/10"
-            >
-              <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-red-100 text-red-600">
-                <AlertTriangle className="size-10" />
-              </div>
-              <h2 className="mt-6 text-2xl font-bold text-slate-900">Access Blocked</h2>
-              <p className="mt-3 text-slate-600 leading-relaxed">
-                Your wallet has been flagged for suspicious activity. For security reasons, you cannot proceed with this transaction.
-              </p>
-              <GradientButton 
-                variant="variant" 
-                className="mt-8 w-full rounded-2xl py-4"
-                onClick={() => setIsBlocking(false)}
-              >
-                Go Back
-              </GradientButton>
-            </motion.div>
-          ) : step === "locking" ? (
+          {step === "locking" ? (
             <motion.div 
               key="locking"
               initial={{ opacity: 0 }}
@@ -285,7 +241,7 @@ export default function DealPage({ params }: { params: { id: string } }) {
 
               {/* PAYMENT SECTION */}
               <div className="mt-10 rounded-3xl bg-slate-900 p-8 text-white shadow-2xl shadow-slate-900/20">
-                {step === "pay" && !walletConnected && (
+                {step === "pay" && !connected && (
                   <div className="space-y-6">
                     <div className="space-y-1">
                       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">Step 1 of 2</p>
@@ -293,102 +249,65 @@ export default function DealPage({ params }: { params: { id: string } }) {
                       <p className="text-sm text-slate-400">Select your preferred Stellar wallet to start.</p>
                     </div>
 
-                    <div className="grid gap-3">
-                      <button 
-                        onClick={() => connectWallet()}
-                        className="flex w-full items-center justify-between rounded-2xl bg-slate-800 px-6 py-5 transition-all hover:bg-slate-750 active:scale-95 group"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="flex size-10 items-center justify-center rounded-xl bg-white/5 text-emerald-400 ring-1 ring-white/10 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-                            <Wallet className="size-5" />
-                          </div>
-                          <span className="font-bold">Freighter Wallet</span>
-                        </div>
-                        <ChevronRight className="size-5 text-slate-500" />
-                      </button>
-
-                      <button 
-                        onClick={() => connectWallet()}
-                        className="flex w-full items-center justify-between rounded-2xl bg-slate-800 px-6 py-5 transition-all hover:bg-slate-750 active:scale-95 group"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="flex size-10 items-center justify-center rounded-xl bg-white/5 text-blue-400 ring-1 ring-white/10 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                            <Wallet className="size-5" />
-                          </div>
-                          <span className="font-bold">Albedo Wallet</span>
-                        </div>
-                        <ChevronRight className="size-5 text-slate-500" />
-                      </button>
-
-                      <div className="relative py-4 text-center">
-                        <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-slate-800" />
-                        </div>
-                        <span className="relative bg-slate-900 px-4 text-[10px] font-black uppercase tracking-widest text-slate-600">OR</span>
-                      </div>
-
-                      <button 
-                        onClick={() => connectWallet()}
-                        className="w-full rounded-2xl border border-dashed border-slate-700 py-4 text-xs font-bold text-slate-400 hover:border-slate-500 hover:text-slate-300 transition-colors"
-                      >
-                        Enter public key manually
-                      </button>
-                    </div>
+                    <WalletConnect />
                   </div>
                 )}
 
-                {walletConnected && step === "pay" && (
+                {connected && step === "pay" && (
                   <div className="space-y-8">
-                    {showCaution && (
-                      <div className="rounded-2xl bg-orange-500/10 border border-orange-500/20 p-4 flex gap-3 text-orange-200">
-                        <AlertTriangle className="size-5 shrink-0" />
+                    {isBlocked ? (
+                       <div className="rounded-2xl bg-red-500/10 border border-red-500/20 p-4 flex gap-3 text-red-200">
+                        <ShieldAlert className="size-5 shrink-0" />
                         <div className="text-xs leading-relaxed italic-none">
-                          <span className="font-bold block text-sm text-orange-400 mb-1 italic-none">Caution: Risk Detected</span>
-                          Your wallet has a risk score of {fraudScore}. Please verify the deal details carefully before proceeding.
+                          <span className="font-bold block text-sm text-red-400 mb-1 italic-none">Access Restricted</span>
+                          Your wallet has been flagged for suspicious activity.
                         </div>
                       </div>
+                    ) : (
+                      <>
+                        {riskScore !== null && riskScore > 60 && (
+                          <div className="rounded-2xl bg-orange-500/10 border border-orange-500/20 p-4 flex gap-3 text-orange-200">
+                            <AlertTriangle className="size-5 shrink-0" />
+                            <div className="text-xs leading-relaxed italic-none">
+                              <span className="font-bold block text-sm text-orange-400 mb-1 italic-none">Caution: Risk Detected</span>
+                              Your wallet has a risk score of {riskScore}. Please verify the deal details carefully.
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">Step 2 of 2</p>
+                          <h3 className="text-2xl font-bold">Confirm Payment</h3>
+                          <div className="inline-flex items-center gap-2 mt-2 px-3 py-1 bg-white/5 rounded-full ring-1 ring-white/10 text-[10px] font-bold text-emerald-400 uppercase tracking-wider italic-none">
+                            <div className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            Connected: {address?.slice(0, 8)}...
+                          </div>
+                        </div>
+
+                        <div className="space-y-4 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10 italic-none">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-slate-400">Your USDC Balance</span>
+                            <span className="font-bold text-white italic-none">{balance} USDC</span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-slate-400">Payment Amount</span>
+                            <span className="font-bold text-emerald-400 italic-none">-{DEAL_DATA.amountUSDC.toFixed(2)} USDC</span>
+                          </div>
+                          <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between">
+                            <span className="text-sm font-bold">Remaining After</span>
+                            <span className="text-lg font-black text-white italic-none">{(parseFloat(balance) - DEAL_DATA.amountUSDC).toFixed(2)} USDC</span>
+                          </div>
+                        </div>
+
+                        <GradientButton 
+                          className="w-full rounded-2xl py-6 text-lg font-black italic-none"
+                          onClick={handlePay}
+                          disabled={!hasUsdcTrustline || isBlocked}
+                        >
+                          {!hasUsdcTrustline ? "Add USDC Trustline First" : "Pay & Lock in Escrow"}
+                        </GradientButton>
+                      </>
                     )}
-
-                    <div className="space-y-1">
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">Step 2 of 2</p>
-                      <h3 className="text-2xl font-bold">Confirm Payment</h3>
-                      <div className="inline-flex items-center gap-2 mt-2 px-3 py-1 bg-white/5 rounded-full ring-1 ring-white/10 text-[10px] font-bold text-emerald-400 uppercase tracking-wider italic-none">
-                        <div className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        Connected: {walletAddress}
-                      </div>
-                    </div>
-
-                    <div className="space-y-4 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10 italic-none">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Your USDC Balance</span>
-                        <span className="font-bold text-white italic-none">{balance.toFixed(2)} USDC</span>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Payment Amount</span>
-                        <span className="font-bold text-emerald-400 italic-none">-{DEAL_DATA.amountUSDC.toFixed(2)} USDC</span>
-                      </div>
-                      <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between">
-                        <span className="text-sm font-bold">Remaining After</span>
-                        <span className="text-lg font-black text-white italic-none">{(balance - DEAL_DATA.amountUSDC).toFixed(2)} USDC</span>
-                      </div>
-                    </div>
-
-                    <GradientButton 
-                      className="w-full rounded-2xl py-6 text-lg font-black italic-none"
-                      onClick={handlePay}
-                    >
-                      Pay & Lock in Escrow
-                    </GradientButton>
-                    
-                    <button 
-                      onClick={() => {
-                        setWalletConnected(false);
-                        setShowCaution(false);
-                      }}
-                      className="w-full text-center text-xs font-bold text-slate-500 hover:text-slate-300"
-                    >
-                      Use a different wallet
-                    </button>
                   </div>
                 )}
 
