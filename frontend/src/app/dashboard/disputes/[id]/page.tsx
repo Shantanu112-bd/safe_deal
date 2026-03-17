@@ -2,17 +2,12 @@
 
 import { useState } from "react";
 import { 
-  AlertTriangle, 
-  MessageSquare, 
   Upload, 
   History, 
-  CheckCircle2, 
   ShieldAlert, 
   ArrowLeft,
   FileText,
-  Clock,
-  ExternalLink,
-  ChevronRight
+  Clock
 } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -25,8 +20,7 @@ type DisputeStatus = "pending_evidence" | "under_review" | "resolved_refund" | "
 
 export default function DisputePage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const [status, setStatus] = useState<DisputeStatus>("pending_evidence");
-  const [loading, setLoading] = useState(false);
+  const [status] = useState<DisputeStatus>("pending_evidence");
 
   const dealData = {
     id: params.id,

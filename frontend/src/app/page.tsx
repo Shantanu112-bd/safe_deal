@@ -23,7 +23,6 @@ import { GradientButton } from "@/components/ui/gradient-button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { Hero } from "@/components/ui/animated-shader-hero";
 import { cn } from "@/lib/utils";
-import { Navbar } from "@/components/layout/Navbar";
 
 const features = [
   {
@@ -98,7 +97,6 @@ export default function LandingPage() {
 
   return (
     <div className="bg-white text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 font-sans italic-none">
-      <Navbar />
 
       {/* ── 1. HERO SECTION ── */}
       <Hero
@@ -167,7 +165,7 @@ export default function LandingPage() {
       </Hero>
 
       {/* ── 2. PROBLEM SECTION ── */}
-      <section className="py-24 lg:py-32 bg-[#0f172a] text-white relative overflow-hidden">
+      <section id="buyers" className="py-24 lg:py-32 bg-[#0f172a] text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.05),transparent)] pointer-events-none" />
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div {...fadeIn} className="text-center mb-20 max-w-3xl mx-auto">
@@ -232,7 +230,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── 4. FEATURES GRID ── */}
-      <section className="py-24 lg:py-32 bg-slate-50">
+      <section id="merchants" className="py-24 lg:py-32 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div {...fadeIn} className="max-w-3xl mb-16">
             <h2 className="text-3xl lg:text-5xl font-black text-slate-900 mb-6 italic-none">Built for High Volume Commerce</h2>
@@ -339,7 +337,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── 7. STATS BAR ── */}
-      <section className="bg-[#0f172a] py-24 relative overflow-hidden border-y border-white/5">
+      <section id="pricing" className="bg-[#0f172a] py-24 relative overflow-hidden border-y border-white/5">
         <SparklesCore
           id="stats-sparkles"
           background="transparent"

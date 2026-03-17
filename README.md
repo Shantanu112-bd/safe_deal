@@ -14,14 +14,25 @@ SafeDeal is an AI-protected decentralized escrow payment platform built on the *
 
 <div align="center">
   <h3>Mobile Buyer Experience</h3>
-  <p>Perfectly optimized for iPhone SE and modern smartphones.</p>
-  <img src="https://via.placeholder.com/300x600/0f172a/ffffff?text=Mobile+Buyer+Page" width="280" />
+  <p>Perfectly optimized for mobile shoppers with glassmorphism UI.</p>
+  <img src="./mobile_buyer_page_mockup.png" width="320" />
 </div>
 
 <div align="center">
   <h3>Merchant Dashboard</h3>
-  <img src="https://via.placeholder.com/800x450/0f172a/ffffff?text=Merchant+Dashboard+Preview" width="600" />
+  <img src="./merchant_dashboard_mockup.png" width="800" />
 </div>
+
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion
+- **Blockchain**: Stellar Network, Soroban Smart Contracts (Rust)
+- **Integration**: Freighter Wallet, Albedo, Stellar SDK
+- **Styling**: Vanilla CSS + Tailwind, Shadcn UI Components
+- **Hosting**: Vercel (Production)
+- **CI/CD**: GitHub Actions
 
 ---
 
@@ -43,18 +54,23 @@ SafeDeal is composed of 5 Soroban smart contracts + a Next.js frontend:
 
 ## 🚀 Key Features
 
-- **🛡️ Shield Analytics**: Silent AI fraud scoring for Every wallet connection.
+- **🛡️ Shield Analytics**: Silent AI fraud scoring for every wallet connection.
 - **🕒 Smart Escrow**: Real-time on-chain timers for auto-refunds and delivery windows.
-- **📱 100% Mobile-First**: Designed for WhatsApp/Instagram buyers with glassmorphism UI.
+- **📱 100% Mobile-First**: Designed for WhatsApp/Instagram buyers with sleek, responsive layouts.
 - **💰 INR Integration**: Automatic USDC to INR conversion (1 USDC ≈ ₹83.50).
 - **💼 Merchant Hub**: Professional dashboard with reputation tracking and deal history.
+- **⚡ Zero-Error Build**: Type-safe codebase with 100% TypeScript coverage.
 
 ---
 
-## 🛠️ Setup & Development
+## 🔧 Setup & Development
 
-### Deployment
-SafeDeal is connected to a complete CI/CD pipeline via **GitHub Actions**. Every push to `main` runs contract tests, lints the frontend, and deploys to **Vercel Production**.
+### CI/CD Pipeline
+SafeDeal is connected to a complete CI/CD pipeline via **GitHub Actions**. Every push to `main`:
+1. Runs all Soroban contract unit tests.
+2. Performs full TypeScript validity checks.
+3. Lints the entire frontend codebase.
+4. Auto-deploys a production bundle to **Vercel**.
 
 ### Running Locally
 1. **Contracts**: `cd contracts/merchant-escrow && cargo test`

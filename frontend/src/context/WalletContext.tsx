@@ -90,6 +90,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } catch (error) {
       const message = error instanceof Error ? error.message : "Failed to connect Freighter";
       toast.error(message);
+      throw error; // re-throw so WalletModal can catch it
     }
   };
 
@@ -112,6 +113,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } catch (error) {
       const message = error instanceof Error ? error.message : "Failed to connect Albedo";
       toast.error(message);
+      throw error; // re-throw so WalletModal can catch it
     }
   };
 

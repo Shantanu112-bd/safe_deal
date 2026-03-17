@@ -86,11 +86,22 @@ export function CreateDealModal({ open, onClose }: Props) {
     [expiryDate]
   );
 
-  const dealId = finalDealId ?? "#4822";
-  const slug = finalSlug ?? "abc123";
-  const dealUrl = `safedeal.app/deal/${slug}`;
+  const dealId = finalDealId ?? "pending";
+  const dealUrl = finalDealId
+    ? `${window.location.origin}/deal/${finalDealId}`
+    : `${typeof window !== "undefined" ? window.location.origin : "https://safedeal.app"}/deal/pending`;
 
-  const handleNext = () => setStep(2);
+  const handleNext = () => {
+    if (!itemName.trim()) {
+      toast.error("Please enter an item name.");
+      return;
+    }
+    if (parsedAmount <= 0) {
+      toast.error("Please enter a valid USDC amount.");
+      return;
+    }
+    setStep(2);
+  };
   const handleBack = () => setStep(1);
 
   const handleConfirmCreate = async () => {
@@ -98,24 +109,26 @@ export function CreateDealModal({ open, onClose }: Props) {
       toast.error("Wallet not connected");
       return;
     }
-    
+
     setIsCreating(true);
     try {
       const result = await createEscrowTransaction(
         publicKey,
         parsedAmount,
         expiryHours,
-        walletType
+        walletType,
+        { itemName: itemName.trim(), description: description.trim(), category }
       );
-      
+
       if (result.success) {
-        setFinalDealId(`#${result.dealId}`);
-        setFinalSlug(Math.random().toString(36).substring(2, 8));
+        setFinalDealId(result.dealId);
+        setFinalSlug(result.dealId); // keep for compat
         setStep(3);
-        toast.success("Deal committed to Stellar blockchain!");
+        toast.success(`Deal #${result.dealId} created successfully!`);
       }
-    } catch (error) {
-      toast.error("Failed to create deal on-chain.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to create deal.";
+      toast.error(msg);
     } finally {
       setIsCreating(false);
     }
@@ -140,7 +153,7 @@ export function CreateDealModal({ open, onClose }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -150,13 +163,14 @@ export function CreateDealModal({ open, onClose }: Props) {
       />
       
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-xl rounded-[2.5rem] bg-white shadow-2xl overflow-hidden"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 100 }}
+        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+        className="relative w-full max-w-xl rounded-t-[2.5rem] sm:rounded-[2.5rem] bg-white shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 px-8 py-6 bg-slate-50/50">
+        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-100 px-8 py-6 bg-white/80 backdrop-blur-md">
           <div>
              <div className="flex items-center gap-2 mb-1">
                 <div className={cn("size-1.5 rounded-full transition-colors", step >= 1 ? "bg-emerald-500" : "bg-slate-200")} />
@@ -170,7 +184,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                 {step === 3 && "Deal is Live!"}
              </h2>
           </div>
-          <button onClick={onClose} className="rounded-full p-2 text-slate-400 hover:bg-slate-100 transition-colors">
+          <button onClick={onClose} className="rounded-full p-2 text-slate-400 hover:bg-slate-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
             <X className="size-6" />
           </button>
         </div>
@@ -195,7 +209,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                               value={itemName}
                               onChange={(e) => setItemName(e.target.value)}
                               placeholder="e.g. Handmade Silver Earrings"
-                              className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:outline-none transition-all"
+                              className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
                             />
                          </div>
                       </div>
@@ -207,7 +221,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                            onChange={(e) => setDescription(e.target.value)}
                            rows={3}
                            placeholder="Describe the item condition, size, etc."
-                           className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:outline-none transition-all resize-none"
+                           className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:outline-none transition-all resize-none min-h-[44px]"
                          />
                       </div>
 
@@ -220,7 +234,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                                  type="number"
                                  value={amountUsdc}
                                  onChange={(e) => setAmountUsdc(e.target.value)}
-                                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-black text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all"
+                                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-black text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
                                />
                             </div>
                             <p className="text-[10px] font-black text-emerald-600 ml-1 uppercase tracking-widest">≈ ₹{inrAmount.toLocaleString()}</p>
@@ -232,7 +246,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                                <select 
                                  value={category}
                                  onChange={(e) => setCategory(e.target.value)}
-                                 className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all"
+                                 className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
                                >
                                   {["Jewelry", "Clothing", "Electronics", "Art", "Services", "Food", "Other"].map(opt => (
                                     <option key={opt}>{opt}</option>
@@ -249,7 +263,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                             <select 
                               value={expiryPreset}
                               onChange={(e) => setExpiryPreset(e.target.value)}
-                              className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all"
+                              className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
                             >
                                <option value="24h">24 hours</option>
                                <option value="3d">3 days</option>
@@ -262,7 +276,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                        <div className="grid gap-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Item Photo (Optional)</label>
                           <div className="flex items-center justify-center w-full">
-                             <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-100 border-dashed rounded-[1.5rem] cursor-pointer bg-slate-50/50 hover:bg-slate-50 transition-all group">
+                             <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-100 border-dashed rounded-[1.5rem] cursor-pointer bg-slate-50/50 hover:bg-slate-50 transition-all group min-h-[44px]">
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                    <div className="size-10 rounded-xl bg-white shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                                       <Plus className="size-5 text-slate-400" />
@@ -275,7 +289,7 @@ export function CreateDealModal({ open, onClose }: Props) {
                        </div>
                     </div>
 
-                   <GradientButton className="w-full rounded-2xl py-4 font-black uppercase tracking-widest text-xs" onClick={handleNext}>
+                   <GradientButton className="w-full rounded-2xl py-4 font-black uppercase tracking-widest text-xs min-h-[44px]" onClick={handleNext}>
                       Continue to Review
                       <ChevronRight className="ml-2 size-4" />
                    </GradientButton>
@@ -318,16 +332,16 @@ export function CreateDealModal({ open, onClose }: Props) {
                       </div>
                    </div>
 
-                   <div className="flex gap-4">
+                   <div className="flex flex-col sm:flex-row gap-4">
                       <button 
                         onClick={handleBack}
-                        className="flex-1 rounded-2xl border border-slate-200 py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors"
+                        className="flex-1 rounded-2xl border border-slate-200 py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors min-h-[44px]"
                       >
                          <ArrowLeft className="inline-block mr-2 size-3.5" />
                          Back
                       </button>
                       <GradientButton 
-                        className="flex-[2] rounded-2xl py-4 font-black uppercase tracking-widest text-xs" 
+                        className="flex-[2] rounded-2xl py-4 font-black uppercase tracking-widest text-xs min-h-[44px]" 
                         onClick={handleConfirmCreate}
                         disabled={isCreating}
                       >
@@ -364,14 +378,14 @@ export function CreateDealModal({ open, onClose }: Props) {
                         <QRCode value={dealUrl} size={150} />
                       </div>
 
-                      <div className="flex-1 min-w-0 space-y-4">
+                      <div className="flex-1 min-w-0 space-y-4 w-full">
                          <div className="space-y-1">
                             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Shareable Link</p>
                             <div className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10">
                                <span className="flex-1 truncate font-mono text-xs font-bold text-emerald-400">{dealUrl}</span>
                                <button 
                                  onClick={handleCopyLink}
-                                 className="size-8 flex items-center justify-center rounded-lg bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
+                                 className="size-10 flex items-center justify-center rounded-lg bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
                                >
                                   {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
                                </button>
@@ -383,38 +397,38 @@ export function CreateDealModal({ open, onClose }: Props) {
                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <button 
                         onClick={shareOnWhatsApp}
-                        className="flex flex-col items-center justify-center gap-2.5 p-4 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/15 transition-all group"
+                        className="flex items-center sm:flex-col justify-center gap-2.5 p-4 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/15 transition-all group min-h-[44px]"
                       >
                          <MessageCircle className="size-5" />
                          <span className="text-[10px] font-black uppercase tracking-widest">WhatsApp</span>
                       </button>
                       <button 
                         onClick={handleCopyLink}
-                        className="flex flex-col items-center justify-center gap-2.5 p-4 rounded-2xl bg-[#E1306C]/10 border border-[#E1306C]/20 text-[#E1306C] hover:bg-[#E1306C]/15 transition-all group"
+                        className="flex items-center sm:flex-col justify-center gap-2.5 p-4 rounded-2xl bg-[#E1306C]/10 border border-[#E1306C]/20 text-[#E1306C] hover:bg-[#E1306C]/15 transition-all group min-h-[44px]"
                       >
                          <Instagram className="size-5" />
                          <span className="text-[10px] font-black uppercase tracking-widest">Instagram</span>
                       </button>
                       <button 
                         onClick={shareOnTelegram}
-                        className="flex flex-col items-center justify-center gap-2.5 p-4 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/20 text-[#0088cc] hover:bg-[#0088cc]/15 transition-all group"
+                        className="flex items-center sm:flex-col justify-center gap-2.5 p-4 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/20 text-[#0088cc] hover:bg-[#0088cc]/15 transition-all group min-h-[44px]"
                       >
                          <Telegram className="size-5" />
                          <span className="text-[10px] font-black uppercase tracking-widest">Telegram</span>
                       </button>
                    </div>
 
-                   <div className="flex gap-4">
+                   <div className="flex flex-col sm:flex-row gap-4">
                       <button 
                         onClick={handleCopyLink}
-                        className="flex-1 rounded-2xl border border-slate-200 py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors"
+                        className="flex-1 rounded-2xl border border-slate-200 py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors min-h-[44px]"
                       >
                         <Copy className="inline-block mr-2 size-3.5" />
                         Copy Link
                       </button>
                       <GradientButton 
                         variant="variant"
-                        className="flex-1 rounded-2xl py-4 font-black uppercase tracking-widest text-xs" 
+                        className="flex-1 rounded-2xl py-4 font-black uppercase tracking-widest text-xs min-h-[44px]" 
                         onClick={onClose}
                       >
                         Back to Dashboard
