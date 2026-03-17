@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Search,
   Plus,
@@ -18,17 +18,16 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { getSellerDeals, type DealData } from "@/lib/stellar";
 
-type Status = "all" | "waiting" | "locked" | "shipped" | "disputed";
-
-
+type Status = "all" | "WaitingForPayment" | "Locked" | "Disputed";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
-  waiting:  { label: "Waiting for Payment", color: "text-amber-600",   bg: "bg-amber-50 border-amber-100" },
-  locked:   { label: "Payment Locked",      color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-100" },
-  shipped:  { label: "Shipped",             color: "text-sky-600",     bg: "bg-sky-50 border-sky-100" },
-  disputed: { label: "Disputed",            color: "text-red-600",     bg: "bg-red-50 border-red-100" },
-  completed:{ label: "Completed",           color: "text-slate-600",   bg: "bg-slate-50 border-slate-200" },
-  refunded: { label: "Refunded",            color: "text-orange-600",  bg: "bg-orange-50 border-orange-100" },
+  WaitingForPayment:  { label: "Waiting for Payment", color: "text-amber-600",   bg: "bg-amber-50 border-amber-100" },
+  Locked:   { label: "Payment Locked",      color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-100" },
+  Disputed: { label: "Disputed",            color: "text-red-600",     bg: "bg-red-50 border-red-100" },
+  Completed:{ label: "Completed",           color: "text-slate-600",   bg: "bg-slate-50 border-slate-200" },
+  Refunded: { label: "Refunded",            color: "text-orange-600",  bg: "bg-orange-50 border-orange-100" },
+  Cancelled:{ label: "Cancelled",           color: "text-slate-500",   bg: "bg-slate-50 border-slate-200" },
+  Expired:  { label: "Expired",             color: "text-red-600",     bg: "bg-red-50 border-red-100" },
 };
 
 export default function ActiveDealsPage() {
@@ -38,28 +37,41 @@ export default function ActiveDealsPage() {
   const [deals, setDeals] = useState<DealData[]>([]);
   const { isConnected, publicKey } = useWallet();
 
-  const loadDeals = async () => {
+  const loadDeals = useCallback(async () => {
     try {
       if (publicKey) {
         // Uses Soroban contract when deployed, localStorage otherwise
         const result = await getSellerDeals(publicKey);
-        setDeals(result);
+        const activeDeals = result.filter(d => 
+          d.status === 'WaitingForPayment' || 
+          d.status === 'Locked' ||
+          d.status === 'Disputed'
+        );
+        setDeals(activeDeals.reverse());
       } else {
         // Fallback: load all deals from localStorage
         const raw = localStorage.getItem("safedeal_deals");
-        if (raw) setDeals(JSON.parse(raw) as DealData[]);
+        if (raw) {
+          const allLocal = JSON.parse(raw) as DealData[];
+          const activeLocal = allLocal.filter(d => 
+            d.status === 'WaitingForPayment' || 
+            d.status === 'Locked' ||
+            d.status === 'Disputed'
+          );
+          setDeals(activeLocal.reverse());
+        }
         else setDeals([]);
       }
     } catch {
       setDeals([]);
     }
-  };
+  }, [publicKey]);
 
   useEffect(() => {
     loadDeals();
     window.addEventListener("focus", loadDeals);
     return () => window.removeEventListener("focus", loadDeals);
-  }, []);
+  }, [loadDeals]);
 
   const handleModalClose = () => {
     setShowCreate(false);
@@ -125,7 +137,7 @@ export default function ActiveDealsPage() {
           {/* FILTERS BAR */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex bg-white p-1 rounded-2xl border border-slate-200 w-fit flex-wrap gap-1">
-              {(["all", "waiting", "locked", "shipped", "disputed"] as Status[]).map((s) => (
+              {(["all", "WaitingForPayment", "Locked", "Disputed"] as Status[]).map((s) => (
                 <button
                   key={s}
                   onClick={() => setFilter(s)}
@@ -157,7 +169,7 @@ export default function ActiveDealsPage() {
           <div className="grid gap-6">
             {filteredDeals.length > 0 ? (
               filteredDeals.map((deal) => {
-                const config = statusConfig[deal.status] ?? statusConfig["waiting"];
+                const config = statusConfig[deal.status] ?? statusConfig["WaitingForPayment"];
                 const label = expiresLabel(deal.expiresAt);
                 const expired = label === "Expired";
 
