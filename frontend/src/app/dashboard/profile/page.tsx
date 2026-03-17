@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Wallet,
   Globe,
@@ -17,20 +17,75 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useWallet } from "@/context/WalletContext";
+import { getSellerProfile, registerSeller, updateSellerProfile } from "@/lib/stellar";
 
 export default function ProfileSettingsPage() {
   const [loading, setLoading] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    category: "",
+    contact: ""
+  });
   const { publicKey, walletType, xlmBalance, usdcBalance, isConnected } = useWallet();
 
   // Derive initials from public key for avatar
   const initials = publicKey ? publicKey.slice(0, 2).toUpperCase() : "??";
 
-  const handleSave = () => {
+  useEffect(() => {
+    if (!publicKey) return;
+    
+    const checkProfile = async () => {
+      try {
+        const profile = await getSellerProfile(publicKey);
+        if (profile && profile.businessName) {
+          setFormData({
+            name: profile.businessName,
+            description: "", // In a real app we'd load this from metadata_uri
+            category: "", // And this
+            contact: "" // And this
+          });
+          setIsRegistered(true);
+        }
+      } catch (error) {
+        console.error("Failed to load profile:", error);
+      }
+    };
+    
+    checkProfile();
+  }, [publicKey]);
+
+  const handleSave = async () => {
+    if (!publicKey) return;
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      if (!isRegistered) {
+        // First time - register seller
+        await registerSeller(
+          publicKey,
+          formData.name,
+          formData.description,
+          formData.category,
+          formData.contact
+        );
+        setIsRegistered(true);
+        toast.success("Profile created on blockchain!");
+      } else {
+        // Update existing profile
+        await updateSellerProfile(
+          publicKey,
+          formData
+        );
+        toast.success("Profile updated successfully!");
+      }
+    } catch (error) {
+      toast.error("Failed to save profile");
+      console.error(error);
+    } finally {
       setLoading(false);
-      toast.success("Profile updated successfully!");
-    }, 1500);
+    }
   };
 
   return (
@@ -99,21 +154,36 @@ export default function ProfileSettingsPage() {
                     <div className="flex-1 space-y-4">
                       <div className="grid gap-2">
                         <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Merchant Name</Label>
-                        <Input placeholder="Your store name..." className="rounded-xl" />
+                        <Input 
+                          placeholder="Your store name..." 
+                          className="rounded-xl" 
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        />
                       </div>
                       <div className="grid gap-2">
                         <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</Label>
-                        <Input placeholder="e.g. Electronics, Handicrafts..." className="rounded-xl" />
+                        <Input 
+                          placeholder="e.g. Electronics, Handicrafts..." 
+                          className="rounded-xl" 
+                          value={formData.category}
+                          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        />
                       </div>
                     </div>
                   </div>
 
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="grid gap-2">
-                      <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Location</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Contact / Platform</Label>
                       <div className="relative">
                         <MapPin className="absolute left-3 top-3 size-4 text-slate-400" />
-                        <Input placeholder="City, Country" className="rounded-xl pl-10" />
+                        <Input 
+                          placeholder="e.g. @MyStore" 
+                          className="rounded-xl pl-10" 
+                          value={formData.contact}
+                          onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                        />
                       </div>
                     </div>
                     <div className="grid gap-2">
@@ -134,6 +204,8 @@ export default function ProfileSettingsPage() {
                     <Textarea
                       placeholder="Tell buyers about yourself and what you sell..."
                       className="rounded-2xl min-h-[120px]"
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     />
                     <p className="text-[10px] font-bold text-slate-400">Keep it short and impactful for mobile buyers. (Max 200 chars)</p>
                   </div>

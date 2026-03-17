@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Upload, 
   History, 
   ShieldAlert, 
   ArrowLeft,
   FileText,
-  Clock
+  Clock,
+  Loader2
 } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -15,26 +16,92 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useWallet } from "@/context/WalletContext";
+import { getDispute, submitEvidence } from "@/lib/stellar";
 
-type DisputeStatus = "pending_evidence" | "under_review" | "resolved_refund" | "resolved_payout";
+type DisputeStatus = "pending_evidence" | "under_review" | "resolved_refund" | "resolved_payout" | string;
 
 export default function DisputePage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const [status] = useState<DisputeStatus>("pending_evidence");
+  const { publicKey } = useWallet();
+  const [status, setStatus] = useState<DisputeStatus>("pending_evidence");
+  
+  const [dealData, setDealData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  
+  const [evidenceExplanation, setEvidenceExplanation] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const dealData = {
-    id: params.id,
-    title: "Handmade Silver Earrings",
-    amount: "2,400 USDC",
-    buyer: "GCKF...WXQR",
-    seller: "Priya's Jewelry",
-    reason: "Item not as described (Color mismatch)",
-    openedOn: "March 15, 2026"
+  useEffect(() => {
+    const fetchDispute = async () => {
+      try {
+        const dispute = await getDispute(params.id);
+        if (dispute) {
+          setDealData({
+            id: dispute.id,
+            title: `SafeDeal #${dispute.dealId}`, // We don't have the original deal's title natively mapped here, so we mock or use dealId
+            amount: `${dispute.amount} USDC`,
+            buyer: dispute.buyer,
+            seller: dispute.seller,
+            reason: dispute.reason,
+            openedOn: new Date(dispute.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+            rawStatus: dispute.status
+          });
+          setStatus(dispute.status);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDispute();
+  }, [params.id]);
+
+  const handleSubmitEvidence = async () => {
+    if (!publicKey) return toast.error("Connect your wallet first");
+    
+    setSubmitting(true);
+    try {
+      // Mock hash generation
+      const evidenceHash = "hash_" + Date.now().toString(16);
+      const evidenceType = "text_explanation";
+
+      await submitEvidence(
+        params.id,
+        publicKey,
+        evidenceType,
+        evidenceHash
+      );
+      toast.success("Evidence submitted successfully");
+      setEvidenceExplanation("");
+    } catch (e) {
+      toast.error("Failed to submit evidence");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const handleUpload = () => {
-    toast.info("Evidence uploaded and hash committed to Stellar network.");
-  };
+  if (loading) {
+    return (
+      <div className="flex-1 min-w-0 bg-slate-50 flex items-center justify-center min-h-screen">
+        <Loader2 className="size-10 text-slate-300 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!dealData) {
+    return (
+      <div className="flex-1 min-w-0 bg-slate-50 flex items-center justify-center min-h-screen pb-20">
+        <div className="text-center">
+          <ShieldAlert className="size-16 text-slate-300 mx-auto mb-4" />
+          <h2 className="text-2xl font-black text-slate-900 uppercase">Dispute Not Found</h2>
+        </div>
+      </div>
+    );
+  }
+
+  const isResolved = status === "resolved_payout" || status === "resolved_refund" || status.toLowerCase() === "dismissed";
 
   return (
     <div className="flex-1 min-w-0 bg-slate-50 pb-20 font-sans italic-none">
@@ -69,7 +136,7 @@ export default function DisputePage({ params }: { params: { id: string } }) {
                     <ShieldAlert className="size-8" />
                  </div>
                  <div className="space-y-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Dispute #SD-{dealData.id}</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Dispute #{dealData.id}</p>
                     <h1 className="text-2xl font-black text-slate-900 italic-none">Evidence Review: {dealData.title}</h1>
                     <p className="text-sm font-bold text-slate-500 italic-none">Reason: <span className="text-red-500 font-black">{dealData.reason}</span></p>
                  </div>
@@ -90,49 +157,52 @@ export default function DisputePage({ params }: { params: { id: string } }) {
                  <CardHeader className="p-8 pb-4">
                     <CardTitle className="text-lg font-black flex items-center gap-2 italic-none">
                        <Upload className="size-5 text-[#0b50da]" />
-                       Submit Evidence (Seller)
+                       Submit Evidence
                     </CardTitle>
                     <CardDescription className="font-bold">Upload receipts, shipping photos, or chat logs to support your case.</CardDescription>
                  </CardHeader>
                  <CardContent className="p-8 space-y-6 italic-none">
-                    <div className="grid grid-cols-2 gap-4 italic-none">
-                       <div className="rounded-2xl border-2 border-dashed border-slate-100 p-8 text-center flex flex-col items-center justify-center gap-2 group cursor-pointer hover:bg-slate-50 transition-all">
-                          <FileText className="size-8 text-slate-300 group-hover:text-slate-900 group-hover:scale-110 transition-all" />
-                          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic-none">Shipping Bill</p>
-                       </div>
-                       <div className="rounded-2xl border-2 border-dashed border-slate-100 p-8 text-center flex flex-col items-center justify-center gap-2 group cursor-pointer hover:bg-slate-50 transition-all">
-                          <FileText className="size-8 text-slate-300 group-hover:text-slate-900 group-hover:scale-110 transition-all" />
-                          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic-none">Packing Proof</p>
-                       </div>
-                    </div>
-                    <textarea 
-                      placeholder="Add an optional explanation for the arbiter..."
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none transition-all resize-none min-h-[100px]"
-                    />
-                    <GradientButton className="w-full rounded-2xl py-4 font-black uppercase tracking-widest text-xs" onClick={handleUpload}>
-                       Submit to Arbiter
-                    </GradientButton>
+                    {!isResolved ? (
+                      <>
+                        <div className="grid grid-cols-2 gap-4 italic-none">
+                           <div className="rounded-2xl border-2 border-dashed border-slate-100 p-8 text-center flex flex-col items-center justify-center gap-2 group cursor-pointer hover:bg-slate-50 transition-all">
+                              <FileText className="size-8 text-slate-300 group-hover:text-slate-900 group-hover:scale-110 transition-all" />
+                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic-none">Shipping Bill</p>
+                           </div>
+                           <div className="rounded-2xl border-2 border-dashed border-slate-100 p-8 text-center flex flex-col items-center justify-center gap-2 group cursor-pointer hover:bg-slate-50 transition-all">
+                              <FileText className="size-8 text-slate-300 group-hover:text-slate-900 group-hover:scale-110 transition-all" />
+                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic-none">Packing Proof</p>
+                           </div>
+                        </div>
+                        <textarea 
+                          value={evidenceExplanation}
+                          onChange={(e) => setEvidenceExplanation(e.target.value)}
+                          placeholder="Add an optional explanation for the arbiter..."
+                          className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs font-bold text-slate-900 focus:bg-white focus:outline-none transition-all resize-none min-h-[100px]"
+                        />
+                        <GradientButton className="w-full rounded-2xl py-4 font-black uppercase tracking-widest text-xs" onClick={handleSubmitEvidence} disabled={submitting}>
+                           {submitting ? "Submitting..." : "Submit to Arbiter"}
+                        </GradientButton>
+                      </>
+                    ) : (
+                      <div className="text-center py-8">
+                        <ShieldAlert className="size-16 text-slate-200 mx-auto mb-4" />
+                        <h4 className="text-lg font-black text-slate-900">Dispute Closed</h4>
+                        <p className="text-slate-500 font-bold text-sm">Evidence submission is no longer allowed.</p>
+                      </div>
+                    )}
                  </CardContent>
               </Card>
 
               <Card className="rounded-[2.5rem] border-slate-200 shadow-sm overflow-hidden bg-slate-50/50 italic-none">
                  <CardHeader className="p-8 pb-4 italic-none">
                     <CardTitle className="text-lg font-black flex items-center gap-2 italic-none text-slate-400">
-                       <Upload className="size-5" />
-                       Evidence Submitted (Buyer)
+                       <History className="size-5" />
+                       Evidence Log
                     </CardTitle>
                  </CardHeader>
                  <CardContent className="p-8 italic-none">
-                    <div className="flex items-center gap-4 bg-white rounded-2xl p-4 border border-slate-100 italic-none">
-                       <div className="size-10 rounded-xl bg-red-50 flex items-center justify-center text-red-500">
-                          <FileText className="size-5" />
-                       </div>
-                       <div className="flex-1 italic-none">
-                          <p className="text-xs font-black text-slate-900">mismatch_photo.jpg</p>
-                          <p className="text-[10px] font-bold text-slate-400">Commit: stellar-tx-3a9b...</p>
-                       </div>
-                       <button className="text-[10px] font-black text-[#0b50da] hover:underline uppercase italic-none">View</button>
-                    </div>
+                    <p className="text-sm font-bold text-slate-500 mb-4">No recent evidence found or syncing with contract.</p>
                  </CardContent>
               </Card>
            </div>
@@ -145,10 +215,10 @@ export default function DisputePage({ params }: { params: { id: string } }) {
                     <h2 className="text-[10px] font-black uppercase tracking-widest text-emerald-400 italic-none">Dispute Timeline</h2>
                  </div>
                  <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-white/5">
-                    <TimelineItem title="Dispute Opened" date="Mar 15, 2:30 PM" active />
-                    <TimelineItem title="Buyer Evidence" date="Mar 15, 2:45 PM" active />
-                    <TimelineItem title="Awaiting Seller" date="In progress" active dotColor="bg-amber-400" />
-                    <TimelineItem title="Arbiter Review" date="Estimated Mar 17" />
+                    <TimelineItem title="Dispute Opened" date={dealData.openedOn} active />
+                    <TimelineItem title="Awaiting Evidence" date="Pending" active={status === "pending_evidence"} dotColor="bg-amber-400" />
+                    <TimelineItem title="Arbiter Review" date="In Progress" active={status === "under_review"} dotColor="bg-blue-400" />
+                    <TimelineItem title="Resolved" date={isResolved ? "Closed" : "Pending"} active={isResolved} />
                  </div>
               </Card>
 
@@ -162,7 +232,11 @@ export default function DisputePage({ params }: { params: { id: string } }) {
                     <div className="size-16 rounded-3xl bg-slate-50 flex items-center justify-center text-slate-300 mb-4 italic-none">
                        <Clock className="size-8" />
                     </div>
-                    <p className="text-sm font-bold text-slate-500 italic-none">Awaiting evidence submission from <span className="text-slate-900 font-black">Seller</span> before final decision.</p>
+                    {isResolved ? (
+                      <p className="text-sm font-bold text-slate-500 italic-none">Decision reached: <span className="text-emerald-500 font-black">{dealData.rawStatus}</span></p>
+                    ) : (
+                      <p className="text-sm font-bold text-slate-500 italic-none">Awaiting final decision from arbiter.</p>
+                    )}
                  </CardContent>
               </Card>
            </div>

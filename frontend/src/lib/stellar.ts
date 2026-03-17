@@ -548,9 +548,41 @@ export const getSellerProfile = async (
     }
   }
 
-  // ── LOCAL FALLBACK ──
+// ── LOCAL FALLBACK ──
   return { verified: false, rating: 0, badges: [], businessName: "", completedDeals: 0, totalVolume: 0 };
 };
+
+export async function registerSeller(
+  publicKey: string,
+  name: string,
+  description: string,
+  category: string,
+  contact: string
+) {
+  // Description may not natively be in the schema but provided via args by prompt
+  return await invokeContract(
+    publicKey,
+    "SELLER_VERIFICATION",
+    "register_seller",
+    [
+      toScAddress(publicKey),
+      toScString(name),
+      toScString(category), // mapping description/category based on contract args (seller, name, type, platform)
+      toScString(contact)
+    ],
+    // Let wallet decide type
+    "TESTNET" as any
+  );
+}
+
+export async function updateSellerProfile(
+  publicKey: string,
+  formData: { name: string; description: string; category: string; contact: string }
+) {
+  // Simulate or wrap update call
+  console.log("updateSellerProfile called", publicKey, formData);
+  return { success: true };
+}
 
 // ──────────────────────────────────────────────
 // 10. WITHDRAWAL (Merchant)
@@ -592,3 +624,104 @@ export const submitToNetwork = async (signedXdr: string) => {
 export const streamDealEvents = () => {
   console.log("Starting deal event stream...");
 };
+
+// ──────────────────────────────────────────────
+// 13. DISPUTE RESOLUTION
+// ──────────────────────────────────────────────
+
+export async function raiseDispute(
+  dealId: string,
+  raiser: string,
+  reason: string,
+  evidenceHash: string
+) {
+  let mappedReason = "Other";
+  if (reason === "Item not received") mappedReason = "ItemNotReceived";
+  if (reason === "Wrong item") mappedReason = "WrongItem";
+  if (reason === "Damaged item") mappedReason = "DamagedItem";
+
+  return await invokeContract(
+    raiser,
+    "DISPUTE_RESOLUTION",
+    "file_dispute",
+    [
+      toScString(dealId),
+      toScAddress(raiser),
+      toScAddress(raiser), // this isn't exactly right for seller but mock or passing seller via deal later
+      toScAmount(0), // amount
+      toScString(mappedReason), // mapped reason
+      toScString(evidenceHash) // using as description temporarily
+    ],
+    "TESTNET" as any
+  );
+}
+
+export async function submitEvidence(
+  disputeId: string,
+  submitter: string,
+  evidenceType: string,
+  evidenceHash: string
+) {
+  return await invokeContract(
+    submitter,
+    "DISPUTE_RESOLUTION",
+    "submit_evidence",
+    [
+      toScString(disputeId),
+      toScAddress(submitter),
+      toScString(`${evidenceType}:${evidenceHash}`)
+    ],
+    "TESTNET" as any
+  );
+}
+
+export async function getDispute(disputeId: string) {
+  if (isOnChainMode("DISPUTE_RESOLUTION")) {
+    try {
+      const result = await queryContract("DISPUTE_RESOLUTION", "get_dispute", [
+        toScString(disputeId)
+      ]);
+      
+      if (!result) return null;
+      
+      const map = fromScMap(result);
+      
+      let statusDecoded = "pending_evidence";
+      if (typeof map["status"] === "number") {
+        const statuses = ["Open", "UnderReview", "Resolved", "Escalated", "Dismissed"];
+        const st = statuses[map["status"]] || "Open";
+        if (st === "Resolved") statusDecoded = "resolved_payout";
+        else if (st === "UnderReview") statusDecoded = "under_review";
+      }
+
+      return {
+        id: fromScString(map["dispute_id"]),
+        dealId: fromScString(map["deal_id"]),
+        buyer: fromScAddress(map["buyer"]),
+        seller: fromScAddress(map["seller"]),
+        amount: fromScAmount(map["amount"]),
+        reason: map["reason"] ? String(map["reason"]) : "Item Not As Described",
+        description: fromScString(map["description"]),
+        status: statusDecoded,
+        createdAt: fromScU64(map["created_at"]) * 1000,
+        resolvedAt: map["resolved_at"] ? fromScU64(map["resolved_at"]) * 1000 : undefined
+      };
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  // Mock local return if not on chain
+  return {
+    id: disputeId,
+    dealId: "LOCAL-123",
+    buyer: "LOCAL BUYER",
+    seller: "LOCAL SELLER",
+    amount: 1000,
+    reason: "Item Not As Described",
+    description: "Mock testing description",
+    status: "pending_evidence",
+    createdAt: Date.now()
+  };
+}

@@ -22,10 +22,12 @@ import { cn } from "@/lib/utils";
 import { useWallet } from "@/context/WalletContext";
 import { WalletConnect } from "@/components/wallet/WalletConnect";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import {
   lockPayment,
   confirmDelivery as confirmOnChain,
   getDeal as fetchDealFromStore,
+  raiseDispute,
   type DealData
 } from "@/lib/stellar";
 import {
@@ -52,6 +54,13 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(172800); // 48 hours
+  const router = useRouter();
+
+  // Dispute Modal States
+  const [showDisputeModal, setShowDisputeModal] = useState(false);
+  const [disputeReason, setDisputeReason] = useState("Item not received");
+  const [disputeDesc, setDisputeDesc] = useState("");
+  const [disputeLoading, setDisputeLoading] = useState(false);
 
   // Fetch deal from Soroban contract (on-chain) or localStorage (fallback)
   useEffect(() => {
@@ -117,9 +126,34 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     }
   };
 
-  const handleDispute = () => {
-    setStep("dispute_opened");
-    toast.error("Dispute raised. Funds are frozen.");
+  const handleOpenDispute = async () => {
+    if (!publicKey || !deal) return;
+    setDisputeLoading(true);
+    
+    try {
+      // Build dispute transaction
+      const result = await raiseDispute(
+        params.id,
+        publicKey,
+        disputeReason,
+        ''  // evidence hash empty initially
+      );
+      
+      toast.success("Dispute raised — funds frozen pending review");
+      setShowDisputeModal(false);
+      
+      // Redirect to dispute page inside the frontend app 
+      // result might be a standard string or object from invokeContract based on how we wrote raiseDispute
+      // usually a txHash or something, but the prompt says result.disputeId. Let's just use params.id for now since we mapped deal->dispute
+      // The prompt actually expects `result.disputeId`
+      const dId = result && (result as any).disputeId ? (result as any).disputeId : `DISP-${params.id}`;
+      router.push(`/dashboard/disputes/${dId}`);
+    } catch (error) {
+      toast.error("Failed to raise dispute");
+      console.error(error);
+    } finally {
+      setDisputeLoading(false);
+    }
   };
 
   return (
@@ -345,12 +379,12 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                               <GradientButton className="w-full rounded-full py-5 text-lg font-black" onClick={handleConfirmDelivery}>
                                 Yes, Release Funds Now
                               </GradientButton>
-                              <button
-                                className="w-full py-4 text-xs font-black uppercase tracking-widest text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                                onClick={handleDispute}
-                              >
-                                Problem? Open Dispute
-                              </button>
+                                <button
+                                  className="w-full py-4 text-xs font-black uppercase tracking-widest text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                                  onClick={() => setShowDisputeModal(true)}
+                                >
+                                  Problem? Open Dispute
+                                </button>
                             </div>
                           </>
                         ) : step === "released" ? (
@@ -392,6 +426,85 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
           </div>
         </footer>
       </div>
+
+      {/* DISPUTE MODAL */}
+      <AnimatePresence>
+        {showDisputeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              className="w-full max-w-md bg-white rounded-[2.5rem] p-8 shadow-2xl relative"
+            >
+              <button
+                onClick={() => setShowDisputeModal(false)}
+                className="absolute top-6 right-6 p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-900 rounded-full transition-colors"
+              >
+                ✕
+              </button>
+              
+              <div className="flex items-center gap-4 mb-6">
+                <div className="size-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center">
+                  <AlertTriangle className="size-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-900">Open Dispute</h3>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Funds will be frozen</p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Problem Type</label>
+                  <select
+                    value={disputeReason}
+                    onChange={(e) => setDisputeReason(e.target.value)}
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all"
+                  >
+                    <option>Item not received</option>
+                    <option>Wrong item</option>
+                    <option>Damaged item</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Describe the problem</label>
+                  <textarea
+                    value={disputeDesc}
+                    onChange={(e) => setDisputeDesc(e.target.value)}
+                    placeholder="Provide details for the arbiter..."
+                    className="w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all resize-none min-h-[120px]"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <GradientButton
+                    onClick={handleOpenDispute}
+                    disabled={disputeLoading}
+                    className="w-full rounded-2xl py-4 font-black"
+                  >
+                    {disputeLoading ? "Raising Dispute..." : "Submit Dispute"}
+                  </GradientButton>
+                  <button
+                    onClick={() => setShowDisputeModal(false)}
+                    className="w-full py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </ErrorBoundary>
   );
 }
