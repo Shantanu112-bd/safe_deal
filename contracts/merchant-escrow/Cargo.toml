@@ -1,6 +1,6 @@
 [package]
 name = "merchant-escrow"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [dependencies]
@@ -8,6 +8,7 @@ soroban-sdk = "21.7"
 
 [dev-dependencies]
 soroban-sdk = { version = "21.7", features = ["testutils"] }
+soroban-token-sdk = "21.7"
 
 [features]
 testutils = ["soroban-sdk/testutils"]

@@ -1,7 +1,13 @@
 #![no_std]
 extern crate alloc;
 
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, Env, String, Vec};
+use soroban_sdk::{
+    contract, contractimpl, contracttype, symbol_short, token, Address, Env, String, Vec,
+};
+
+// ──────────────────────────────────────────────
+// Types
+// ──────────────────────────────────────────────
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -30,22 +36,59 @@ pub struct Deal {
     pub locked_at: Option<u64>,
 }
 
+// ──────────────────────────────────────────────
+// Storage keys
+// ──────────────────────────────────────────────
+
 #[contracttype]
 #[derive(Clone)]
 pub enum DataKey {
+    Admin,
+    TokenAddress,
     Deal(String),
     SellerDeals(Address),
     BuyerDeals(Address),
     NextDealId,
 }
 
+// ──────────────────────────────────────────────
+// Contract
+// ──────────────────────────────────────────────
+
 #[contract]
 pub struct MerchantEscrowContract;
 
 #[contractimpl]
 impl MerchantEscrowContract {
-    /// Creates a new escrow deal
-    /// Returns the unique deal_id
+    // ────────────── Initialization ──────────────
+
+    /// Initialize the contract with admin and USDC token address.
+    /// Can only be called once.
+    pub fn initialize(env: Env, admin: Address, token_address: Address) {
+        if env.storage().instance().has(&DataKey::Admin) {
+            panic!("Contract already initialized");
+        }
+        env.storage().instance().set(&DataKey::Admin, &admin);
+        env.storage()
+            .instance()
+            .set(&DataKey::TokenAddress, &token_address);
+
+        env.events()
+            .publish((symbol_short!("Escrow"), symbol_short!("init")), admin);
+    }
+
+    /// Get the stored USDC token address
+    pub fn get_token(env: Env) -> Address {
+        env.storage()
+            .instance()
+            .get(&DataKey::TokenAddress)
+            .unwrap_or_else(|| panic!("Contract not initialized"))
+    }
+
+    // ────────────── Deal lifecycle ──────────────
+
+    /// Creates a new escrow deal.
+    /// Returns the unique deal_id.
     pub fn create_deal(
         env: Env,
         seller: Address,
@@ -63,17 +106,21 @@ impl MerchantEscrowContract {
             panic!("Expiry hours must be greater than zero");
         }
 
-        // Generate deal ID using a simple counter for now
-        let next_id: u64 = env.storage().instance().get(&DataKey::NextDealId).unwrap_or(1);
-        
+        // Generate deal ID using a simple counter
+        let next_id: u64 = env
+            .storage()
+            .instance()
+            .get(&DataKey::NextDealId)
+            .unwrap_or(1);
+
         let deal_id_str = alloc::format!("DEAL-{}", next_id);
         let deal_id = String::from_str(&env, &deal_id_str);
-        
-        
-        env.storage().instance().set(&DataKey::NextDealId, &(next_id + 1));
+
+        env.storage()
+            .instance()
+            .set(&DataKey::NextDealId, &(next_id + 1));
 
         let current_time = env.ledger().timestamp();
-        // Convert expiry hours to seconds
         let expiry_at = current_time + (expiry_hours * 3600);
 
         let deal = Deal {
@@ -90,9 +137,11 @@ impl MerchantEscrowContract {
         };
 
         // Store the deal
-        env.storage().instance().set(&DataKey::Deal(deal_id.clone()), &deal);
+        env.storage()
+            .instance()
+            .set(&DataKey::Deal(deal_id.clone()), &deal);
 
-        // Update seller deals
+        // Update seller deals index
         let mut seller_deals: Vec<String> = env
             .storage()
             .instance()
@@ -101,7 +150,7 @@ impl MerchantEscrowContract {
         seller_deals.push_back(deal_id.clone());
         env.storage()
             .instance()
-            .set(&DataKey::SellerDeals(seller.clone()), &seller_deals);
+            .set(&DataKey::SellerDeals(seller), &seller_deals);
 
         // Emit created event
         env.events()
@@ -110,7 +159,8 @@ impl MerchantEscrowContract {
         deal_id
     }
 
-    /// Buyer locks USDC into escrow vault
+    /// Buyer locks USDC into escrow vault.
+    /// REAL token transfer: buyer → contract address.
     pub fn lock_payment(env: Env, deal_id: String, buyer: Address, amount: i128) -> bool {
         buyer.require_auth();
 
@@ -128,19 +178,26 @@ impl MerchantEscrowContract {
             return false;
         }
 
-        // In a real implementation, this would interact with a token contract to transfer the funds to this contract's address
-        // For example:
-        // let token = token::Client::new(&env, &token_address);
-        // token.transfer(&buyer, &env.current_contract_address(), &amount);
+        // ── REAL USDC TRANSFER: buyer → escrow contract ──
+        let token_address: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::TokenAddress)
+            .unwrap_or_else(|| panic!("Contract not initialized"));
 
+        let token_client = token::Client::new(&env, &token_address);
+        token_client.transfer(&buyer, &env.current_contract_address(), &amount);
+
+        // Update deal state
         deal.buyer = Some(buyer.clone());
         deal.status = DealStatus::Locked;
         deal.locked_at = Some(env.ledger().timestamp());
 
-        // Update the deal
-        env.storage().instance().set(&DataKey::Deal(deal_id.clone()), &deal);
+        env.storage()
+            .instance()
+            .set(&DataKey::Deal(deal_id.clone()), &deal);
 
-        // Update buyer deals
+        // Update buyer deals index
         let mut buyer_deals: Vec<String> = env
             .storage()
             .instance()
@@ -151,14 +208,14 @@ impl MerchantEscrowContract {
             .instance()
             .set(&DataKey::BuyerDeals(buyer), &buyer_deals);
 
-        // Emit locked event
+        // Emit event with amount
         env.events()
-            .publish((symbol_short!("Deal"), symbol_short!("locked")), deal_id);
+            .publish((symbol_short!("Deal"), symbol_short!("locked")), (deal_id, amount));
 
         true
     }
 
-    /// Buyer confirms they received the item, releasing USDC
+    /// Buyer confirms delivery — USDC released from contract to seller.
     pub fn confirm_delivery(env: Env, deal_id: String, buyer: Address) {
         buyer.require_auth();
 
@@ -176,18 +233,32 @@ impl MerchantEscrowContract {
             panic!("Only the buyer can confirm delivery");
         }
 
-        // Real implementation: Release funds to seller
-        // let token = token::Client::new(&env, &token_address);
-        // token.transfer(&env.current_contract_address(), &deal.seller, &deal.amount);
+        // ── REAL USDC TRANSFER: escrow contract → seller ──
+        let token_address: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::TokenAddress)
+            .unwrap_or_else(|| panic!("Contract not initialized"));
+
+        let token_client = token::Client::new(&env, &token_address);
+        token_client.transfer(
+            &env.current_contract_address(),
+            &deal.seller,
+            &deal.amount,
+        );
 
         deal.status = DealStatus::Completed;
-        env.storage().instance().set(&DataKey::Deal(deal_id.clone()), &deal);
+        env.storage()
+            .instance()
+            .set(&DataKey::Deal(deal_id.clone()), &deal);
 
-        env.events()
-            .publish((symbol_short!("Deal"), symbol_short!("completed")), deal_id);
+        env.events().publish(
+            (symbol_short!("Deal"), symbol_short!("released")),
+            (deal_id, deal.amount),
+        );
     }
 
-    /// Auto refund if expiry time passed
+    /// Auto refund if expiry time passed — USDC returned from contract to buyer.
     pub fn auto_refund(env: Env, deal_id: String) {
         let mut deal: Deal = env
             .storage()
@@ -203,19 +274,30 @@ impl MerchantEscrowContract {
             panic!("Deal has not expired yet");
         }
 
-        // Real implementation: Refund buyer
-        // let buyer = deal.buyer.clone().unwrap();
-        // let token = token::Client::new(&env, &token_address);
-        // token.transfer(&env.current_contract_address(), &buyer, &deal.amount);
+        // ── REAL USDC TRANSFER: escrow contract → buyer ──
+        let buyer = deal.buyer.clone().unwrap_or_else(|| panic!("No buyer found"));
+
+        let token_address: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::TokenAddress)
+            .unwrap_or_else(|| panic!("Contract not initialized"));
+
+        let token_client = token::Client::new(&env, &token_address);
+        token_client.transfer(&env.current_contract_address(), &buyer, &deal.amount);
 
         deal.status = DealStatus::Refunded;
-        env.storage().instance().set(&DataKey::Deal(deal_id.clone()), &deal);
+        env.storage()
+            .instance()
+            .set(&DataKey::Deal(deal_id.clone()), &deal);
 
-        env.events()
-            .publish((symbol_short!("Deal"), symbol_short!("refunded")), deal_id);
+        env.events().publish(
+            (symbol_short!("Deal"), symbol_short!("refunded")),
+            (deal_id, deal.amount),
+        );
     }
 
-    /// Cancel a deal before payment
+    /// Cancel a deal. If payment was locked, refund USDC to buyer.
     pub fn cancel_deal(env: Env, deal_id: String, seller: Address) {
         seller.require_auth();
 
@@ -229,16 +311,38 @@ impl MerchantEscrowContract {
             panic!("Only the seller can cancel");
         }
 
-        if deal.status != DealStatus::WaitingForPayment {
-            panic!("Only WaitingForPayment deals can be cancelled");
+        // Allow cancellation of WaitingForPayment or Locked deals
+        if deal.status != DealStatus::WaitingForPayment && deal.status != DealStatus::Locked {
+            panic!("Deal cannot be cancelled in current status");
+        }
+
+        // If payment was already locked, refund the buyer
+        if deal.status == DealStatus::Locked {
+            let buyer = deal
+                .buyer
+                .clone()
+                .unwrap_or_else(|| panic!("No buyer found"));
+
+            let token_address: Address = env
+                .storage()
+                .instance()
+                .get(&DataKey::TokenAddress)
+                .unwrap_or_else(|| panic!("Contract not initialized"));
+
+            let token_client = token::Client::new(&env, &token_address);
+            token_client.transfer(&env.current_contract_address(), &buyer, &deal.amount);
         }
 
         deal.status = DealStatus::Cancelled;
-        env.storage().instance().set(&DataKey::Deal(deal_id.clone()), &deal);
+        env.storage()
+            .instance()
+            .set(&DataKey::Deal(deal_id.clone()), &deal);
 
         env.events()
-            .publish((symbol_short!("Deal"), symbol_short!("cancelled")), deal_id);
+            .publish((symbol_short!("Deal"), symbol_short!("cancel")), deal_id);
     }
+
+    // ────────────── Queries ──────────────
 
     /// Read full deal details
     pub fn get_deal(env: Env, deal_id: String) -> Deal {
@@ -255,7 +359,7 @@ impl MerchantEscrowContract {
             .instance()
             .get(&DataKey::SellerDeals(seller))
             .unwrap_or(Vec::new(&env));
-            
+
         let mut deals = Vec::new(&env);
         for id in deal_ids.iter() {
             if let Some(deal) = env.storage().instance().get(&DataKey::Deal(id)) {
@@ -272,7 +376,7 @@ impl MerchantEscrowContract {
             .instance()
             .get(&DataKey::BuyerDeals(buyer))
             .unwrap_or(Vec::new(&env));
-            
+
         let mut deals = Vec::new(&env);
         for id in deal_ids.iter() {
             if let Some(deal) = env.storage().instance().get(&DataKey::Deal(id)) {
@@ -282,4 +386,5 @@ impl MerchantEscrowContract {
         deals
     }
 }
+
 mod test;
