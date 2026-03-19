@@ -31,6 +31,7 @@ import {
   fromScVec,
   fromScMap,
   fromScBool,
+  fromScEnum,
 } from "./soroban";
 
 const server = new Horizon.Server(HORIZON_URL);
@@ -111,8 +112,14 @@ const DEAL_STATUS_MAP: Record<number, string> = {
 
 const decodeDealStatus = (scVal: unknown): string => {
   try {
-    // Soroban enum is encoded as a u32
+    // Soroban enum might be encoded as a u32, or a Symbol vector
     if (typeof scVal === "number") return DEAL_STATUS_MAP[scVal] || "WaitingForPayment";
+    if (typeof scVal === "string") {
+      const pascalCase = scVal.charAt(0).toUpperCase() + scVal.slice(1).toLowerCase();
+      // Adjust standard formats
+      if (scVal.toLowerCase() === "waitingforpayment") return "WaitingForPayment";
+      return pascalCase;
+    }
     return "WaitingForPayment";
   } catch {
     return "WaitingForPayment";
@@ -336,7 +343,7 @@ export const getDeal = async (dealId: string): Promise<DealData | null> => {
         amountUSDC: fromScAmount(map["amount"]),
         sellerKey: fromScAddress(map["seller"]),
         buyerKey: map["buyer"] ? fromScAddress(map["buyer"]) : undefined,
-        status: decodeDealStatus(fromScU32(map["status"])),
+        status: decodeDealStatus(fromScEnum(map["status"])),
         createdAt: fromScU64(map["created_at"]) * 1000,
         expiresAt: fromScU64(map["expiry_at"]) * 1000,
         lockedAt: map["locked_at"] ? fromScU64(map["locked_at"]) * 1000 : undefined,
@@ -392,7 +399,7 @@ export const getSellerDeals = async (sellerAddress: string): Promise<DealData[]>
           amountUSDC: fromScAmount(map["amount"]),
           sellerKey: fromScAddress(map["seller"]),
           buyerKey: map["buyer"] ? fromScAddress(map["buyer"]) : undefined,
-          status: decodeDealStatus(fromScU32(map["status"])),
+          status: decodeDealStatus(fromScEnum(map["status"])),
           createdAt: fromScU64(map["created_at"]) * 1000,
           expiresAt: fromScU64(map["expiry_at"]) * 1000,
         };

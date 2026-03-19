@@ -293,6 +293,9 @@ export const fromScString = (val: xdr.ScVal): string => {
   if (val.switch().value === xdr.ScValType.scvString().value) {
     return val.str().toString();
   }
+  if (val.switch().value === xdr.ScValType.scvSymbol().value) {
+    return val.sym().toString();
+  }
   return "";
 };
 
@@ -396,5 +399,23 @@ export const fromScVec = (val: xdr.ScVal): xdr.ScVal[] => {
     return [];
   } catch {
     return [];
+  }
+};
+
+/**
+ * Decode a Soroban Enum ScVal into string variant name or u32
+ */
+export const fromScEnum = (val: xdr.ScVal): string | number => {
+  try {
+    const sw = val.switch().value;
+    if (sw === xdr.ScValType.scvU32().value) return val.u32();
+    if (sw === xdr.ScValType.scvSymbol().value) return val.sym().toString();
+    if (sw === xdr.ScValType.scvVec().value) {
+      const vec = val.vec();
+      if (vec && vec.length > 0) return fromScEnum(vec[0]); // recursive for first element
+    }
+    return 0; // default
+  } catch {
+    return 0;
   }
 };
