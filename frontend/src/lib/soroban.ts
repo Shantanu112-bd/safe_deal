@@ -247,11 +247,21 @@ export const queryContract = async (
 
   const contract = new Contract(contractId);
 
-  // Use a random source for read-only calls
+  // For read-only simulation we don't need a funded account.
+  // Use a random keypair with a mock Account object (sequence "0").
   const randomSource = Keypair.random().publicKey();
   
   try {
-    const account = await rpcServer.getAccount(randomSource);
+    // Try to get the account from the network first
+    let account;
+    try {
+      account = await rpcServer.getAccount(randomSource);
+    } catch {
+      // Account doesn't exist on-chain — use a local mock Account.
+      // This is valid for simulation-only (read) calls.
+      const { Account } = await import("@stellar/stellar-sdk");
+      account = new Account(randomSource, "0");
+    }
     
     const tx = new TransactionBuilder(account, {
       fee: BASE_FEE,
@@ -264,6 +274,7 @@ export const queryContract = async (
     const simResponse = await rpcServer.simulateTransaction(tx);
 
     if (rpc.Api.isSimulationError(simResponse)) {
+      console.error("[queryContract] Simulation error:", simResponse);
       return null;
     }
 
@@ -275,9 +286,8 @@ export const queryContract = async (
     }
 
     return null;
-  } catch {
-    // Read-only call can fail if account doesn't exist; 
-    // use a funded source instead
+  } catch (err) {
+    console.error("[queryContract] Failed:", err);
     return null;
   }
 };
@@ -289,20 +299,26 @@ export const queryContract = async (
 /**
  * Decode a Soroban String ScVal to JS string
  */
-export const fromScString = (val: xdr.ScVal): string => {
-  if (val.switch().value === xdr.ScValType.scvString().value) {
-    return val.str().toString();
+export const fromScString = (val?: xdr.ScVal): string => {
+  if (!val) return "";
+  try {
+    if (val.switch().value === xdr.ScValType.scvString().value) {
+      return val.str().toString();
+    }
+    if (val.switch().value === xdr.ScValType.scvSymbol().value) {
+      return val.sym().toString();
+    }
+    return "";
+  } catch {
+    return "";
   }
-  if (val.switch().value === xdr.ScValType.scvSymbol().value) {
-    return val.sym().toString();
-  }
-  return "";
 };
 
 /**
  * Decode a Soroban i128 ScVal to JS number (USDC amount)
  */
-export const fromScAmount = (val: xdr.ScVal): number => {
+export const fromScAmount = (val?: xdr.ScVal): number => {
+  if (!val) return 0;
   try {
     if (val.switch().value === xdr.ScValType.scvI128().value) {
       const i128Parts = val.i128();
@@ -320,7 +336,8 @@ export const fromScAmount = (val: xdr.ScVal): number => {
 /**
  * Decode a Soroban u64 ScVal to JS number
  */
-export const fromScU64 = (val: xdr.ScVal): number => {
+export const fromScU64 = (val?: xdr.ScVal): number => {
+  if (!val) return 0;
   try {
     if (val.switch().value === xdr.ScValType.scvU64().value) {
       return Number(val.u64().toString());
@@ -334,7 +351,8 @@ export const fromScU64 = (val: xdr.ScVal): number => {
 /**
  * Decode a Soroban u32 ScVal to JS number
  */
-export const fromScU32 = (val: xdr.ScVal): number => {
+export const fromScU32 = (val?: xdr.ScVal): number => {
+  if (!val) return 0;
   try {
     if (val.switch().value === xdr.ScValType.scvU32().value) {
       return val.u32();
@@ -348,7 +366,8 @@ export const fromScU32 = (val: xdr.ScVal): number => {
 /**
  * Decode a Soroban Address ScVal to string
  */
-export const fromScAddress = (val: xdr.ScVal): string => {
+export const fromScAddress = (val?: xdr.ScVal): string => {
+  if (!val) return "";
   try {
     return Address.fromScVal(val).toString();
   } catch {
@@ -359,9 +378,13 @@ export const fromScAddress = (val: xdr.ScVal): string => {
 /**
  * Decode a Soroban Bool ScVal
  */
-export const fromScBool = (val: xdr.ScVal): boolean => {
+export const fromScBool = (val?: xdr.ScVal): boolean => {
+  if (!val) return false;
   try {
-    return val.b();
+    if (val.switch().value === xdr.ScValType.scvBool().value) {
+      return val.b();
+    }
+    return false;
   } catch {
     return false;
   }
@@ -370,8 +393,9 @@ export const fromScBool = (val: xdr.ScVal): boolean => {
 /**
  * Decode a Soroban Map ScVal to JS object
  */
-export const fromScMap = (val: xdr.ScVal): Record<string, xdr.ScVal> => {
+export const fromScMap = (val?: xdr.ScVal): Record<string, xdr.ScVal> => {
   const result: Record<string, xdr.ScVal> = {};
+  if (!val) return result;
   try {
     if (val.switch().value === xdr.ScValType.scvMap().value) {
       const entries = val.map();
@@ -391,7 +415,8 @@ export const fromScMap = (val: xdr.ScVal): Record<string, xdr.ScVal> => {
 /**
  * Decode a Soroban Vec ScVal to array of ScVal
  */
-export const fromScVec = (val: xdr.ScVal): xdr.ScVal[] => {
+export const fromScVec = (val?: xdr.ScVal): xdr.ScVal[] => {
+  if (!val) return [];
   try {
     if (val.switch().value === xdr.ScValType.scvVec().value) {
       return val.vec() || [];
@@ -405,7 +430,8 @@ export const fromScVec = (val: xdr.ScVal): xdr.ScVal[] => {
 /**
  * Decode a Soroban Enum ScVal into string variant name or u32
  */
-export const fromScEnum = (val: xdr.ScVal): string | number => {
+export const fromScEnum = (val?: xdr.ScVal): string | number => {
+  if (!val) return 0;
   try {
     const sw = val.switch().value;
     if (sw === xdr.ScValType.scvU32().value) return val.u32();

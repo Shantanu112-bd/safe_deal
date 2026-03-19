@@ -171,6 +171,29 @@ export const createEscrowTransaction = async (
       }
     }
 
+    // Also save to localStorage as a cache so it shows up immediately
+    try {
+      const expiresAt = Date.now() + expiryHours * 60 * 60 * 1000;
+      const cachedDeal: DealData = {
+        id: dealId,
+        title: meta?.itemName || "SafeDeal Item",
+        description: meta?.description || "",
+        category: meta?.category || "Other",
+        amountUSDC: amount,
+        sellerKey: merchantAddress,
+        status: "WaitingForPayment",
+        createdAt: Date.now(),
+        expiresAt,
+      };
+      const existing = JSON.parse(localStorage.getItem("safedeal_deals") || "[]");
+      existing.unshift(cachedDeal);
+      localStorage.setItem("safedeal_deals", JSON.stringify(existing));
+      localStorage.setItem(`safedeal_deal_${dealId}`, JSON.stringify(cachedDeal));
+      console.log("[createEscrowTransaction] Deal cached to localStorage:", dealId);
+    } catch (e) {
+      console.warn("[createEscrowTransaction] localStorage cache failed:", e);
+    }
+
     return { success: true, dealId };
   }
 
@@ -325,32 +348,34 @@ export const cancelDeal = async (
 export const getDeal = async (dealId: string): Promise<DealData | null> => {
   // ── ON-CHAIN MODE ──
   if (isOnChainMode("MERCHANT_ESCROW")) {
-    console.log("[getDeal] Soroban mode");
+    console.log("[getDeal] Soroban mode, dealId:", dealId);
 
     const result = await queryContract("MERCHANT_ESCROW", "get_deal", [
       toScString(dealId),
     ]);
 
-    if (!result) return null;
-
-    try {
-      const map = fromScMap(result);
-      return {
-        id: fromScString(map["deal_id"]),
-        title: fromScString(map["item_name"]),
-        description: fromScString(map["description"]),
-        category: "",
-        amountUSDC: fromScAmount(map["amount"]),
-        sellerKey: fromScAddress(map["seller"]),
-        buyerKey: map["buyer"] ? fromScAddress(map["buyer"]) : undefined,
-        status: decodeDealStatus(fromScEnum(map["status"])),
-        createdAt: fromScU64(map["created_at"]) * 1000,
-        expiresAt: fromScU64(map["expiry_at"]) * 1000,
-        lockedAt: map["locked_at"] ? fromScU64(map["locked_at"]) * 1000 : undefined,
-      };
-    } catch (e) {
-      console.error("Failed to decode deal:", e);
-      return null;
+    if (!result) {
+      console.warn("[getDeal] queryContract returned null — falling back to localStorage");
+      // Fall through to local fallback below
+    } else {
+      try {
+        const map = fromScMap(result);
+        return {
+          id: fromScString(map["deal_id"]),
+          title: fromScString(map["item_name"]),
+          description: fromScString(map["description"]),
+          category: "",
+          amountUSDC: fromScAmount(map["amount"]),
+          sellerKey: fromScAddress(map["seller"]),
+          buyerKey: map["buyer"] ? fromScAddress(map["buyer"]) : undefined,
+          status: decodeDealStatus(fromScEnum(map["status"])),
+          createdAt: fromScU64(map["created_at"]) * 1000,
+          expiresAt: fromScU64(map["expiry_at"]) * 1000,
+          lockedAt: map["locked_at"] ? fromScU64(map["locked_at"]) * 1000 : undefined,
+        };
+      } catch (e) {
+        console.error("[getDeal] Failed to decode deal:", e);
+      }
     }
   }
 
@@ -379,34 +404,42 @@ export const getDeal = async (dealId: string): Promise<DealData | null> => {
 export const getSellerDeals = async (sellerAddress: string): Promise<DealData[]> => {
   // ── ON-CHAIN MODE ──
   if (isOnChainMode("MERCHANT_ESCROW")) {
-    console.log("[getSellerDeals] Soroban mode");
+    console.log("[getSellerDeals] Soroban mode, seller:", sellerAddress);
 
     const result = await queryContract("MERCHANT_ESCROW", "get_seller_deals", [
       toScAddress(sellerAddress),
     ]);
 
-    if (!result) return [];
+    console.log("[getSellerDeals] queryContract result:", result ? "got data" : "null");
 
-    try {
-      const vec = fromScVec(result);
-      return vec.map((dealVal) => {
-        const map = fromScMap(dealVal);
-        return {
-          id: fromScString(map["deal_id"]),
-          title: fromScString(map["item_name"]),
-          description: fromScString(map["description"]),
-          category: "",
-          amountUSDC: fromScAmount(map["amount"]),
-          sellerKey: fromScAddress(map["seller"]),
-          buyerKey: map["buyer"] ? fromScAddress(map["buyer"]) : undefined,
-          status: decodeDealStatus(fromScEnum(map["status"])),
-          createdAt: fromScU64(map["created_at"]) * 1000,
-          expiresAt: fromScU64(map["expiry_at"]) * 1000,
-        };
-      });
-    } catch (e) {
-      console.error("Failed to decode seller deals:", e);
-      return [];
+    if (!result) {
+      console.warn("[getSellerDeals] queryContract returned null — falling back to localStorage");
+      // Fall through to local fallback below instead of returning empty
+    } else {
+      try {
+        const vec = fromScVec(result);
+        console.log("[getSellerDeals] Decoded vec length:", vec.length);
+        const deals = vec.map((dealVal) => {
+          const map = fromScMap(dealVal);
+          console.log("[getSellerDeals] Deal map keys:", Object.keys(map));
+          return {
+            id: fromScString(map["deal_id"]),
+            title: fromScString(map["item_name"]),
+            description: fromScString(map["description"]),
+            category: "",
+            amountUSDC: fromScAmount(map["amount"]),
+            sellerKey: fromScAddress(map["seller"]),
+            buyerKey: map["buyer"] ? fromScAddress(map["buyer"]) : undefined,
+            status: decodeDealStatus(fromScEnum(map["status"])),
+            createdAt: fromScU64(map["created_at"]) * 1000,
+            expiresAt: fromScU64(map["expiry_at"]) * 1000,
+          };
+        });
+        console.log("[getSellerDeals] Decoded deals:", deals);
+        return deals;
+      } catch (e) {
+        console.error("[getSellerDeals] Failed to decode seller deals:", e);
+      }
     }
   }
 
