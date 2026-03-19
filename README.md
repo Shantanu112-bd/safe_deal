@@ -1,7 +1,7 @@
 # SafeDeal 🛡️ 
 
 [![SafeDeal CI/CD](https://github.com/Shantanu112-bd/Safe-Deal/actions/workflows/deploy.yml/badge.svg)](https://github.com/Shantanu112-bd/Safe-Deal/actions/workflows/deploy.yml)
-[![Live on Vercel](https://img.shields.io/badge/Live%20on-Vercel-black?style=flat&logo=vercel)](https://safedeal.vercel.app)
+[![Live on Vercel](https://img.shields.io/badge/Live%20on-Vercel-black?style=flat&logo=vercel)](https://safe-deal-ten.vercel.app)
 
 SafeDeal is an AI-protected decentralized escrow payment platform built on the **Stellar blockchain**, purpose-built for social commerce merchants on WhatsApp, Instagram, and Telegram.
 
