@@ -25,7 +25,6 @@ export default function ActiveDealsPage() {
   const { isConnected, publicKey } = useWallet();
 
   const [loading, setLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
   const loadDeals = useCallback(async () => {
     try {
@@ -53,7 +52,6 @@ export default function ActiveDealsPage() {
         }
         else setDeals([]);
       }
-      setLastUpdated(new Date());
     } catch {
       setDeals([]);
     } finally {
