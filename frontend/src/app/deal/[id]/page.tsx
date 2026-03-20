@@ -54,6 +54,8 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(172800); // 48 hours
+  const [payoutTxHash, setPayoutTxHash] = useState<string | null>(null);
+  const [paymentTxHash, setPaymentTxHash] = useState<string | null>(null);
   const router = useRouter();
 
   // Dispute Modal States
@@ -103,6 +105,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     try {
       const result = await lockPayment(params.id, deal.amountUSDC, walletType, publicKey || undefined);
       if (result.success) {
+        if (result.txHash) setPaymentTxHash(result.txHash);
         setStep("success");
         toast.success("Payment locked in escrow!");
       }
@@ -117,6 +120,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     try {
       const result = await confirmOnChain(params.id, walletType, publicKey || undefined);
       if (result.success) {
+        if (result.txHash) setPayoutTxHash(result.txHash);
         setStep("released");
         toast.success("Funds released to seller. Thank you!");
       }
@@ -129,7 +133,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   const handleOpenDispute = async () => {
     if (!publicKey || !deal) return;
     setDisputeLoading(true);
-    
+
     try {
       // Build dispute transaction
       const result = await raiseDispute(
@@ -138,10 +142,10 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
         disputeReason,
         ''  // evidence hash empty initially
       );
-      
+
       toast.success("Dispute raised — funds frozen pending review");
       setShowDisputeModal(false);
-      
+
       // Redirect to dispute page inside the frontend app 
       // result might be a standard string or object from invokeContract based on how we wrote raiseDispute
       // usually a txHash or something, but the prompt says result.disputeId. Let's just use params.id for now since we mapped deal->dispute
@@ -380,12 +384,12 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                               <GradientButton className="w-full rounded-full py-5 text-lg font-black" onClick={handleConfirmDelivery}>
                                 Yes, Release Funds Now
                               </GradientButton>
-                                <button
-                                  className="w-full py-4 text-xs font-black uppercase tracking-widest text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                                  onClick={() => setShowDisputeModal(true)}
-                                >
-                                  Problem? Open Dispute
-                                </button>
+                              <button
+                                className="w-full py-4 text-xs font-black uppercase tracking-widest text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                                onClick={() => setShowDisputeModal(true)}
+                              >
+                                Problem? Open Dispute
+                              </button>
                             </div>
                           </>
                         ) : step === "released" ? (
@@ -393,7 +397,16 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                             <CheckCircle2 className="size-16 text-emerald-500 mx-auto mb-6" />
                             <h4 className="text-2xl font-black text-slate-900 mb-2">Deal Closed</h4>
                             <p className="text-slate-500 font-bold text-sm">Funds have been released to the seller. Thank you for using SafeDeal!</p>
-                            <button className="mt-8 text-xs font-black uppercase tracking-widest text-[#0b50da] flex items-center gap-2 mx-auto">
+                            <button
+                              className="mt-8 text-xs font-black uppercase tracking-widest text-[#0b50da] flex items-center gap-2 mx-auto"
+                              onClick={() => {
+                                if (payoutTxHash) {
+                                  window.open(`https://stellar.expert/explorer/testnet/tx/${payoutTxHash}`, "_blank");
+                                } else {
+                                  toast.error("Transaction hash not available");
+                                }
+                              }}
+                            >
                               View on Stellar Expert <ExternalLink className="size-3" />
                             </button>
                           </div>
@@ -449,7 +462,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
               >
                 ✕
               </button>
-              
+
               <div className="flex items-center gap-4 mb-6">
                 <div className="size-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center">
                   <AlertTriangle className="size-6" />
