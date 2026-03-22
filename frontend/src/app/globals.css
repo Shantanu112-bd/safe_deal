@@ -262,3 +262,16 @@
     --border-color-2: hsla(320, 50%, 90%, 0.75);
   }
 }
+
+/* MOBILE UTILITIES */
+@layer utilities {
+  .touch-scrolling {
+    -webkit-overflow-scrolling: touch;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .no-tap-highlight {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
