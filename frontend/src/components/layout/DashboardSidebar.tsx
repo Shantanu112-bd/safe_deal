@@ -13,6 +13,9 @@ import {
   Wallet,
   LogOut,
   ChevronRight,
+  Home,
+  FileText,
+  Clock,
   LucideIcon
 } from "lucide-react";
 import { useWallet } from "@/context/WalletContext";
@@ -29,6 +32,14 @@ export function DashboardSidebar() {
     { label: "History", href: "/dashboard/history", icon: History },
     { label: "My Profile", href: "/merchant/profile", icon: User },
     { label: "Settings", href: "/dashboard/settings", icon: Settings },
+  ];
+
+  const tabs = [
+    { icon: Home, label: 'Home', href: '/dashboard' },
+    { icon: FileText, label: 'Deals', href: '/dashboard/deals' },
+    { icon: Clock, label: 'History', href: '/dashboard/history' },
+    { icon: User, label: 'Profile', href: '/dashboard/profile' },
+    { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
   ];
 
   return (
@@ -103,45 +114,26 @@ export function DashboardSidebar() {
         </div>
       </aside>
 
-      {/* MOBILE BOTTOM TAB BAR */}
-      <nav className="fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-xl border-t border-slate-200 flex items-center justify-around p-4 lg:hidden z-50">
-         {menuItems.slice(0, 2).map((item) => (
-           <MobileTab key={item.label} item={item} isActive={pathname === item.href} />
-         ))}
-         
-         {/* ACTION BUTTON */}
-         <div className="-mt-12 flex items-center justify-center">
-            <GradientButton className="size-14 rounded-2xl shadow-2xl shadow-slate-900/40 p-0 flex items-center justify-center" asChild>
-               <Link href="/dashboard/deals/create">
-                  <Plus className="size-6 text-white" />
-               </Link>
-            </GradientButton>
-         </div>
-
-         {menuItems.slice(3).map((item) => (
-           <MobileTab key={item.label} item={item} isActive={pathname === item.href} />
-         ))}
+      {/* NEW — Mobile bottom tab bar only */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111827] border-t border-[#1e293b] flex items-center justify-around h-16">
+        {tabs.map(tab => (
+          <Link
+            key={tab.href}
+            href={tab.href}
+            className={cn(
+              "flex flex-col items-center gap-1",
+              "py-2 px-3 rounded-lg",
+              pathname === tab.href
+                ? "text-emerald-500"
+                : "text-slate-400"
+            )}>
+            <tab.icon className="w-5 h-5" />
+            <span className="text-[10px] font-medium">
+              {tab.label}
+            </span>
+          </Link>
+        ))}
       </nav>
     </>
-  );
-}
-
-function MobileTab({ item, isActive }: { item: { label: string; href: string; icon: LucideIcon }, isActive: boolean }) {
-  return (
-    <Link 
-      href={item.href}
-      className={cn(
-        "flex flex-col items-center justify-center gap-1.5 transition-all",
-        isActive ? "text-slate-900" : "text-slate-400"
-      )}
-    >
-      <div className={cn(
-        "p-2 rounded-xl transition-all",
-        isActive ? "bg-slate-100 text-slate-900" : ""
-      )}>
-        <item.icon className="size-5" />
-      </div>
-      <span className="text-[9px] font-black uppercase tracking-widest">{item.label.split(" ").pop()}</span>
-    </Link>
   );
 }
