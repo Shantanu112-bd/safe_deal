@@ -174,7 +174,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
           </Badge>
         </header>
 
-        <main className="mx-auto max-w-lg px-4 sm:px-6 py-8 space-y-6">
+        <main className="max-w-lg mx-auto p-4 lg:p-6 pb-28 lg:pb-6 space-y-6">
 
           <div className="flex items-center gap-2 text-slate-400">
             <button className="p-2 hover:bg-white rounded-full transition-colors" onClick={() => window.history.back()}>
@@ -318,13 +318,15 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                             Funds will be locked in the <span className="font-black">SafeDeal Smart Escrow</span>. Only release when you receive the item. Auto-refunds trigger after 48h if no confirmation.
                           </p>
                         </div>
-                        <GradientButton
-                          className="w-full rounded-full py-6 text-xl font-black"
-                          onClick={handlePay}
-                          disabled={isBlocked}
-                        >
-                          Pay {deal.amountUSDC.toFixed(2)} USDC & Lock
-                        </GradientButton>
+                        <div className="fixed bottom-0 left-0 right-0 p-4 bg-[#0a0f1a]/95 backdrop-blur-sm border-t border-[#1e293b] lg:relative lg:bottom-auto lg:border-0 lg:p-0 lg:bg-transparent">
+                          <GradientButton
+                            className="w-full rounded-full py-6 text-xl font-black"
+                            onClick={handlePay}
+                            disabled={isBlocked}
+                          >
+                            Pay {deal.amountUSDC.toFixed(2)} USDC & Lock
+                          </GradientButton>
+                        </div>
                         {isBlocked && (
                           <p className="text-center text-xs font-black text-red-500">Your wallet is currently blacklisted.</p>
                         )}
