@@ -187,7 +187,7 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="relative w-full max-w-xl rounded-t-[2.5rem] sm:rounded-[2.5rem] bg-white shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+        className="relative w-full sm:max-w-lg max-sm:fixed max-sm:bottom-0 max-sm:inset-x-0 max-sm:top-auto max-sm:rounded-t-2xl max-sm:rounded-b-none max-sm:translate-y-0 bg-white shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
       >
         {/* Header */}
         <div className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-100 px-8 py-6 bg-white/80 backdrop-blur-md">
