@@ -109,9 +109,9 @@ class PointerHandler {
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.onPointer = this.onPointer.bind(this);
-    this.onTouch   = this.onTouch.bind(this);
+    this.onTouch = this.onTouch.bind(this);
     canvas.addEventListener("pointermove", this.onPointer);
-    canvas.addEventListener("touchmove",   this.onTouch, { passive: true });
+    canvas.addEventListener("touchmove", this.onTouch, { passive: true });
   }
 
   private onPointer(e: PointerEvent) {
@@ -130,7 +130,7 @@ class PointerHandler {
 
   destroy() {
     this.canvas.removeEventListener("pointermove", this.onPointer);
-    this.canvas.removeEventListener("touchmove",   this.onTouch);
+    this.canvas.removeEventListener("touchmove", this.onTouch);
   }
 }
 
@@ -140,17 +140,17 @@ class WebGLRenderer {
   private program: WebGLProgram;
   private buf: WebGLBuffer;
   private uTime: WebGLUniformLocation | null;
-  private uRes:  WebGLUniformLocation | null;
+  private uRes: WebGLUniformLocation | null;
   private uMouse: WebGLUniformLocation | null;
   private t0: number;
 
   constructor(canvas: HTMLCanvasElement, fragmentSrc: string) {
     const gl = canvas.getContext("webgl");
     if (!gl) throw new Error("WebGL not supported");
-    this.gl  = gl;
-    this.t0  = performance.now();
+    this.gl = gl;
+    this.t0 = performance.now();
 
-    const vs = this.compile(gl.VERTEX_SHADER,   VERTEX_SRC);
+    const vs = this.compile(gl.VERTEX_SHADER, VERTEX_SRC);
     const fs = this.compile(gl.FRAGMENT_SHADER, fragmentSrc);
 
     const prog = gl.createProgram()!;
@@ -166,7 +166,7 @@ class WebGLRenderer {
     this.buf = gl.createBuffer()!;
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buf);
     gl.bufferData(gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1,  1, -1,  -1, 1,  1, 1]),
+      new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
       gl.STATIC_DRAW
     );
 
@@ -176,8 +176,8 @@ class WebGLRenderer {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buf);
     gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
 
-    this.uTime  = gl.getUniformLocation(prog, "u_time");
-    this.uRes   = gl.getUniformLocation(prog, "u_resolution");
+    this.uTime = gl.getUniformLocation(prog, "u_time");
+    this.uRes = gl.getUniformLocation(prog, "u_resolution");
     this.uMouse = gl.getUniformLocation(prog, "u_mouse");
   }
 
@@ -193,11 +193,11 @@ class WebGLRenderer {
 
   render(w: number, h: number, mx: number, my: number) {
     const gl = this.gl;
-    const t  = (performance.now() - this.t0) / 1000;
+    const t = (performance.now() - this.t0) / 1000;
     gl.viewport(0, 0, w, h);
     gl.useProgram(this.program);
-    gl.uniform1f(this.uTime,  t);
-    gl.uniform2f(this.uRes,   w, h);
+    gl.uniform1f(this.uTime, t);
+    gl.uniform2f(this.uRes, w, h);
     gl.uniform2f(this.uMouse, mx, my);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
@@ -211,14 +211,14 @@ class WebGLRenderer {
 // ─── Hero component ──────────────────────────────────────────────────────────
 export interface HeroProps {
   trustBadge?: { text: string; icons?: string[] };
-  headline?:   { line1: string; line2: string };
-  subtitle?:   string;
+  headline?: { line1: string; line2: string };
+  subtitle?: string;
   buttons?: {
-    primary?:   { text: string; onClick?: () => void; href?: string };
+    primary?: { text: string; onClick?: () => void; href?: string };
     secondary?: { text: string; onClick?: () => void; href?: string };
   };
   shaderSource?: string;
-  className?:    string;
+  className?: string;
   /** Optional right-side slot rendered alongside hero text */
   children?: React.ReactNode;
 }
@@ -232,15 +232,15 @@ export function Hero({
   className,
   children,
 }: HeroProps) {
-  const canvasRef  = useRef<HTMLCanvasElement>(null);
-  const rendRef    = useRef<WebGLRenderer | null>(null);
-  const ptrRef     = useRef<PointerHandler | null>(null);
-  const rafRef     = useRef<number>(0);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rendRef = useRef<WebGLRenderer | null>(null);
+  const ptrRef = useRef<PointerHandler | null>(null);
+  const rafRef = useRef<number>(0);
 
   const tick = useCallback(() => {
     const canvas = canvasRef.current;
-    const rend   = rendRef.current;
-    const ptr    = ptrRef.current;
+    const rend = rendRef.current;
+    const ptr = ptrRef.current;
     if (!canvas || !rend) return;
     rend.render(canvas.width, canvas.height, ptr?.x ?? 0, ptr?.y ?? 0);
     rafRef.current = requestAnimationFrame(tick);
@@ -254,16 +254,16 @@ export function Hero({
 
     try {
       rendRef.current = new WebGLRenderer(canvas, shaderSource);
-      ptrRef.current  = new PointerHandler(canvas);
+      ptrRef.current = new PointerHandler(canvas);
 
       const resize = () => {
         const parent = canvas.parentElement;
         if (!parent) return;
         const w = parent.offsetWidth;
         const h = parent.offsetHeight;
-        canvas.width  = w * devicePixelRatio;
+        canvas.width = w * devicePixelRatio;
         canvas.height = h * devicePixelRatio;
-        canvas.style.width  = `${w}px`;
+        canvas.style.width = `${w}px`;
         canvas.style.height = `${h}px`;
       };
 
