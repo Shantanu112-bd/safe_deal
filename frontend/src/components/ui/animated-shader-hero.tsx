@@ -316,7 +316,7 @@ export function Hero({
             )}
 
             {headline && (
-              <h1 className="mt-6 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+              <h1 className="mt-6 text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight text-white">
                 {headline.line1}
                 <br />
                 <span className="text-emerald-400">{headline.line2}</span>
@@ -330,7 +330,7 @@ export function Hero({
             )}
 
             {buttons && (
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 {buttons.primary && (
                   buttons.primary.href ? (
                     <GradientButton asChild>
