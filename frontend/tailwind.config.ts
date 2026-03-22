@@ -36,6 +36,10 @@ const config: Config = {
         "sidebar-border": "var(--sidebar-border)",
         "sidebar-ring": "var(--sidebar-ring)",
       },
+      fontFamily: {
+        sans: ["var(--font-inter)", "system-ui", "Arial", "sans-serif"],
+        inter: ["var(--font-inter)", "system-ui", "Arial", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
