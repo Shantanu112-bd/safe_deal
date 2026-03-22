@@ -141,7 +141,7 @@ export default function ActiveDealsPage() {
           </div>
 
           {/* DEALS LIST */}
-          <div className="grid gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 lg:gap-6">
             {loading ? (
               <>
                 <DealCardSkeleton />
