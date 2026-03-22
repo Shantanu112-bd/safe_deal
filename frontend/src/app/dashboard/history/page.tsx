@@ -25,6 +25,14 @@ export default function HistoryPage() {
   const { publicKey, isConnected, xlmBalance, usdcBalance } = useWallet();
   const [history, setHistory] = useState<DealData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     if (!publicKey) {
@@ -128,117 +136,114 @@ export default function HistoryPage() {
           {loading ? (
              <TableSkeleton /> 
           ) : (
-            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-              <div className="hidden lg:block overflow-x-auto">
-                <table className="w-full min-w-[800px] text-left border-collapse">
-                  <thead>
-                    <tr className="bg-slate-50/50 border-b border-slate-100">
-                      <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Transaction</th>
-                      <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Deal Reference</th>
-                      <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Date & Time</th>
-                      <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
-                      <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Settlement</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredHistory.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="px-8 py-20 text-center">
-                          <div className="flex flex-col items-center space-y-4">
-                            <FileText className="size-10 text-slate-200" />
-                            <p className="text-sm font-black text-slate-400 uppercase tracking-widest">
-                              {!isConnected ? "Connect your wallet to view transaction history" : "No completed deals yet"}
-                            </p>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest max-w-xs">
-                              {isConnected ? "Your finalized deals will appear here." : "Connect to view history."}
-                            </p>
-                            {isConnected && (
-                              <Link href="/dashboard/deals" className="mt-4 inline-block">
-                                <GradientButton className="rounded-xl px-6 py-3 text-xs font-bold">
-                                  Go to Active Deals
-                                </GradientButton>
-                              </Link>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ) : (
-                      filteredHistory.map((deal) => (
-                        <tr key={deal.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group">
-                           <td className="px-8 py-6">
-                            <div className="flex items-center gap-4">
-                              <div className="size-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:text-slate-900 transition-colors shadow-sm">
-                                <CheckCircle2 className="size-4" />
-                              </div>
-                              <span className="text-sm font-black text-slate-900">{deal.title}</span>
-                            </div>
-                           </td>
-                           <td className="px-8 py-6">
-                             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{deal.id}</span>
-                           </td>
-                           <td className="px-8 py-6">
-                             <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{new Date(deal.createdAt).toLocaleDateString()}</span>
-                           </td>
-                           <td className="px-8 py-6">
-                              <span className={cn(
-                                "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border",
-                                deal.status === "Completed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
-                                deal.status === "Refunded" ? "bg-orange-50 text-orange-600 border-orange-100" :
-                                deal.status === "Cancelled" ? "bg-slate-50 text-slate-600 border-slate-200" :
-                                "bg-red-50 text-red-600 border-red-100" // Disputed
-                              )}>
-                                {deal.status}
-                              </span>
-                           </td>
-                           <td className="px-8 py-6 text-right">
-                             <span className="text-sm font-black text-emerald-600">
-                               {deal.status === "Completed" ? "+" : ""}{deal.amountUSDC.toFixed(2)} USDC
-                             </span>
-                           </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-  
-              {/* MOBILE HISTORY VIEW */}
-              <div className="lg:hidden">
-                {filteredHistory.length === 0 ? (
-                  <div className="py-20 flex flex-col items-center space-y-4">
-                    <FileText className="size-10 text-slate-200" />
-                    <p className="text-sm font-black text-slate-400 uppercase tracking-widest">
-                      {!isConnected ? "Connect wallet to view history" : "No completed deals yet"}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="divide-y divide-slate-100">
-                    {filteredHistory.map((deal) => (
-                      <div key={deal.id} className="p-6 space-y-4">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <p className="text-sm font-black text-slate-900">{deal.title}</p>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{deal.id}</p>
-                          </div>
-                          <span className={cn(
-                              "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border",
-                              deal.status === "Completed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
-                              deal.status === "Refunded" ? "bg-orange-50 text-orange-600 border-orange-100" :
-                              deal.status === "Cancelled" ? "bg-slate-50 text-slate-600 border-slate-200" :
-                              "bg-red-50 text-red-600 border-red-100"
-                            )}>
-                              {deal.status}
-                           </span>
-                        </div>
-                        <div className="flex items-center justify-between text-xs font-bold">
-                           <span className="text-slate-400">{new Date(deal.createdAt).toLocaleDateString()}</span>
-                           <span className="text-emerald-600">{deal.status === "Completed" ? "+" : ""}{deal.amountUSDC.toFixed(2)} USDC</span>
-                        </div>
+            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden p-6 sm:p-0">
+              {isMobile ? (
+                <div className="flex flex-col gap-3">
+                  {filteredHistory.map(deal => (
+                    <div key={deal.id} className="bg-[#1a2235] rounded-xl p-4 border border-[#1e293b]">
+                      <div className="flex justify-between items-start mb-2">
+                        <p className="font-medium text-white text-sm">{deal.title}</p>
+                        <span className={cn(
+                          "px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border",
+                          deal.status === "Completed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                          deal.status === "Refunded" ? "bg-orange-50 text-orange-600 border-orange-100" :
+                          deal.status === "Cancelled" ? "bg-slate-50 text-slate-600 border-slate-200" :
+                          "bg-red-50 text-red-600 border-red-100"
+                        )}>
+                          {deal.status}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      <div className="flex justify-between items-center">
+                        <p className="text-emerald-400 font-semibold text-sm">
+                          {deal.amountUSDC.toFixed(2)} USDC
+                        </p>
+                        <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest">
+                          {new Date(deal.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                  {filteredHistory.length === 0 && (
+                     <div className="py-20 flex flex-col items-center space-y-4 text-center">
+                       <FileText className="size-10 text-slate-200" />
+                       <p className="text-sm font-black text-slate-400 uppercase tracking-widest">No history yet</p>
+                     </div>
+                  )}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[800px] text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50/50 border-b border-slate-100">
+                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Transaction</th>
+                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Deal Reference</th>
+                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Date & Time</th>
+                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
+                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Settlement</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredHistory.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="px-8 py-20 text-center">
+                            <div className="flex flex-col items-center space-y-4">
+                              <FileText className="size-10 text-slate-200" />
+                              <p className="text-sm font-black text-slate-400 uppercase tracking-widest">
+                                {!isConnected ? "Connect your wallet to view transaction history" : "No completed deals yet"}
+                              </p>
+                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest max-w-xs">
+                                {isConnected ? "Your finalized deals will appear here." : "Connect to view history."}
+                              </p>
+                              {isConnected && (
+                                <Link href="/dashboard/deals" className="mt-4 inline-block">
+                                  <GradientButton className="rounded-xl px-6 py-3 text-xs font-bold">
+                                    Go to Active Deals
+                                  </GradientButton>
+                                </Link>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredHistory.map((deal) => (
+                          <tr key={deal.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group">
+                             <td className="px-8 py-6">
+                              <div className="flex items-center gap-4">
+                                <div className="size-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:text-slate-900 transition-colors shadow-sm">
+                                  <CheckCircle2 className="size-4" />
+                                </div>
+                                <span className="text-sm font-black text-slate-900">{deal.title}</span>
+                              </div>
+                             </td>
+                             <td className="px-8 py-6">
+                               <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{deal.id}</span>
+                             </td>
+                             <td className="px-8 py-6">
+                               <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{new Date(deal.createdAt).toLocaleDateString()}</span>
+                             </td>
+                             <td className="px-8 py-6">
+                                <span className={cn(
+                                  "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border",
+                                  deal.status === "Completed" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                                  deal.status === "Refunded" ? "bg-orange-50 text-orange-600 border-orange-100" :
+                                  deal.status === "Cancelled" ? "bg-slate-50 text-slate-600 border-slate-200" :
+                                  "bg-red-50 text-red-600 border-red-100" // Disputed
+                                )}>
+                                  {deal.status}
+                                </span>
+                             </td>
+                             <td className="px-8 py-6 text-right">
+                               <span className="text-sm font-black text-emerald-600">
+                                 {deal.status === "Completed" ? "+" : ""}{deal.amountUSDC.toFixed(2)} USDC
+                               </span>
+                             </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
