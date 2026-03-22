@@ -176,7 +176,7 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
             {[
               { icon: ShieldQuestion, title: "Fake Screenshots", desc: "Scammers use apps to fake payment proofs, tricking sellers into shipping for free." },
               { icon: Package, title: "Non-Delivery", desc: "Buyers pay upfront and never hear from the seller again. No way to get money back." },
@@ -238,7 +238,7 @@ export default function LandingPage() {
             <p className="text-lg text-slate-600 font-semibold italic-none">SafeDeal is engineered to scale with your business, whether you sell one ring a week or 500 orders a day.</p>
           </motion.div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {features.map((f, i) => (
               <motion.article
                 key={i}
@@ -350,7 +350,7 @@ export default function LandingPage() {
           speed={0.8}
         />
         <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 italic-none">
-          <div className="grid gap-12 grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
             {[
               { val: "₹4.8Cr", lbl: "Escrow Volume", sub: "Annualized" },
               { val: "5 Sec", lbl: "Finality", sub: "Stellar Network" },
