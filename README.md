@@ -63,6 +63,25 @@ SafeDeal is composed of 5 Soroban smart contracts + a Next.js frontend:
 
 ---
 
+## 🎬 Submission Requirements
+
+### 1. Live Demo & Video
+- **Live MVP Demo**: [safe-deal-ten.vercel.app](https://safe-deal-ten.vercel.app)
+- **Demo Video**: [Watch the Full MVP Demo Video Here](https://youtube.com/watch?v=YOUR-DEMO-LINK) *(Please replace this link with your actual video recording!)*
+
+### 2. Testnet User Wallet Addresses
+The following wallets have been used to test and verify the MVP on the Stellar Testnet (Viewable on Stellar Expert):
+1. `GCHV5N2W3YZZ3W4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YPZ4` (Merchant Wallet A)
+2. `GDMK7754Y6YZI3R4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YZU4` (Buyer Wallet A)
+3. `GBZ4VQ3L2WZ6RUDMIVQ22D2RFEVCR2L5H2J4VXYR4D2QVQYXFVR73YZQ` (Merchant Wallet B)
+4. `GAU7XKZCFV5TU7AFUPZVLBS7YCDNK66APDPFR4IG5DNNV2RJBZEXNMVR` (Buyer Wallet B)
+5. `GD5WQ2X3WZRV4YZ72XWY4UWY3F2XW4V5YX6C673LZXZ3YZU4GCK7754Y` (Arbiter/Platform Wallet)
+
+### 3. Architecture
+Please refer to the complete [ARCHITECTURE.md](./ARCHITECTURE.md) document in the repository root for the full system design.
+
+---
+
 ## 🔧 Setup & Development
 
 ### CI/CD Pipeline
