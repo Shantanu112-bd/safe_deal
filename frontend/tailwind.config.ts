@@ -37,8 +37,8 @@ const config: Config = {
         "sidebar-ring": "var(--sidebar-ring)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "Arial", "sans-serif"],
-        inter: ["var(--font-inter)", "system-ui", "Arial", "sans-serif"],
+        sans: ["Inter", "system-ui", "Arial", "sans-serif"],
+        inter: ["Inter", "system-ui", "Arial", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

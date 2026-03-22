@@ -85,9 +85,7 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-  html {
-    font-family: var(--font-inter), system-ui, Arial, sans-serif;
+    font-family: Inter, system-ui, Arial, sans-serif;
   }
 }
 

@@ -1,37 +1,9 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { WalletProvider } from "@/context/WalletContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/layout/Navbar";
-
-const inter = localFont({
-  src: [
-    {
-      path: "../public/fonts/Inter-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Inter-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Inter-SemiBold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Inter-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "SafeDeal | Secure Escrow Payments",
@@ -44,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      </head>
+      <body style={{ fontFamily: 'Inter, system-ui, Arial, sans-serif' }}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
