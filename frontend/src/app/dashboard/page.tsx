@@ -121,7 +121,7 @@ export default function Dashboard() {
           ) : (
             <>
               {/* STATS OVERVIEW */}
-              <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
                 {stats.map((stat) => (
                   <article key={stat.label} className="group relative overflow-hidden rounded-3xl border border-white bg-white p-6 shadow-sm transition-all hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
