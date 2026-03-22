@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { 
   Shield, 
   Menu, 
@@ -45,7 +44,9 @@ export function Navbar() {
         
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <Image src="/logo.png" alt="SafeDeal Logo" width={40} height={40} className="rounded-xl shadow-xl transition-transform group-hover:scale-105" />
+          <div className="flex size-10 items-center justify-center rounded-xl bg-slate-900 shadow-xl text-white transition-transform group-hover:scale-105">
+            <Shield className="size-6" />
+          </div>
           <span className="text-xl font-black text-slate-900 tracking-tighter">SafeDeal</span>
         </Link>
 
@@ -125,7 +126,9 @@ export function Navbar() {
                <div className="flex h-full flex-col bg-white p-8">
                   <header className="flex items-center justify-between mb-12">
                      <div className="flex items-center gap-2.5">
-                        <Image src="/logo.png" alt="SafeDeal Logo" width={40} height={40} className="rounded-xl" />
+                        <div className="flex size-10 items-center justify-center rounded-xl bg-slate-900 text-white">
+                           <Shield className="size-6" />
+                        </div>
                         <span className="text-xl font-black text-slate-900">SafeDeal</span>
                      </div>
                   </header>

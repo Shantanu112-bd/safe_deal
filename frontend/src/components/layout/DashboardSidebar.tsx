@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { 
   Shield, 
@@ -37,7 +36,9 @@ export function DashboardSidebar() {
       {/* DESKTOP SIDEBAR */}
       <aside className="hidden lg:flex w-72 flex-col border-r border-slate-200 bg-white px-6 py-10 h-screen sticky top-0 overflow-y-auto">
         <div className="flex items-center gap-3 px-2 mb-12">
-          <Image src="/logo.png" alt="SafeDeal Logo" width={40} height={40} className="rounded-xl shadow-xl" />
+          <div className="flex size-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xl">
+            <Shield className="size-6" />
+          </div>
           <span className="text-xl font-black text-slate-900 tracking-tight italic-none">SafeDeal</span>
         </div>
 
