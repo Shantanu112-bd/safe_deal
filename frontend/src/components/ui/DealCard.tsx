@@ -76,7 +76,7 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
   };
 
   return (
-    <div className="group block rounded-[2.5rem] bg-white border border-slate-100 p-6 sm:p-8 shadow-sm transition-all hover:shadow-xl hover:shadow-slate-200/50">
+    <div className="group block rounded-[2.5rem] bg-white border border-slate-100 p-4 lg:p-6 shadow-sm transition-all hover:shadow-xl hover:shadow-slate-200/50">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         
         {/* LEFT COLUMN: TITLE & DESC */}
