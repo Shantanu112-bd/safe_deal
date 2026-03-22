@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import {
   BadgeCheck,
   CheckCircle2,
@@ -112,7 +113,7 @@ export default function LandingPage() {
         buttons={{
           primary: {
             text: "Get Started",
-            onClick: () => router.push('/dashboard')
+            href: "/dashboard"
           },
           secondary: {
             text: "How it Works",
@@ -375,16 +376,16 @@ export default function LandingPage() {
             <div className="flex flex-wrap items-center justify-center gap-4">
               <GradientButton
                 className="rounded-[1.5rem] px-12 py-6 text-xl font-black italic-none"
-                onClick={() => router.push('/dashboard')}
+                asChild
               >
-                Create a Deal
+                <Link href="/dashboard">Create a Deal</Link>
               </GradientButton>
               <GradientButton
                 variant="variant"
                 className="rounded-[1.5rem] px-12 py-6 text-xl font-black italic-none"
-                onClick={() => router.push('/dashboard')}
+                asChild
               >
-                Become a Merchant
+                <Link href="/dashboard">Become a Merchant</Link>
               </GradientButton>
             </div>
             <p className="mt-12 text-xs font-black text-slate-400 uppercase tracking-widest italic-none flex items-center justify-center gap-2">

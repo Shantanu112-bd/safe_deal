@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { GradientButton } from "./gradient-button";
 
 // ─── Default WebGL fragment shader ────────────────────────────────────────────
@@ -213,8 +214,8 @@ export interface HeroProps {
   headline?:   { line1: string; line2: string };
   subtitle?:   string;
   buttons?: {
-    primary?:   { text: string; onClick?: () => void };
-    secondary?: { text: string; onClick?: () => void };
+    primary?:   { text: string; onClick?: () => void; href?: string };
+    secondary?: { text: string; onClick?: () => void; href?: string };
   };
   shaderSource?: string;
   className?:    string;
@@ -331,17 +332,26 @@ export function Hero({
             {buttons && (
               <div className="mt-8 flex flex-wrap gap-3">
                 {buttons.primary && (
-                  <GradientButton onClick={buttons.primary.onClick}>
-                    {buttons.primary.text}
-                  </GradientButton>
+                  buttons.primary.href ? (
+                    <GradientButton asChild>
+                      <Link href={buttons.primary.href}>{buttons.primary.text}</Link>
+                    </GradientButton>
+                  ) : (
+                    <GradientButton onClick={buttons.primary.onClick}>
+                      {buttons.primary.text}
+                    </GradientButton>
+                  )
                 )}
                 {buttons.secondary && (
-                  <GradientButton
-                    variant="variant"
-                    onClick={buttons.secondary.onClick}
-                  >
-                    {buttons.secondary.text}
-                  </GradientButton>
+                  buttons.secondary.href ? (
+                    <GradientButton variant="variant" asChild>
+                      <Link href={buttons.secondary.href}>{buttons.secondary.text}</Link>
+                    </GradientButton>
+                  ) : (
+                    <GradientButton variant="variant" onClick={buttons.secondary.onClick}>
+                      {buttons.secondary.text}
+                    </GradientButton>
+                  )
                 )}
               </div>
             )}
