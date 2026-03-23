@@ -99,12 +99,12 @@ jobs:
         run: cd frontend && npm ci
 
       - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+        run: npm install -g vercel@32.3.0
 
       - name: Pull Vercel environment
         run: |
           cd frontend
-          vercel pull --yes \
+          vercel pull --yes --debug \
             --environment=production \
             --token=${{ secrets.VERCEL_TOKEN }}
         env:
@@ -114,8 +114,9 @@ jobs:
       - name: Build with Vercel
         run: |
           cd frontend
-          vercel build --prod \
+          vercel build --prod --debug \
             --token=${{ secrets.VERCEL_TOKEN }}
+
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
