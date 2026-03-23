@@ -23,7 +23,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            contracts/target
+            **/target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-
@@ -76,9 +76,10 @@ jobs:
           NEXT_PUBLIC_ESCROW_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_ESCROW_CONTRACT_ID }}
           NEXT_PUBLIC_FRAUD_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_FRAUD_CONTRACT_ID }}
           NEXT_PUBLIC_DISPUTE_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_DISPUTE_CONTRACT_ID }}
-          NEXT_PUBLIC_VERIFICATION_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_VERIFICATION_CONTRACT_ID }}
-          NEXT_PUBLIC_FIAT_BRIDGE_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_FIAT_BRIDGE_CONTRACT_ID }}
+          NEXT_PUBLIC_VERIFY_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_VERIFY_CONTRACT_ID }}
+          NEXT_PUBLIC_FIAT_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_FIAT_CONTRACT_ID }}
           NEXT_PUBLIC_USDC_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_USDC_CONTRACT_ID }}
+
 
   deploy:
     needs: [test-contracts, build-frontend]

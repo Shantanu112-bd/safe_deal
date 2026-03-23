@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -87,7 +86,8 @@ const badges = [
 ];
 
 export default function LandingPage() {
-  const router = useRouter();
+  // router removed to fix lint error
+
 
   const fadeIn = {
     initial: { opacity: 0, y: 20 },

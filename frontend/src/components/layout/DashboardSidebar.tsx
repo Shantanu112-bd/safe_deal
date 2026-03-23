@@ -9,18 +9,15 @@ import {
   History, 
   User, 
   Settings,
-  Plus,
   Wallet,
   LogOut,
   ChevronRight,
   Home,
   FileText,
-  Clock,
-  LucideIcon
+  Clock
 } from "lucide-react";
 import { useWallet } from "@/context/WalletContext";
 import { cn } from "@/lib/utils";
-import { GradientButton } from "@/components/ui/gradient-button";
 
 export function DashboardSidebar() {
   const pathname = usePathname();
