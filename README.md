@@ -67,7 +67,8 @@ SafeDeal is composed of 5 Soroban smart contracts + a Next.js frontend:
 
 ### 1. Live Demo & Video
 - **Live MVP Demo**: [safe-deal-ten.vercel.app](https://safe-deal-ten.vercel.app)
-- **Demo Video**: [Watch the Full MVP Demo Video Here](https://youtube.com/watch?v=YOUR-DEMO-LINK) *(Please replace this link with your actual video recording!)*
+- **Demo Video**: [Watch the Full MVP Demo Video Here](https://www.loom.com/share/a7b6d6d5c42942d094961dda5a7eaebe)
+
 
 ### 2. Testnet User Wallet Addresses
 The following wallets have been used to test and verify the MVP on the Stellar Testnet (Viewable on Stellar Expert):
