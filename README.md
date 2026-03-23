@@ -53,6 +53,32 @@ SafeDeal is composed of 5 Soroban smart contracts + a Next.js frontend:
 
 ---
 
+## ## System Architecture
+
+SafeDeal is built in 6 layers:
+
+**Users** — Sellers (WhatsApp merchants) and Buyers connect through their own browser or phone.
+
+**Frontend** — Next.js 14 deployed on Vercel with three main surfaces: merchant dashboard, buyer payment page, and seller public profile.
+
+**Wallet Layer** — Freighter and Albedo browser wallets handle transaction signing. Private keys never leave the user's device.
+
+**Stellar SDK + Soroban Client** — `stellar.ts`, `soroban.ts`, and `contracts.ts` handle all blockchain communication including transaction building, simulation, signing, and submission.
+
+**Stellar Testnet** — Horizon API handles transaction submission, SSE real-time event streaming, and account balance queries.
+
+**Smart Contracts (Rust/Soroban)** — Five on-chain contracts handle all business logic:
+- `merchant-escrow` — creates deals and locks/releases USDC
+- `fraud-detection` — scores buyer wallets for risk
+- `dispute-resolution` — handles contested deals
+- `seller-verification` — manages trust badges
+- `fiat-bridge` — SEP-24 anchor for INR withdrawal
+
+**Payments** — USDC stablecoin on Stellar testnet for escrow. SEP-24 anchor integration for fiat off-ramp to UPI/INR bank accounts.
+
+
+---
+
 ## 🚀 Key Features
 
 - **🛡️ Shield Analytics**: Silent AI fraud scoring for every wallet connection.
