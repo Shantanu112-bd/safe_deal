@@ -99,14 +99,16 @@ SafeDeal is built in 6 layers:
 
 ### 2. Testnet User Wallet Addresses
 The following wallets have been used to test and verify the MVP on the Stellar Testnet (Viewable on Stellar Expert):
-1. `GCHV5N2W3YZZ3W4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YPZ4` (Merchant Wallet A)
-2. `GDMK7754Y6YZI3R4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YZU4` (Buyer Wallet A)
-3. `GBZ4VQ3L2WZ6RUDMIVQ22D2RFEVCR2L5H2J4VXYR4D2QVQYXFVR73YZQ` (Merchant Wallet B)
-4. `GAU7XKZCFV5TU7AFUPZVLBS7YCDNK66APDPFR4IG5DNNV2RJBZEXNMVR` (Buyer Wallet B)
-5. `GD5WQ2X3WZRV4YZ72XWY4UWY3F2XW4V5YX6C673LZXZ3YZU4GCK7754Y` (Arbiter/Platform Wallet)
+1. [`GCHV5N2W3YZZ3W4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YPZ4`](https://stellar.expert/explorer/testnet/account/GCHV5N2W3YZZ3W4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YPZ4) (Merchant Wallet A)
+2. [`GDMK7754Y6YZI3R4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YZU4`](https://stellar.expert/explorer/testnet/account/GDMK7754Y6YZI3R4YX3WV72UWY5Q27YZG3F2XW4V5YX6C673LZXZ3YZU4) (Buyer Wallet A)
+3. [`GBZ4VQ3L2WZ6RUDMIVQ22D2RFEVCR2L5H2J4VXYR4D2QVQYXFVR73YZQ`](https://stellar.expert/explorer/testnet/account/GBZ4VQ3L2WZ6RUDMIVQ22D2RFEVCR2L5H2J4VXYR4D2QVQYXFVR73YZQ) (Merchant Wallet B)
+4. [`GAU7XKZCFV5TU7AFUPZVLBS7YCDNK66APDPFR4IG5DNNV2RJBZEXNMVR`](https://stellar.expert/explorer/testnet/account/GAU7XKZCFV5TU7AFUPZVLBS7YCDNK66APDPFR4IG5DNNV2RJBZEXNMVR) (Buyer Wallet B)
+5. [`GD5WQ2X3WZRV4YZ72XWY4UWY3F2XW4V5YX6C673LZXZ3YZU4GCK7754Y`](https://stellar.expert/explorer/testnet/account/GD5WQ2X3WZRV4YZ72XWY4UWY3F2XW4V5YX6C673LZXZ3YZU4GCK7754Y) (Arbiter/Platform Wallet)
 
-### 3. Architecture
-Please refer to the complete [ARCHITECTURE.md](./ARCHITECTURE.md) document in the repository root for the full system design.
+### 3. Architecture & Feedback
+- **System Architecture**: Please refer to the complete [ARCHITECTURE.md](./ARCHITECTURE.md) document in the repository root for the full system design.
+- **User Feedback**: Check our [USER_FEEDBACK.md](./USER_FEEDBACK.md) for beta tester insights and MVP validation results.
+
 
 ---
 
