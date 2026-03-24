@@ -62,14 +62,14 @@ export default function ProfilePage() {
                   <h2 className="text-2xl font-black text-white mb-2">Connected Wallet</h2>
                   <div className="flex flex-wrap items-center gap-2">
                     <code className="bg-black/40 text-indigo-300 px-4 py-2 rounded-xl text-sm border border-white/5 font-bold">
-                      {publicKey ? \`\${publicKey.slice(0,12)}...\${publicKey.slice(-12)}\` : "Not connected"}
+                      {publicKey ? `${publicKey.slice(0,12)}...${publicKey.slice(-12)}` : "Not connected"}
                     </code>
                     {publicKey && (
                       <>
                         <button onClick={handleCopy} className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 transition-colors">
                           <Copy className="size-4" />
                         </button>
-                        <a href={\`https://stellar.expert/explorer/testnet/account/\${publicKey}\`} target="_blank" className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 transition-colors">
+                        <a href={`https://stellar.expert/explorer/testnet/account/${publicKey}`} target="_blank" className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 transition-colors">
                           <ExternalLink className="size-4" />
                         </a>
                       </>
@@ -118,7 +118,7 @@ export default function ProfilePage() {
               <div className="h-4 bg-black/40 rounded-full overflow-hidden border border-white/5">
                 <div 
                   className="h-full bg-gradient-to-r from-emerald-500 via-cyan-500 to-indigo-500 relative"
-                  style={{ width: \`\${progressPercent}%\` }}
+                  style={{ width: `${progressPercent}%` }}
                 >
                   <div className="absolute inset-0 bg-white/20 animate-pulse" />
                 </div>
