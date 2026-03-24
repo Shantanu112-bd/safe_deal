@@ -39,7 +39,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-indigo-500/10 bg-[#030712]/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(99,102,241,0.05)]">
+    <header className="sticky top-0 z-50 w-full border-b border-indigo-500/20 bg-[#030712] shadow-[0_4px_30px_rgba(99,102,241,0.1)]">
       <div className="container mx-auto flex h-20 items-center justify-between px-6">
         
         {/* LOGO */}

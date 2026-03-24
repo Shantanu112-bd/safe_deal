@@ -26,18 +26,18 @@ export default function RootLayout({
       <body style={{ fontFamily: 'Inter, system-ui, Arial, sans-serif' }}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          enableSystem
+          defaultTheme="dark"
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <WalletProvider>
-            <div className="relative flex min-h-screen flex-col overflow-hidden bg-background">
+            <div className="relative flex min-h-screen flex-col overflow-hidden bg-[#030712] text-white">
               {/* Attractive Background Glow Effects */}
               <div className="pointer-events-none fixed inset-0 z-0">
                 <div className="absolute top-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full bg-primary/30 blur-[120px] animate-pulse" style={{ animationDuration: '4s' }} />
                 <div className="absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-blue-500/30 blur-[100px] animate-pulse" style={{ animationDuration: '6s' }} />
                 <div className="absolute top-[40%] left-[80%] h-[30%] w-[30%] rounded-full bg-emerald-500/20 blur-[100px] animate-pulse" style={{ animationDuration: '5s' }} />
-                <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px]" />
+                <div className="absolute inset-0 bg-[#030712]/60 backdrop-blur-[2px]" />
               </div>
               
               <div className="relative z-10 flex min-h-screen flex-col">
