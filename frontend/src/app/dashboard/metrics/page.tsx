@@ -11,14 +11,14 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 // Dummy Data
 const dauData = [
   ...Array.from({ length: 30 }).map((_, i) => ({
-    day: \`Day \${i + 1}\`,
+    day: `Day ${i + 1}`,
     users: Math.floor(10 + Math.random() * 24),
   }))
 ];
 
 const txVolumeData = [
   ...Array.from({ length: 14 }).map((_, i) => ({
-    date: \`Mar \${i + 1}\`,
+    date: `Mar ${i + 1}`,
     volume: Math.floor(50 + Math.random() * 200),
   }))
 ];
@@ -90,7 +90,7 @@ export default function MetricsDashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={txVolumeData} margin={{ left: -20, bottom: 0 }}>
                   <XAxis dataKey="date" stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => \`$\${v}\`}/>
+                  <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v}`}/>
                   <Tooltip contentStyle={{ background: "#030712", border: "1px solid #1e293b", borderRadius: "8px" }} cursor={{ fill: "rgba(255,255,255,0.05)" }} />
                   <Bar dataKey="volume" fill="#06b6d4" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -111,7 +111,7 @@ export default function MetricsDashboard() {
               </svg>
               <span className="text-3xl font-black text-white">67%</span>
             </div>
-            <p className="text-xs text-[#94a3b8] font-bold">Of users create >1 deal per week</p>
+            <p className="text-xs text-[#94a3b8] font-bold">Of users create &gt;1 deal per week</p>
           </div>
 
           {/* Wallets Table */}
@@ -157,7 +157,7 @@ export default function MetricsDashboard() {
                 <PieChart>
                   <Pie data={statusData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
                     {statusData.map((entry, index) => (
-                      <Cell key={\`cell-\${index}\`} fill={entry.color} />
+                      <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip contentStyle={{ background: "#030712", border: "1px solid #1e293b", borderRadius: "8px" }} itemStyle={{ color: "#fff" }} />

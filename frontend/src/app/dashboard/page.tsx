@@ -95,7 +95,7 @@ export default function Dashboard() {
     : 100;
 
   const shortKey = publicKey
-    ? \`\${publicKey.slice(0, 6)}...\${publicKey.slice(-4)}\`
+    ? `${publicKey.slice(0, 6)}...${publicKey.slice(-4)}`
     : "—";
 
   // Dummy Chart Data based on total earned today vs past days (just static for demo visual)
@@ -236,7 +236,7 @@ export default function Dashboard() {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <style dangerouslySetInnerHTML={{__html: \`
+                      <style dangerouslySetInnerHTML={{__html: `
                         @keyframes pulseGreen {
                           0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4) }
                           70% { box-shadow: 0 0 0 10px rgba(16,185,129,0) }
@@ -247,7 +247,7 @@ export default function Dashboard() {
                           70% { box-shadow: 0 0 0 10px rgba(239,68,68,0) }
                           100% { box-shadow: 0 0 0 0 rgba(239,68,68,0) }
                         }
-                      \`}} />
+                      `}} />
                       {activeDealsList.map((deal) => {
                         let dotColor = "#3b82f6";
                         let dotStyle = {};
@@ -263,7 +263,7 @@ export default function Dashboard() {
                         }
 
                         return (
-                          <Link href={\`/dashboard/deals\`} key={deal.id}>
+                          <Link href={`/dashboard/deals`} key={deal.id}>
                             <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(10px)" }} className="rounded-2xl p-5 hover:bg-white/5 transition-all flex items-center justify-between mb-3 group">
                               <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 rounded-full bg-[#030712] flex items-center justify-center relative">
@@ -302,7 +302,7 @@ export default function Dashboard() {
                               </linearGradient>
                            </defs>
                            <XAxis dataKey="name" stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} />
-                           <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => \`\$\${v}\`} />
+                           <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v}`} />
                            <Tooltip contentStyle={{ background: "#0f0f1a", border: "1px solid #1e293b", borderRadius: "8px" }} itemStyle={{ color: "#06b6d4" }} />
                            <Area type="monotone" dataKey="earn" fill="url(#earnGrad)" stroke="#6366f1" strokeWidth={2} />
                          </AreaChart>

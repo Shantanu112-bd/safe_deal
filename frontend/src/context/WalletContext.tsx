@@ -10,6 +10,7 @@ import {
 } from "@/lib/wallet";
 import { checkFraudScore } from "@/lib/stellar";
 import { toast } from "sonner";
+import { monitor } from "@/lib/monitoring";
 
 interface WalletContextType {
   publicKey: string | null;
@@ -80,6 +81,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       localStorage.setItem("safedeal_wallet_type", walletType);
       document.cookie = `safedeal_pubkey=${publicKey}; path=/; max-age=604800; samesite=lax`;
       toast.success("Wallet connected via Freighter");
+      monitor.userConnected(publicKey);
       
       // Initial fraud check
       const fraud = await checkFraudScore(publicKey);
@@ -103,6 +105,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       localStorage.setItem("safedeal_wallet_type", walletType);
       document.cookie = `safedeal_pubkey=${publicKey}; path=/; max-age=604800; samesite=lax`;
       toast.success("Wallet connected via Albedo");
+      monitor.userConnected(publicKey);
 
       // Initial fraud check
       const fraud = await checkFraudScore(publicKey);

@@ -274,7 +274,7 @@ export default function LandingPage() {
               <div className="grid gap-4">
                 {badges.map((b, i) => (
                   <div key={i} className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div className={`p-2 rounded-lg bg-slate-900 ${b.glow}`}><BadgeCheck className={\`w-6 h-6 \${b.color}\`} /></div>
+                    <div className={`p-2 rounded-lg bg-slate-900 ${b.glow}`}><BadgeCheck className={`w-6 h-6 ${b.color}`} /></div>
                     <div>
                       <div className="font-bold">{b.level} Badge</div>
                       <div className="text-xs text-[#94a3b8]">{b.minDeals}+ Deals</div>

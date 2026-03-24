@@ -15,7 +15,7 @@ export async function createFeeBumpTransaction(
   const feeBumpTx = TransactionBuilder
     .buildFeeBumpTransaction(
       feeSourcePublicKey,
-      BASE_FEE * 10,
+      (Number(BASE_FEE) * 10).toString(),
       innerTx as Transaction,
       Networks.TESTNET
     )
@@ -34,7 +34,7 @@ export async function submitFeeBumpTransaction(
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: \`tx=\${encodeURIComponent(feeBumpXDR)}\`
+      body: `tx=${encodeURIComponent(feeBumpXDR)}`
     }
   )
   

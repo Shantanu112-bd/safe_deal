@@ -118,7 +118,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
-    return \`\${h}h \${m}m \${s}s\`;
+    return `${h}h ${m}m ${s}s`;
   };
 
   const handlePay = async () => {
@@ -167,8 +167,8 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
       setShowDisputeModal(false);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const dId = result && (result as any).disputeId ? (result as any).disputeId : \`DISP-\${params.id}\`;
-      router.push(\`/dashboard/disputes/\${dId}\`);
+      const dId = result && (result as any).disputeId ? (result as any).disputeId : `DISP-${params.id}`;
+      router.push(`/dashboard/disputes/${dId}`);
     } catch (error) {
       toast.error("Failed to raise dispute");
       console.error(error);
