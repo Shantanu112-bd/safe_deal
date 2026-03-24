@@ -6,9 +6,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
+  experimental: {},
   images: {
     unoptimized: true,
     remotePatterns: [
