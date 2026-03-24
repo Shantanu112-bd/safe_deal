@@ -107,14 +107,20 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <>
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setModalOpen(true)}
+                className="hidden md:block px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors"
+              >
+                Sign In
+              </button>
               <GradientButton 
                 onClick={() => setModalOpen(true)}
-                className="rounded-full px-6 py-2.5 text-xs font-black uppercase tracking-widest shadow-xl shadow-slate-900/10"
+                className="rounded-xl px-6 py-2.5 text-xs font-black tracking-widest uppercase shadow-xl shadow-indigo-500/20"
               >
-                Connect Wallet
+                Get Started
               </GradientButton>
-            </>
+            </div>
           )}
 
           {/* MOBILE MENU */}
@@ -161,7 +167,7 @@ export function Navbar() {
                            onClick={() => setModalOpen(true)}
                            className="w-full rounded-2xl py-4 font-black uppercase tracking-widest text-xs"
                         >
-                           Connect Wallet
+                           Get Started
                         </GradientButton>
                      ) : (
                         <div className="grid grid-cols-2 gap-3">
