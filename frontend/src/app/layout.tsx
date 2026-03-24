@@ -4,6 +4,7 @@ import { WalletProvider } from "@/context/WalletContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/layout/Navbar";
+import { PageTracker } from "@/components/PageTracker";
 
 export const metadata: Metadata = {
   title: "SafeDeal | Secure Escrow Payments",
@@ -31,6 +32,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <WalletProvider>
+            <PageTracker />
             <div className="relative flex min-h-screen flex-col overflow-hidden bg-[#030712] text-white">
               {/* Attractive Background Glow Effects */}
               <div className="pointer-events-none fixed inset-0 z-0">

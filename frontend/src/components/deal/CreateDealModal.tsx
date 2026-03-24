@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { createEscrowTransaction } from "@/lib/stellar";
 import { useWallet } from "@/context/WalletContext";
 import { toast } from "sonner";
+import { monitor } from "@/lib/monitoring";
 
 type Props = {
   open: boolean;
@@ -135,6 +136,7 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
         setStep(3);
         onDealCreated?.();
         toast.success(`Deal #${result.dealId} created successfully!`);
+        monitor.dealCreated(result.dealId, parsedAmount, category);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Failed to create deal.";

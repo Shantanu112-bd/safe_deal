@@ -18,6 +18,7 @@ import { useWallet } from "@/context/WalletContext";
 import { WalletConnect } from "@/components/wallet/WalletConnect";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { monitor } from "@/lib/monitoring";
 import {
   lockPayment,
   confirmDelivery as confirmOnChain,
@@ -118,6 +119,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
       if (result.success) {
         setStep("success");
         toast.success("Payment locked in escrow!");
+        monitor.paymentLocked(params.id, deal.amountUSDC);
       }
     } catch (err) {
       setStep("pay");
@@ -133,6 +135,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
         if (result.txHash) 
         setStep("released");
         toast.success("Funds released to seller. Thank you!");
+        if (deal) monitor.paymentReleased(params.id, deal.amountUSDC);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Failed to release funds on-chain.";
