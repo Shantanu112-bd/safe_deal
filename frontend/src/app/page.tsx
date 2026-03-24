@@ -333,38 +333,6 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
-
-      {/* 7. CTA SECTION */}
-      <section className="py-32 relative z-10">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          <motion.div 
-            {...fadeIn} 
-            style={{
-              background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2))",
-              border: "1px solid rgba(99,102,241,0.3)",
-              borderRadius: "24px",
-              padding: "64px"
-            }}
-            className="text-center"
-          >
-            <h2 className="text-4xl font-black mb-6">Start Selling Safely</h2>
-            <p className="text-lg text-[#94a3b8] mb-10 max-w-2xl mx-auto">Create your first deal in seconds. Protect your revenue and build trust with your customers instantly.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/dashboard" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }} className="px-8 py-4 rounded-xl font-bold text-white hover:opacity-90 transition-opacity whitespace-nowrap hidden sm:inline-block md:inline-block">
-                Create a Deal
-              </Link>
-              <Link href="/docs" style={{ background: "transparent", border: "1px solid", borderImageSource: "linear-gradient(135deg, #6366f1, #06b6d4)", borderImageSlice: 1 }} className="px-8 py-4 rounded-xl font-bold hover:bg-white/5 transition-colors border-[#6366f1] border hidden sm:inline-block md:inline-block">
-                Read Documentation
-              </Link>
-              <div className="sm:hidden flex flex-col gap-4">
-               <Link href="/dashboard" className="px-8 py-4 bg-indigo-500 rounded-xl font-bold text-white text-center">Create a Deal</Link>
-               <Link href="/docs" className="px-8 py-4 bg-transparent border border-indigo-500 rounded-xl font-bold text-center">Docs</Link>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-      
     </div>
   );
 }
