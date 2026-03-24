@@ -35,6 +35,7 @@ export function Navbar() {
     { label: "For Merchants", href: "/#merchants" },
     { label: "For Buyers", href: "/#buyers" },
     { label: "Pricing", href: "/#pricing" },
+    { label: "Docs", href: "/docs" },
   ];
 
   return (
