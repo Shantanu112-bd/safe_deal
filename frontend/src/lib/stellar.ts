@@ -240,7 +240,8 @@ export const lockPayment = async (
   dealId: string,
   amount: number,
   walletType: WalletType,
-  buyerAddress?: string
+  buyerAddress?: string,
+  isGasless?: boolean
 ): Promise<{ success: boolean; txHash: string }> => {
   if (!walletType) throw new Error("Wallet not connected");
 
@@ -259,7 +260,8 @@ export const lockPayment = async (
       "MERCHANT_ESCROW",
       "lock_payment",
       args,
-      walletType
+      walletType,
+      isGasless
     );
 
     return { success: true, txHash: result.txHash };

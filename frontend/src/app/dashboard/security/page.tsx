@@ -1,7 +1,6 @@
 "use client"
-import { useState } from 'react'
 import { 
-  Shield, Check, ExternalLink,
+  Shield, Check,
   Download, Lock, Code, 
   Server, User 
 } from 'lucide-react'

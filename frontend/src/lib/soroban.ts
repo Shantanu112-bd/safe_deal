@@ -152,10 +152,24 @@ export const simulateAndPrepare = async (
 export const signAndSubmit = async (
   preparedXdr: string,
   walletType: WalletType,
-  sourcePublicKey: string
+  sourcePublicKey: string,
+  isGasless?: boolean
 ): Promise<{ txHash: string; resultXdr: string }> => {
   // 1. Sign with the user's wallet
-  const signedXdr = await signTransaction(preparedXdr, walletType, PASSPHRASE, sourcePublicKey);
+  let signedXdr = await signTransaction(preparedXdr, walletType, PASSPHRASE, sourcePublicKey);
+
+  // 1.5 Optionally wrap with fee bump if gasless is enabled
+  if (isGasless) {
+    try {
+      const { wrapWithFeeBump, isFeeSponsorshipEnabled } = await import("./feeBump");
+      if (isFeeSponsorshipEnabled()) {
+        console.log("[signAndSubmit] Wrapping with fee bump...");
+        signedXdr = await wrapWithFeeBump(signedXdr);
+      }
+    } catch (err) {
+      console.warn("[signAndSubmit] Fee bump failed, proceeding with original tx", err);
+    }
+  }
 
   // 2. Submit to network
   const tx = TransactionBuilder.fromXDR(signedXdr, PASSPHRASE);
@@ -215,7 +229,8 @@ export const invokeContract = async (
   contractKey: keyof typeof CONTRACTS,
   method: string,
   args: xdr.ScVal[],
-  walletType: WalletType
+  walletType: WalletType,
+  isGasless?: boolean
 ): Promise<{ txHash: string; resultXdr: string; simulatedResult?: xdr.ScVal }> => {
   const contractId = CONTRACTS[contractKey];
   if (!isContractDeployed(contractId)) {
@@ -227,7 +242,7 @@ export const invokeContract = async (
   const contract = new Contract(contractId);
   const builder = await buildContractTx(sourcePublicKey, contract, method, args);
   const { preparedXdr, simulatedResult } = await simulateAndPrepare(builder);
-  const { txHash, resultXdr } = await signAndSubmit(preparedXdr, walletType, sourcePublicKey);
+  const { txHash, resultXdr } = await signAndSubmit(preparedXdr, walletType, sourcePublicKey, isGasless);
   return { txHash, resultXdr, simulatedResult };
 };
 

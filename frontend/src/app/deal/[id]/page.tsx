@@ -72,6 +72,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   const isBlocked = fraudLevel === "Blocked";
 
   const [step, setStep] = useState<PageStep>("pay");
+  const [isGasless, setIsGasless] = useState(true);
   const [deal, setDeal] = useState<DealData | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -116,7 +117,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     if (!deal) return;
     setStep("locking");
     try {
-      const result = await lockPayment(params.id, deal.amountUSDC, walletType, publicKey || undefined);
+      const result = await lockPayment(params.id, deal.amountUSDC, walletType, publicKey || undefined, isGasless);
       if (result.success) {
         setStep("success");
         toast.success("Payment locked in escrow!");
@@ -304,7 +305,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                       ) : step === "pay" ? (
                         <>
                           <div className="-mx-6 px-6 relative z-10">
-                            <GaslessToggle />
+                            <GaslessToggle onToggle={setIsGasless} />
                             
                             {isFeeSponsorshipEnabled() && (
                               <div className="flex items-center gap-3 

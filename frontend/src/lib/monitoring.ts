@@ -10,7 +10,7 @@ type EventType =
 interface MonitorEvent {
   event: EventType
   timestamp: string
-  data: Record<string, any>
+  data: Record<string, string | number | boolean | null | undefined>
 }
 
 const STORAGE_KEY = 'safedeal_events'
@@ -95,7 +95,7 @@ export const monitor = {
           e.event === 'user_connected' &&
           new Date(e.timestamp).toDateString() === today
         )
-        .map(e => e.data.wallet)
+        .map(e => String(e.data.wallet || ''))
     )
     return uniqueWallets.size
   },
@@ -109,7 +109,7 @@ export const monitor = {
   getTotalVolume: (): number => {
     return monitor.getEvents()
       .filter(e => e.event === 'payment_released')
-      .reduce((sum, e) => sum + (e.data.amount || 0), 0)
+      .reduce((sum, e) => sum + (Number(e.data.amount) || 0), 0)
   },
 
   getLast30DaysDAU: (): {date: string, users: number}[] => {
@@ -125,7 +125,7 @@ export const monitor = {
             e.event === 'user_connected' &&
             new Date(e.timestamp).toDateString() === dateStr
           )
-          .map(e => e.data.wallet)
+          .map(e => String(e.data.wallet || ''))
       )
       result.push({
         date: date.toLocaleDateString('en-US', 
@@ -148,7 +148,7 @@ export const monitor = {
           e.event === 'payment_locked' &&
           new Date(e.timestamp).toDateString() === dateStr
         )
-        .reduce((sum, e) => sum + (e.data.amount || 0), 0)
+        .reduce((sum, e) => sum + (Number(e.data.amount) || 0), 0)
       result.push({
         date: date.toLocaleDateString('en-US',
           { month: 'short', day: 'numeric' }),

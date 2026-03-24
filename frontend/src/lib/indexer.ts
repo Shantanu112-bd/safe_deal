@@ -59,14 +59,14 @@ export async function getAccountTransactions(
       .limit(limit)
       .call()
     
-    return txs.records.map((tx: any) => ({
+    return txs.records.map((tx) => ({
       hash: tx.hash,
       createdAt: tx.created_at,
       memo: tx.memo,
       successful: tx.successful,
       explorerUrl: `https://stellar.expert/explorer/testnet/tx/${tx.hash}`
     }))
-  } catch (error) {
+  } catch {
     return []
   }
 }

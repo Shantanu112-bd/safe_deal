@@ -1,8 +1,7 @@
 import { 
-  TransactionBuilder,
   Networks,
-  Keypair,
-  BASE_FEE
+  BASE_FEE,
+  Transaction
 } from '@stellar/stellar-sdk'
 
 const SAFEDEAL_FEE_ACCOUNT = 
@@ -12,19 +11,18 @@ export async function wrapWithFeeBump(
   innerTransactionXDR: string
 ): Promise<string> {
   try {
-    const { TransactionBuilder } = 
-      await import('@stellar/stellar-sdk')
+    const { TransactionBuilder } = await import('@stellar/stellar-sdk')
     
     const innerTx = TransactionBuilder.fromXDR(
       innerTransactionXDR,
       Networks.TESTNET
-    )
+    ) as Transaction
     
     const feeBumpTx = TransactionBuilder
       .buildFeeBumpTransaction(
         SAFEDEAL_FEE_ACCOUNT,
         String(Number(BASE_FEE) * 10),
-        innerTx as any,
+        innerTx,
         Networks.TESTNET
       )
     

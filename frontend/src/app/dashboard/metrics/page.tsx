@@ -5,8 +5,7 @@ import { getAccountTransactions } from '@/lib/indexer'
 import { 
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, 
-  Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell
+  Tooltip, ResponsiveContainer
 } from 'recharts'
 import { 
   Users, TrendingUp, DollarSign, 
@@ -19,7 +18,7 @@ export default function MetricsPage() {
   const [totalVolume, setTotalVolume] = useState(0)
   const [dauData, setDauData] = useState<{date: string, users: number}[]>([])
   const [volumeData, setVolumeData] = useState<{date: string, volume: number}[]>([])
-  const [txs, setTxs] = useState<any[]>([])
+  const [txs, setTxs] = useState<{hash: string, createdAt: string, successful: boolean, explorerUrl: string}[]>([])
 
   useEffect(() => {
     setDau(monitor.getDAU())
@@ -240,11 +239,11 @@ export default function MetricsPage() {
               {monitor.getEvents()
                 .filter(e => 
                   e.event === 'user_connected')
-                .reduce((acc: any[], e) => {
+                .reduce((acc: {wallet: string, firstSeen: string}[], e) => {
                   if (!acc.find(a => 
-                    a.wallet === e.data.wallet)) {
+                    a.wallet === String(e.data.wallet))) {
                     acc.push({
-                      wallet: e.data.wallet,
+                      wallet: String(e.data.wallet),
                       firstSeen: e.timestamp
                     })
                   }

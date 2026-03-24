@@ -15,8 +15,7 @@ import {
   Home,
   FileText,
   Clock,
-  BarChart3,
-  ShieldCheck
+  BarChart3
 } from "lucide-react";
 import { useWallet } from "@/context/WalletContext";
 import { cn } from "@/lib/utils";
