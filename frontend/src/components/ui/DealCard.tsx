@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Clock, Share2, Info, CheckCircle2, ShieldAlert } from "lucide-react";
-import { GradientButton } from "./gradient-button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -12,14 +11,14 @@ interface DealCardProps {
 }
 
 const statusColors: Record<string, string> = {
-  WaitingForPayment: "bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]",
-  Locked: "bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]",
-  Shipped: "bg-blue-500",
-  Completed: "bg-slate-400",
-  Disputed: "bg-orange-500 animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.8)]",
-  Refunded: "bg-red-500",
-  Cancelled: "bg-slate-400",
-  Expired: "bg-slate-400",
+  WaitingForPayment: "bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.6)] animate-pulse",
+  Locked: "bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)] animate-pulse",
+  Shipped: "bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.6)]",
+  Completed: "bg-indigo-500",
+  Disputed: "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)] animate-pulse",
+  Refunded: "bg-slate-500",
+  Cancelled: "bg-slate-500",
+  Expired: "bg-slate-700",
 };
 
 export function DealCard({ deal, onRefresh }: DealCardProps) {
@@ -61,9 +60,6 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
     const dealUrl = `${baseUrl}/deal/${deal.id}`;
     navigator.clipboard.writeText(dealUrl);
     toast.success("Payment link copied to clipboard!");
-    toast.success("Share on WhatsApp: wa.me/?text=...");
-    // A modal is requested, but standard is handling it via a ShareDealModal state (which could be implemented below or via props).
-    // For simplicity, we just trigger standard browser features here since we must satisfy the core request.
     const shareText = `Hi! I've created a SafeDeal payment link for your order. Pay here: ${dealUrl}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
   };
@@ -76,130 +72,114 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
   };
 
   return (
-    <div className="group block rounded-[2.5rem] bg-white border border-slate-100 p-4 lg:p-6 shadow-sm transition-all hover:shadow-xl hover:shadow-slate-200/50">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+    <div className="group block rounded-[2rem] bg-white/5 border border-white/5 p-6 backdrop-blur-md transition-all hover:-translate-y-1 hover:bg-white/10 hover:border-white/10 shadow-lg relative overflow-hidden">
+      
+      {/* Background Glow */}
+      <div className={cn("absolute -top-16 -right-16 w-32 h-32 rounded-full blur-[40px] opacity-20 pointer-events-none transition-colors", statusColors[displayStatus]?.split(" ")[0])} />
+
+      <div className="flex flex-col h-full justify-between gap-6 relative z-10">
         
-        {/* LEFT COLUMN: TITLE & DESC */}
-        <div className="flex gap-6 items-center flex-1">
-          <div className="size-16 shrink-0 rounded-3xl bg-slate-50 flex items-center justify-center text-2xl ring-1 ring-slate-100 group-hover:bg-white transition-colors">
-            🛍️
-          </div>
-          <div className="space-y-2 flex-1">
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Deal #{deal.id}</p>
-            <h3 className="text-2xl font-black text-slate-900 tracking-tight">{deal.title}</h3>
-            <p className="text-sm font-bold text-slate-500 line-clamp-2 leading-relaxed max-w-md">{deal.description || "No description provided."}</p>
-            
-            <div className="flex items-center flex-wrap gap-4 pt-1">
-              <span className="text-sm font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-lg">{deal.amountUSDC.toFixed(2)} USDC</span>
-              <span className="text-xs font-bold text-slate-500 bg-slate-50 px-3 py-1 rounded-lg">≈ ₹{inrAmount}</span>
-              
-              {/* Buyer Address if locked */}
-              {(displayStatus === "Locked" || displayStatus === "Shipped" || displayStatus === "Completed" || displayStatus === "Disputed") && deal.buyerKey && (
-                <span className="text-xs font-mono font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
-                  Buyer: {deal.buyerKey.slice(0, 5)}...{deal.buyerKey.slice(-4)}
-                </span>
-              )}
+        <div>
+          <div className="flex justify-between items-start mb-4">
+            <div className="size-12 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+              🛍️
+            </div>
+            <div className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/5">
+              <div className={cn("size-2 rounded-full", statusColors[displayStatus] || "bg-slate-500")} />
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#f8fafc]">{displayStatus}</span>
             </div>
           </div>
+
+          <p className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] mb-1">Deal #{deal.id}</p>
+          <h3 className="text-xl font-black text-white tracking-tight mb-2 line-clamp-1">{deal.title}</h3>
+          
+          <div className="flex items-center flex-wrap gap-2 pt-1">
+            <span className="text-sm font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-lg">
+              {deal.amountUSDC.toFixed(2)} USDC
+            </span>
+            <span className="text-xs font-bold text-slate-400 bg-white/5 border border-white/5 px-3 py-1 rounded-lg">
+              ≈ ₹{inrAmount}
+            </span>
+          </div>
+
+          {(displayStatus === "Locked" || displayStatus === "Shipped" || displayStatus === "Completed" || displayStatus === "Disputed") && deal.buyerKey && (
+             <div className="mt-3 text-xs font-mono font-bold text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-500/20 inline-block">
+               Buyer: {deal.buyerKey.slice(0, 5)}...{deal.buyerKey.slice(-4)}
+             </div>
+          )}
         </div>
 
-        {/* RIGHT COLUMN: STATUS & TIME */}
-        <div className="flex flex-col sm:items-end justify-between gap-3 shrink-0">
-          
-          <div className="flex items-center gap-2">
-            <div className={cn("size-2.5 rounded-full", statusColors[displayStatus] || "bg-slate-400")} />
-            <span className="text-xs font-black uppercase tracking-widest text-slate-700">{displayStatus}</span>
-          </div>
-
-          <div className="text-[10px] font-bold text-slate-400 space-y-1 mt-2 mb-4">
-            <div className="flex items-center gap-1.5 sm:justify-end">
-              <Clock className="size-2.5" />
-              Created {timeAgo(deal.createdAt)}
+        <div>
+          <div className="flex items-center justify-between text-[10px] font-bold text-[#94a3b8] mb-4 pb-4 border-b border-white/5">
+            <div className="flex items-center gap-1.5">
+              <Clock className="size-3" />
+              {timeAgo(deal.createdAt)}
             </div>
-            <div className={cn("flex items-center gap-1.5 sm:justify-end", deal.expiresAt < Date.now() ? "text-red-500" : "text-amber-600")}>
+            <div className={cn("flex items-center gap-1.5", deal.expiresAt < Date.now() ? "text-red-400" : "text-amber-400")}>
               Expires in {expiresLabel(deal.expiresAt)}
             </div>
           </div>
 
+          {/* ACTION BUTTONS */}
+          <div className="flex items-center gap-2">
+            {displayStatus === "WaitingForPayment" && (
+              <>
+                <button onClick={handleShare} className="flex-1 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-black transition-colors flex items-center justify-center gap-2">
+                  <Share2 className="size-3.5" /> Share
+                </button>
+                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+                  Details
+                </Link>
+              </>
+            )}
+
+            {displayStatus === "Locked" && (
+              <>
+                <button onClick={markShipped} className="flex-1 py-3 bg-emerald-500 hover:bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.3)] text-white rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-2">
+                  <CheckCircle2 className="size-3.5" /> Shipped?
+                </button>
+                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+                  Details
+                </Link>
+              </>
+            )}
+
+            {displayStatus === "Shipped" && (
+              <>
+                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+                  View Details
+                </Link>
+                <span className="flex-1 text-[10px] font-black uppercase tracking-widest text-[#94a3b8] flex items-center justify-center gap-1.5">
+                  <Info className="size-3" /> Waiting
+                </span>
+              </>
+            )}
+
+            {displayStatus === "Completed" && (
+              <>
+                <button className="flex-1 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl text-xs font-black transition-colors text-center">
+                  Withdraw
+                </button>
+              </>
+            )}
+
+            {displayStatus === "Disputed" && (
+              <>
+                <Link href={`/dashboard/disputes/${deal.id}`} className="flex-1 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-2">
+                  <ShieldAlert className="size-3.5" /> View Dispute
+                </Link>
+              </>
+            )}
+            
+            {(displayStatus === "Expired" || displayStatus === "Cancelled" || displayStatus === "Refunded") && (
+              <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+                History
+              </Link>
+            )}
+          </div>
         </div>
+
       </div>
-      
-      {/* ──────────────── ACTION BUTTONS ──────────────── */}
-      <div className="mt-6 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-3">
-        {displayStatus === "WaitingForPayment" && (
-          <>
-            <GradientButton onClick={handleShare} className="px-6 py-2.5 rounded-xl text-xs font-black shrink-0">
-              <Share2 className="mr-2 size-3.5" /> Share Link
-            </GradientButton>
-            <Link href={`/deal/${deal.id}`} target="_blank" className="px-6 py-2.5 rounded-xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors shrink-0">
-              View Details
-            </Link>
-            <button className="px-6 py-2.5 rounded-xl text-xs font-black tracking-widest uppercase text-red-500 hover:bg-red-50 shrink-0 ml-auto transition-colors">
-              Cancel
-            </button>
-          </>
-        )}
-
-        {displayStatus === "Locked" && (
-          <>
-            <GradientButton onClick={markShipped} className="px-6 py-2.5 flex items-center justify-center rounded-xl text-xs font-black shrink-0 text-center">
-              <CheckCircle2 className="mr-2 size-3.5" /> Mark as Shipped
-            </GradientButton>
-            <Link href={`/deal/${deal.id}`} target="_blank" className="px-6 py-2.5 rounded-xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors shrink-0">
-              View Details
-            </Link>
-            <button className="px-6 py-2.5 rounded-xl text-xs font-black tracking-widest uppercase text-red-500 hover:bg-red-50 shrink-0 ml-auto transition-colors">
-              Cancel & Refund
-            </button>
-          </>
-        )}
-
-        {displayStatus === "Shipped" && (
-          <>
-            <Link href={`/deal/${deal.id}`} target="_blank" className="px-6 py-2.5 rounded-xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors shrink-0">
-              View Details
-            </Link>
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-auto flex items-center gap-2">
-              <Info className="size-3" /> Waiting for buyer
-            </span>
-          </>
-        )}
-
-        {displayStatus === "Completed" && (
-          <>
-            <Link href={`/deal/${deal.id}`} target="_blank" className="px-6 py-2.5 rounded-xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors shrink-0">
-              View Details
-            </Link>
-            <GradientButton className="px-6 py-2.5 rounded-xl text-xs font-black shrink-0 flex items-center justify-center text-center">
-              Withdraw Funds
-            </GradientButton>
-          </>
-        )}
-
-        {displayStatus === "Disputed" && (
-          <>
-            <GradientButton className="px-6 py-2.5 rounded-xl text-xs font-black shrink-0">
-              Submit Evidence
-            </GradientButton>
-            <Link href={`/dashboard/disputes/${deal.id}`} className="px-6 py-2.5 rounded-xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors shrink-0 flex items-center justify-center">
-              <ShieldAlert className="mr-2 size-3.5" /> View Dispute
-            </Link>
-          </>
-        )}
-        
-        {displayStatus === "Expired" && (
-          <Link href={`/deal/${deal.id}`} target="_blank" className="px-6 py-2.5 rounded-xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors shrink-0">
-            View Details
-          </Link>
-        )}
-
-        {displayStatus === "Cancelled" && (
-          <Link href={`/deal/${deal.id}`} target="_blank" className="px-6 py-2.5 rounded-xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors shrink-0">
-            View Details
-          </Link>
-        )}
-      </div>
-
     </div>
   );
 }
