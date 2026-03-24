@@ -6,12 +6,8 @@ import {
   CheckCircle2,
   AlertTriangle,
   ShieldCheck,
-  Timer,
   ArrowLeft,
   Shield,
-  Smartphone,
-  ExternalLink,
-  ChevronRight,
   Loader2,
   Lock,
   Zap
@@ -78,7 +74,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(172800); // 48 hours
-  const [payoutTxHash, setPayoutTxHash] = useState<string | null>(null);
+  
   const router = useRouter();
 
   // Dispute Modal States
@@ -114,13 +110,6 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     }
   }, [timeLeft, step]);
 
-  const formatTime = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${h}h ${m}m ${s}s`;
-  };
-
   const handlePay = async () => {
     if (!deal) return;
     setStep("locking");
@@ -141,7 +130,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     try {
       const result = await confirmOnChain(params.id, walletType, publicKey || undefined);
       if (result.success) {
-        if (result.txHash) setPayoutTxHash(result.txHash);
+        if (result.txHash) 
         setStep("released");
         toast.success("Funds released to seller. Thank you!");
       }
@@ -279,7 +268,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                           {deal.amountUSDC.toFixed(2)} <span className="text-2xl">USDC</span>
                         </p>
                         <p className="text-[#94a3b8] text-[1.1rem] mt-2 font-medium">
-                          ≈ ₹{(deal.amountUSDC * 83.5).toFixed(0)} at today's rate
+                          ≈ ₹{(deal.amountUSDC * 83.5).toFixed(0)} at today&apos;s rate
                         </p>
                       </div>
                     </div>

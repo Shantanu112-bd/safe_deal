@@ -24,8 +24,7 @@ export async function createFeeBumpTransaction(
 }
 
 export async function submitFeeBumpTransaction(
-  feeBumpXDR: string,
-  _signedInnerXDR?: string // Added unused parameter just to match the signature in the prompt
+  feeBumpXDR: string
 ): Promise<string> {
   const response = await fetch(
     'https://horizon-testnet.stellar.org/transactions',

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { BookOpen, HelpCircle, Shield, CreditCard, PlayCircle, Star, Scale, Lock, RefreshCw, Smartphone } from "lucide-react";
+import { BookOpen, HelpCircle, Shield, CreditCard, PlayCircle, Star, Scale, RefreshCw, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -70,7 +70,7 @@ export default function DocsPage() {
             </div>
 
             <Section id="getting-started" title="1. Getting Started for Merchants">
-              <p>Welcome to SafeDeal. SafeDeal replaces risky UPI and bank transfers with a secure, trustable escrow link that guarantees you get paid while ensuring your customer's money is safe until delivery.</p>
+              <p>Welcome to SafeDeal. SafeDeal replaces risky UPI and bank transfers with a secure, trustable escrow link that guarantees you get paid while ensuring your customer&apos;s money is safe until delivery.</p>
               <div className="my-6 rounded-2xl bg-white/5 border border-white/10 p-1 flex items-center justify-center aspect-video">
                 <span className="text-slate-600 font-bold tracking-widest uppercase text-sm flex items-center gap-2"><PlayCircle /> Explainer Video Placeholder</span>
               </div>
@@ -85,12 +85,12 @@ export default function DocsPage() {
               <p>Creating a deal takes less than 30 seconds.</p>
               <ol className="list-decimal leading-relaxed text-slate-400 space-y-2 pl-5 mb-4">
                 <li>Navigate to the <Link href="/dashboard" className="text-indigo-400 hover:underline">Merchant Dashboard</Link>.</li>
-                <li>Click the "Create Deal" button in the top right.</li>
+                <li>Click the &quot;Create Deal&quot; button in the top right.</li>
                 <li>Enter the item description, total amount in USDC, and buyer details (optional).</li>
                 <li>Submit to generate your unique Escrow Link.</li>
               </ol>
               <div className="bg-[#0f0f1a] rounded-xl border border-white/10 p-4 font-mono text-sm text-indigo-300">
-                <span className="text-slate-500">// Example payload</span><br/>
+                <span className="text-slate-500">{/* Example payload */}</span><br/>
                 {`{
   "title": "Vintage Leather Jacket",
   "amount": 45.00,
@@ -112,7 +112,7 @@ export default function DocsPage() {
               <ul className="list-disc leading-relaxed text-slate-400 space-y-2 pl-5">
                 <li>The buyer connects a wallet or uses a sponsored gasless transaction.</li>
                 <li>They approve the payment, locking the USDC in a secure Smart Escrow.</li>
-                <li>After confirming receipt of the physical item, the buyer clicks "I Received My Item" to instantly release the funds.</li>
+                <li>After confirming receipt of the physical item, the buyer clicks &quot;I Received My Item&quot; to instantly release the funds.</li>
               </ul>
             </Section>
 
@@ -133,7 +133,7 @@ export default function DocsPage() {
             </Section>
 
             <Section id="disputes" title="6. Dispute Resolution">
-              <p>If an item arrives damaged or is not delivered, buyers can click "Open Dispute".</p>
+              <p>If an item arrives damaged or is not delivered, buyers can click &quot;Open Dispute&quot;.</p>
               <p className="mt-2 text-slate-400">This freezes the funds indefinitely. SafeDeal compliance will contact both parties to request chat logs and tracking IDs before ruling on the payout.</p>
             </Section>
 
@@ -147,7 +147,7 @@ export default function DocsPage() {
             </Section>
 
             <Section id="security" title="8. Security & Privacy">
-              <p>SafeDeal's smart contracts are deployed on the Soroban network.</p>
+              <p>SafeDeal&apos;s smart contracts are deployed on the Soroban network.</p>
               <ul className="list-disc leading-relaxed text-slate-400 space-y-2 pl-5">
                 <li>No custodial risk — SafeDeal cannot freeze your wallet or steal your funds.</li>
                 <li>End-to-end HTTPS encryption on the frontend.</li>

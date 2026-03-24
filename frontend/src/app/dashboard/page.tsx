@@ -7,16 +7,13 @@ import {
   ShoppingBag,
   CheckCircle2,
   AlertTriangle,
-  Zap,
   Lock,
   Wallet,
   Activity
 } from "lucide-react";
-import { GradientButton } from "@/components/ui/gradient-button";
 import { CreateDealModal } from "@/components/deal/CreateDealModal";
 import { StatsSkeleton } from "@/components/ui/loading-skeletons";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { cn } from "@/lib/utils";
 import { useWallet } from "@/context/WalletContext";
 import { getSellerDeals, type DealData } from "@/lib/stellar";
 import Link from "next/link";
@@ -27,12 +24,11 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid
-} from "recharts";
+  } from "recharts";
 
 export default function Dashboard() {
   const [showCreate, setShowCreate] = useState(false);
-  const { publicKey, isConnected, fraudScore, fraudLevel } = useWallet();
+  const { publicKey, isConnected } = useWallet();
   const [deals, setDeals] = useState<DealData[]>([]);
   const [loading, setLoading] = useState(true);
 

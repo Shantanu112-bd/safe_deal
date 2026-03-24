@@ -2,14 +2,13 @@
 
 import { useWallet } from "@/context/WalletContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { BadgeCheck, Copy, ExternalLink, ShieldAlert, Star, TrendingUp, Award, Activity } from "lucide-react";
+import { BadgeCheck, Copy, ExternalLink, Star, Award, } from "lucide-react";
 import { toast } from "sonner";
-import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
-  const { isConnected, publicKey, fraudScore, fraudLevel, xlmBalance, usdcBalance } = useWallet();
-  const [copied, setCopied] = useState(false);
+  const { publicKey, xlmBalance, usdcBalance, fraudLevel, fraudScore } = useWallet();
+  
 
   // Mock progression stats
   const dealsCompleted = 12;
@@ -19,9 +18,9 @@ export default function ProfilePage() {
   const handleCopy = () => {
     if (publicKey) {
       navigator.clipboard.writeText(publicKey);
-      setCopied(true);
+      
       toast.success("Wallet address copied!");
-      setTimeout(() => setCopied(false), 2000);
+      
     }
   };
 

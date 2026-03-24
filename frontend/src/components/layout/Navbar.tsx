@@ -10,7 +10,6 @@ import {
   User,
   Settings
 } from "lucide-react";
-import { GradientButton } from "@/components/ui/gradient-button";
 import { WalletModal } from "@/components/wallet/WalletModal";
 import { useWallet } from "@/context/WalletContext";
 import { 

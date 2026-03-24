@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import {
   BadgeCheck,
@@ -14,12 +13,8 @@ import {
   ThumbsUp,
   ShieldQuestion,
   ShieldCheck,
-  Star,
-  Shield,
-  Globe
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 const features = [
   {
@@ -125,7 +120,7 @@ export default function LandingPage() {
             Every Deal,<br/>Guaranteed Safe
           </motion.h1>
           <motion.p {...fadeIn} className="text-[#94a3b8] text-lg lg:text-xl max-w-2xl mx-auto mb-12 font-medium">
-            The AI-protected escrow platform for WhatsApp merchants in India. Don't lose money to fake screenshots and non-delivery ever again.
+            The AI-protected escrow platform for WhatsApp merchants in India. Don&apos;t lose money to fake screenshots and non-delivery ever again.
           </motion.p>
 
           <motion.div
@@ -202,7 +197,7 @@ export default function LandingPage() {
             <motion.div {...fadeIn} transition={{ delay: 0.3 }} style={{ borderLeft: "4px solid #6366f1" }} className="bg-[#0f0f1a] p-8 rounded-xl border border-white/5 border-l-[#6366f1]">
               <ShieldQuestion className="text-[#6366f1] w-8 h-8 mb-4" />
               <h3 className="text-xl font-bold mb-2">No Protection</h3>
-              <p className="text-[#94a3b8] text-sm">Banks won't help you reverse a scam transaction.</p>
+              <p className="text-[#94a3b8] text-sm">Banks won&apos;t help you reverse a scam transaction.</p>
             </motion.div>
           </div>
         </div>
