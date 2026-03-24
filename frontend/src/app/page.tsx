@@ -19,9 +19,6 @@ import {
   Globe
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { GradientButton } from "@/components/ui/gradient-button";
-import { SparklesCore } from "@/components/ui/sparkles";
-import { Hero } from "@/components/ui/animated-shader-hero";
 import { cn } from "@/lib/utils";
 
 const features = [
@@ -29,66 +26,68 @@ const features = [
     title: "AI Fraud Shield",
     description: "Real-time scanning of wallet history to block known scammers before they pay.",
     icon: ShieldCheck,
+    color: "text-[#6366f1]"
   },
   {
     title: "Smart Escrow",
     description: "Funds are mathematically secured on Stellar until the physical item is delivered.",
     icon: Lock,
+    color: "text-[#06b6d4]"
   },
   {
     title: "Seller Reputation",
     description: "Verified badges based on successful deal history and delivery speed.",
     icon: BadgeCheck,
+    color: "text-[#10b981]"
   },
   {
     title: "Automatic Refunds",
     description: "If the seller doesn't ship within the countdown, funds return to you instantly.",
     icon: HandCoins,
+    color: "text-[#f59e0b]"
   },
   {
     title: "Low 1% Fee",
     description: "Zero upfront costs. Professional escrow protection for the price of a coffee.",
     icon: Zap,
+    color: "text-[#a855f7]"
   },
   {
     title: "Dispute Support",
     description: "Our compliance team reviews evidence if something goes wrong with delivery.",
     icon: ThumbsUp,
+    color: "text-[#8b5cf6]"
   },
 ];
 
 const steps = [
   {
-    num: "01",
-    title: "Seller Creates Deal",
+    num: "1",
+    title: "Create Deal",
     description: "Set item details and amount. Generate a secure payment link in 30 seconds.",
     icon: Smartphone,
   },
   {
-    num: "02",
-    title: "Buyer Locks Payment",
-    description: "Buyer pays via any Stellar wallet. Funds are held securely in a vault.",
+    num: "2",
+    title: "Lock Payment",
+    description: "Buyer pays via any Stellar wallet. Funds are held safely.",
     icon: Lock,
   },
   {
-    num: "03",
-    title: "Ship & Get Paid",
-    description: "Seller ships confidently. Once delivery is confirmed, funds release instantly.",
+    num: "3",
+    title: "Ship & Earn",
+    description: "Seller ships confidently. Funds release instantly on delivery.",
     icon: CheckCircle2,
   },
 ];
 
 const badges = [
-  { level: "New", minDeals: 0, color: "text-slate-400", bg: "bg-slate-50" },
-  { level: "Rising", minDeals: 10, color: "text-blue-500", bg: "bg-blue-50" },
-  { level: "Trusted", minDeals: 50, color: "text-orange-500", bg: "bg-orange-50" },
-  { level: "Verified", minDeals: 200, color: "text-emerald-500", bg: "bg-emerald-50" },
+  { level: "New", minDeals: 0, glow: "shadow-[0_0_15px_rgba(148,163,184,0.4)]", color: "text-slate-400" },
+  { level: "Rising", minDeals: 10, glow: "shadow-[0_0_15px_rgba(59,130,246,0.4)]", color: "text-blue-400" },
+  { level: "Trusted", minDeals: 50, glow: "shadow-[0_0_15px_rgba(16,185,129,0.4)]", color: "text-[#10b981]" },
 ];
 
 export default function LandingPage() {
-  // router removed to fix lint error
-
-
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -97,358 +96,255 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="bg-white text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 font-sans italic-none">
+    <div className="bg-[#030712] min-h-screen text-[#f8fafc] font-sans selection:bg-[#6366f1]/30 overflow-hidden">
+      
+      {/* 1. HERO SECTION */}
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        {/* Animated gradient mesh background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0f0f1a] to-[#030712]" />
+          <div className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] bg-[conic-gradient(from_90deg_at_50%_50%,#030712_0%,#6366f1_25%,#8b5cf6_50%,#030712_75%,#030712_100%)] opacity-20 animate-[spin_20s_linear_infinite]" />
+          <div className="absolute inset-0 bg-[#030712]/80 backdrop-blur-3xl" />
+        </div>
 
-      {/* ── 1. HERO SECTION ── */}
-      <Hero
-        trustBadge={{
-          text: "Stellar Testnet Node: Online",
-          icons: ["📡"]
-        }}
-        headline={{
-          line1: "Every Deal,",
-          line2: "Guaranteed Safe"
-        }}
-        subtitle="The trusted middleman for WhatsApp and Instagram commerce. Stop losing money to fake screenshots and non-delivery."
-        buttons={{
-          primary: {
-            text: "Get Started",
-            href: "/dashboard"
-          },
-          secondary: {
-            text: "How it Works",
-            onClick: () => {
-              document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-            }
-          }
-        }}
-      >
-        {/* Animated Card Visualization */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, rotate: 0 }}
-          animate={{ opacity: 1, scale: 1, rotate: 2 }}
-          transition={{ duration: 1.2 }}
-          className="relative hidden lg:block"
-        >
-          <div className="rounded-[2.5rem] bg-white/10 backdrop-blur-3xl border border-white/20 p-8 shadow-2xl">
-            <div className="flex items-center justify-between mb-8">
-              <div className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Escrow Transaction ID #4822</div>
-              <div className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-            </div>
-            <div className="space-y-4">
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Amount Secured</p>
-                  <p className="text-xl font-black text-white italic-none">12,400 USDC</p>
-                </div>
-                <Lock className="size-6 text-emerald-500" />
-              </div>
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Buyer Risk Score</p>
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full w-[12%] bg-emerald-500" />
-                  </div>
-                  <span className="text-xs font-black text-emerald-400 italic-none">12% — Safe</span>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8 pt-8 border-t border-white/10 flex items-center justify-between">
-              <div className="flex -space-x-3">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="size-10 rounded-full bg-slate-800 border-2 border-[#1e1e1e]" />
-                ))}
-              </div>
-              <p className="text-[10px] font-black text-slate-400 italic-none">JOINING 400+ MERCHANTS</p>
-            </div>
-          </div>
-        </motion.div>
-      </Hero>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+          <motion.h1 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              background: "linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontSize: "clamp(2.5rem, 6vw, 5rem)",
+              fontWeight: 800,
+              lineHeight: 1.1
+            }}
+            className="mb-8"
+          >
+            Every Deal,<br/>Guaranteed Safe
+          </motion.h1>
+          <motion.p {...fadeIn} className="text-[#94a3b8] text-lg lg:text-xl max-w-2xl mx-auto mb-16 font-medium">
+            The AI-protected escrow platform for WhatsApp merchants in India. Don't lose money to fake screenshots and non-delivery ever again.
+          </motion.p>
 
-      {/* ── 2. PROBLEM SECTION ── */}
-      <section id="buyers" className="py-24 lg:py-32 bg-[#0f172a] text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.05),transparent)] pointer-events-none" />
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div {...fadeIn} className="text-center mb-20 max-w-3xl mx-auto">
-            <h2 className="text-3xl lg:text-5xl font-black mb-6 italic-none">The Social Commerce Trap</h2>
-            <p className="text-slate-400 font-bold text-lg leading-relaxed italic-none">
-              Buying and selling on WhatsApp should be easy, but trust is broken by bad actors.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+          >
             {[
-              { icon: ShieldQuestion, title: "Fake Screenshots", desc: "Scammers use apps to fake payment proofs, tricking sellers into shipping for free." },
-              { icon: Package, title: "Non-Delivery", desc: "Buyers pay upfront and never hear from the seller again. No way to get money back." },
-              { icon: AlertTriangle, title: "No Bank Help", desc: "Banks and UPI apps don't offer protection for peer-to-peer commerce. Your loss is final." }
-            ].map((p, i) => (
-              <motion.div
-                key={i}
-                {...fadeIn}
-                transition={{ delay: i * 0.1 }}
-                className="p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-all"
+              { icon: "🔒", title: "0% Fraud", desc: "on verified deals" },
+              { icon: "⚡", title: "5s Settlement", desc: "on Stellar blockchain" },
+              { icon: "💰", title: "1% Fee Only", desc: "when you earn" }
+            ].map((stat, i) => (
+              <div 
+                key={i} 
+                style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(20px)",
+                  borderRadius: "16px",
+                  padding: "24px"
+                }}
+                className="flex items-center gap-4 text-left"
               >
-                <div className="size-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-6">
-                  <p.icon className="size-6 text-amber-500" />
+                <div className="text-3xl">{stat.icon}</div>
+                <div>
+                  <div className="font-bold text-white text-lg">{stat.title}</div>
+                  <div className="text-[#94a3b8] text-sm">{stat.desc}</div>
                 </div>
-                <h3 className="text-xl font-bold mb-3 italic-none">{p.title}</h3>
-                <p className="text-slate-400 font-medium leading-relaxed italic-none">{p.desc}</p>
-              </motion.div>
+              </div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 2. PROBLEM SECTION */}
+      <section className="py-24 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div {...fadeIn} className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">The Problems We Solve</h2>
+            <p className="text-[#94a3b8]">Why you need an escrow for social commerce.</p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div {...fadeIn} transition={{ delay: 0.1 }} style={{ borderLeft: "4px solid #ef4444" }} className="bg-[#0f0f1a] p-8 rounded-xl border border-white/5 border-l-[#ef4444]">
+              <AlertTriangle className="text-[#ef4444] w-8 h-8 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Fake Screenshots</h3>
+              <p className="text-[#94a3b8] text-sm">Scammers fake payment receipts. You ship goods for free.</p>
+            </motion.div>
+            <motion.div {...fadeIn} transition={{ delay: 0.2 }} style={{ borderLeft: "4px solid #f59e0b" }} className="bg-[#0f0f1a] p-8 rounded-xl border border-white/5 border-l-[#f59e0b]">
+              <Package className="text-[#f59e0b] w-8 h-8 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Non-Delivery</h3>
+              <p className="text-[#94a3b8] text-sm">Buyers pay and get ghosted. No protection on direct UPI.</p>
+            </motion.div>
+            <motion.div {...fadeIn} transition={{ delay: 0.3 }} style={{ borderLeft: "4px solid #6366f1" }} className="bg-[#0f0f1a] p-8 rounded-xl border border-white/5 border-l-[#6366f1]">
+              <ShieldQuestion className="text-[#6366f1] w-8 h-8 mb-4" />
+              <h3 className="text-xl font-bold mb-2">No Protection</h3>
+              <p className="text-[#94a3b8] text-sm">Banks won't help you reverse a scam transaction.</p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ── 3. HOW IT WORKS ── */}
-      <section id="how-it-works" className="py-24 lg:py-40 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      {/* 3. HOW IT WORKS */}
+      <section className="py-24 relative z-10 bg-[#0f0f1a]/50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div {...fadeIn} className="text-center mb-20">
-            <h2 className="text-3xl lg:text-5xl font-black text-slate-900 mb-6 italic-none">3 Steps to Peace of Mind</h2>
-            <p className="text-slate-500 font-black uppercase tracking-widest text-xs italic-none">Simple. Secure. Irreversible.</p>
+            <h2 className="text-3xl font-bold mb-4">How SafeDeal Works</h2>
+            <p className="text-[#94a3b8]">Three simple steps.</p>
           </motion.div>
+          
+          <div className="relative grid md:grid-cols-3 gap-12 text-center">
+            {/* Connecting line */}
+            <div className="hidden md:block absolute top-[24px] left-[15%] right-[15%] pointer-events-none" style={{ borderTop: "2px dashed rgba(99,102,241,0.3)", zIndex: 0 }} />
 
-          <div className="grid gap-12 lg:grid-cols-3 relative">
-            {/* Connector line */}
-            <div className="hidden lg:block absolute top-[100px] left-[300px] right-[300px] h-0.5 border-t-2 border-dashed border-slate-100" />
-
-            {steps.map((s, i) => (
-              <motion.div
-                key={i}
-                {...fadeIn}
-                transition={{ delay: i * 0.1 }}
-                className="text-center relative z-10"
-              >
-                <div className="size-20 rounded-[2rem] bg-slate-900 mx-auto mb-8 flex items-center justify-center text-white shadow-2xl shadow-slate-900/10 ring-8 ring-slate-50 transition-transform hover:scale-110 duration-500">
-                  <s.icon className="size-8" />
+            {steps.map((step, i) => (
+              <motion.div key={i} {...fadeIn} transition={{ delay: i * 0.1 }} className="relative z-10 flex flex-col items-center">
+                <div style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", width: 48, height: 48, borderRadius: "50%", color: "white", fontWeight: 800, fontSize: 20 }} className="flex items-center justify-center shadow-lg mb-6 ring-4 ring-[#030712]">
+                  {step.num}
                 </div>
-                <div className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-2 italic-none">{s.num}</div>
-                <h3 className="text-xl font-black text-slate-900 mb-4 italic-none">{s.title}</h3>
-                <p className="text-slate-500 font-bold leading-relaxed max-w-xs mx-auto italic-none">{s.description}</p>
+                <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+                <p className="text-[#94a3b8] text-sm max-w-xs">{step.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 4. FEATURES GRID ── */}
-      <section id="merchants" className="py-24 lg:py-32 bg-slate-50">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div {...fadeIn} className="max-w-3xl mb-16">
-            <h2 className="text-3xl lg:text-5xl font-black text-slate-900 mb-6 italic-none">Built for High Volume Commerce</h2>
-            <p className="text-lg text-slate-600 font-semibold italic-none">SafeDeal is engineered to scale with your business, whether you sell one ring a week or 500 orders a day.</p>
+      {/* 4. FEATURES GRID */}
+      <section className="py-24 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div {...fadeIn} className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">Everything You Need</h2>
+            <p className="text-[#94a3b8]">Powerful features out of the box.</p>
           </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {features.map((f, i) => (
-              <motion.article
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, i) => (
+              <motion.div 
                 key={i}
                 {...fadeIn}
                 transition={{ delay: i * 0.05 }}
-                className="p-8 rounded-[2rem] bg-white border border-slate-200 shadow-sm transition-all hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-500/5 group"
+                className="group cursor-default transition-all duration-300"
+                style={{
+                  background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.05))",
+                  border: "1px solid rgba(99,102,241,0.2)",
+                  borderRadius: "20px",
+                  padding: "28px"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 20px 60px rgba(99,102,241,0.2)";
+                  e.currentTarget.style.borderColor = "rgba(99,102,241,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(99,102,241,0.2)";
+                }}
               >
-                <div className="size-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <f.icon className="size-6 text-emerald-600" />
-                </div>
-                <h3 className="text-xl font-black text-slate-900 mb-3 italic-none">{f.title}</h3>
-                <p className="text-slate-500 font-bold leading-relaxed italic-none">{f.description}</p>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. TRUST BADGE PROGRESSION ── */}
-      <section className="py-24 lg:py-40 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <motion.div {...fadeIn}>
-              <h2 className="text-3xl lg:text-5xl font-black text-slate-900 mb-8 leading-tight italic-none">A Reputation That<br />Actually Pays Off</h2>
-              <p className="text-lg text-slate-600 font-bold leading-relaxed mb-10 italic-none">
-                As you complete successful deals, you earn trust badges that show up on your public storefront. High-trust sellers convert 4x more customers on Instagram.
-              </p>
-              <div className="space-y-4 italic-none">
-                {badges.map((b, i) => (
-                  <div key={i} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 bg-slate-50 transition-all hover:bg-white hover:border-slate-200">
-                    <div className={cn("flex size-10 items-center justify-center rounded-xl bg-white shadow-sm italic-none", b.color)}>
-                      <BadgeCheck className="size-6" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-black text-slate-900 italic-none">{b.level} Badge</p>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic-none">{b.minDeals}+ Successful Deals</p>
-                    </div>
-                    <div className="ml-auto">
-                      {i < 3 ? <div className="text-[8px] font-black uppercase text-slate-400">Locked</div> : <div className="text-[8px] font-black uppercase text-emerald-600">Premium</div>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div {...fadeIn} className="relative">
-              <div className="aspect-square rounded-[3rem] bg-emerald-600 p-1 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] overflow-hidden shadow-2xl shadow-emerald-500/20">
-                <div className="h-full w-full rounded-[2.8rem] bg-[#0f172a] p-12 flex flex-col items-center justify-center text-center">
-                  <BadgeCheck className="size-32 text-emerald-500 mb-8 animate-pulse" />
-                  <h3 className="text-3xl font-black text-white mb-4 italic-none">VERIFIED MERCHANT</h3>
-                  <p className="text-emerald-400 font-bold uppercase tracking-[0.2em] text-xs mb-8 italic-none">Level 4 Trust Shield</p>
-                  <div className="w-full h-1 bg-white/10 rounded-full mb-4">
-                    <div className="h-full w-full bg-emerald-500 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.8)]" />
-                  </div>
-                  <p className="text-slate-500 text-[10px] font-black italic-none">TOP 1% OF SAFE DEALERS NATIONWIDE</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 6. REAL STORY ── */}
-      <section className="bg-slate-900 py-32 lg:py-48 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')]" />
-        <div className="mx-auto max-w-5xl px-6 lg:px-8 relative z-10">
-          <motion.div {...fadeIn} className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="size-56 lg:size-80 rounded-[3rem] overflow-hidden rotate-3 shrink-0 ring-[12px] ring-white/5 shadow-2xl relative">
-              <Image
-                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&auto=format&fit=crop"
-                alt="Priya"
-                fill
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
-                <p className="text-xs font-black uppercase tracking-widest text-emerald-400">Priya from Nashik</p>
-              </div>
-            </div>
-            <div>
-              <div className="flex gap-1 text-amber-500 mb-8">
-                {[...Array(5)].map((_, i) => <Star key={i} className="size-6 fill-current" />)}
-              </div>
-              <h2 className="text-3xl lg:text-4xl font-black leading-tight italic-none mb-8">
-                &quot;I used to hold my breath every time I shipped an order. Now, if the money isn&apos;t on Stellar, I don&apos;t ship. It&apos;s that simple.&quot;
-              </h2>
-              <p className="text-xl text-slate-400 font-bold mb-8 italic-none">
-                Priya sells custom jewelry on Instagram. She nearly shut down her business after a ₹12,000 fraud. SafeDeal gave her the confidence to start selling again.
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="size-1.5 rounded-full bg-emerald-500" />
-                <span className="text-xs font-black uppercase tracking-widest text-emerald-500">Maanas Jewelry Design</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── 7. STATS BAR ── */}
-      <section id="pricing" className="bg-[#0f172a] py-24 relative overflow-hidden border-y border-white/5">
-        <SparklesCore
-          id="stats-sparkles"
-          background="transparent"
-          minSize={0.4}
-          maxSize={1.2}
-          particleDensity={80}
-          className="absolute inset-0 w-full h-full"
-          particleColor="#10b981"
-          speed={0.8}
-        />
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 italic-none">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
-            {[
-              { val: "₹4.8Cr", lbl: "Escrow Volume", sub: "Annualized" },
-              { val: "5 Sec", lbl: "Finality", sub: "Stellar Network" },
-              { val: "100%", lbl: "Fund Safety", sub: "No Custodial Risk" },
-              { val: "2,400+", lbl: "Active Sellers", sub: "Verified Global" }
-            ].map((s, i) => (
-              <motion.div key={i} {...fadeIn} transition={{ delay: i * 0.1 }} className="text-center">
-                <p className="text-4xl lg:text-5xl font-black text-white mb-2 italic-none">{s.val}</p>
-                <p className="text-xs font-black uppercase tracking-widest text-emerald-400 mb-1 italic-none">{s.lbl}</p>
-                <p className="text-[10px] font-black text-slate-500 italic-none">{s.sub}</p>
+                <feature.icon className={`w-8 h-8 mb-6 ${feature.color}`} />
+                <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                <p className="text-[#94a3b8] text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 8. CTA SECTION ── */}
-      <section className="py-32 lg:py-48 bg-white text-center relative overflow-hidden">
-        <div className="mx-auto max-w-4xl px-6 lg:px-8 relative z-10">
-          <motion.div {...fadeIn}>
-            <h2 className="text-4xl lg:text-7xl font-black text-slate-900 mb-8 tracking-tighter italic-none">Ready to reclaim your trust?</h2>
-            <p className="text-xl lg:text-2xl text-slate-600 font-bold mb-12 italic-none">Join the next generation of social commerce. One secure deal at a time.</p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <GradientButton
-                className="rounded-[1.5rem] px-12 py-6 text-xl font-black italic-none"
-                asChild
-              >
-                <Link href="/dashboard">Create a Deal</Link>
-              </GradientButton>
-              <GradientButton
-                variant="variant"
-                className="rounded-[1.5rem] px-12 py-6 text-xl font-black italic-none"
-                asChild
-              >
-                <Link href="/dashboard">Become a Merchant</Link>
-              </GradientButton>
-            </div>
-            <p className="mt-12 text-xs font-black text-slate-400 uppercase tracking-widest italic-none flex items-center justify-center gap-2">
-              <ShieldCheck className="size-4" /> 256-Bit Blockchain Encryption Standard
-            </p>
-          </motion.div>
+      {/* 5. TRUST BADGES */}
+      <section className="py-24 relative z-10 bg-[#0f0f1a]/50">
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes verifiedPulse {
+            0% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4) }
+            70% { box-shadow: 0 0 0 20px rgba(245,158,11,0) }
+            100% { box-shadow: 0 0 0 0 rgba(245,158,11,0) }
+          }
+          .animate-verified-pulse {
+            animation: verifiedPulse 2s infinite;
+          }
+        `}} />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <motion.div {...fadeIn}>
+              <h2 className="text-3xl font-bold mb-6">Build Trust, Sell More</h2>
+              <p className="text-[#94a3b8] mb-8">Earn trust badges as you complete deals. Buyers pay 40% faster to verified merchants.</p>
+              <div className="grid gap-4">
+                {badges.map((b, i) => (
+                  <div key={i} className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <div className={`p-2 rounded-lg bg-slate-900 ${b.glow}`}><BadgeCheck className={\`w-6 h-6 \${b.color}\`} /></div>
+                    <div>
+                      <div className="font-bold">{b.level} Badge</div>
+                      <div className="text-xs text-[#94a3b8]">{b.minDeals}+ Deals</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div {...fadeIn} className="flex justify-center">
+              <div className="relative p-[1px] rounded-[32px] bg-gradient-to-b from-[#f59e0b] to-[#d97706] animate-verified-pulse">
+                <div className="bg-[#030712] rounded-[31px] p-12 text-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[#f59e0b]/5 blur-3xl rounded-full" />
+                  <BadgeCheck className="w-24 h-24 text-[#f59e0b] mx-auto mb-6 relative z-10" />
+                  <h3 className="text-2xl font-bold text-[#f59e0b] uppercase tracking-widest mb-2 relative z-10">Verified</h3>
+                  <p className="text-xs text-[#94a3b8] relative z-10">PREMIUM SELLER</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ── 9. FOOTER ── */}
-      <footer className="bg-slate-50 pt-24 pb-12 border-t border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-16 lg:grid-cols-4 mb-20 italic-none">
-            <div className="lg:col-span-1">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="size-10 rounded-xl bg-slate-900 flex items-center justify-center text-white">
-                  <Shield className="size-6" />
-                </div>
-                <span className="text-2xl font-black tracking-tighter italic-none text-slate-900">SafeDeal</span>
-              </div>
-              <p className="text-slate-500 font-bold leading-relaxed italic-none">
-                Building the trust layer for emerging market social commerce. Powering the Instagram entrepreneurs of tomorrow.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">Platform</h4>
-              <ul className="space-y-4">
-                {["Create Deal", "How it Works", "Merchant Portal", "Pricing"].map(l => (
-                  <li key={l}><a href="#" className="font-bold text-slate-600 hover:text-emerald-600 transition-colors text-sm italic-none">{l}</a></li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">Resources</h4>
-              <ul className="space-y-4">
-                {["Stellar Network", "Soroban Guide", "API Docs", "Fraud Database"].map(l => (
-                  <li key={l}><a href="#" className="font-bold text-slate-600 hover:text-emerald-600 transition-colors text-sm italic-none">{l}</a></li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">Company</h4>
-              <ul className="space-y-4">
-                {["About Us", "Contact", "Privacy", "Terms"].map(l => (
-                  <li key={l}><a href="#" className="font-bold text-slate-600 hover:text-emerald-600 transition-colors text-sm italic-none">{l}</a></li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-center justify-between pt-12 border-t border-slate-200 gap-8">
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic-none">© 2026 SAFEDEAL PROTOCOL • STELLAR TESTNET DEPLOYMENT</p>
-            <div className="flex items-center gap-8">
-              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 italic-none">
-                <Globe className="size-3" /> Asia-Pacific / EMEA
-              </div>
-              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-emerald-600 italic-none">
-                <div className="size-1.5 rounded-full bg-current animate-pulse" /> Live Status
-              </div>
-            </div>
-          </div>
+      {/* 6. STATS BAR */}
+      <section style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4)", padding: "48px" }} className="relative z-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { v: "$1.2M+", l: "Secured" },
+            { v: "0.01s", l: "Wait Time" },
+            { v: "100%", l: "Safety" },
+            { v: "5,400+", l: "Merchants" }
+          ].map((s, i) => (
+            <motion.div key={i} {...fadeIn} transition={{ delay: i * 0.1 }}>
+              <div className="text-3xl md:text-5xl font-black text-white mb-2">{s.v}</div>
+              <div className="text-white/80 font-medium uppercase tracking-wider text-sm">{s.l}</div>
+            </motion.div>
+          ))}
         </div>
-      </footer>
+      </section>
+
+      {/* 7. CTA SECTION */}
+      <section className="py-32 relative z-10">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+          <motion.div 
+            {...fadeIn} 
+            style={{
+              background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2))",
+              border: "1px solid rgba(99,102,241,0.3)",
+              borderRadius: "24px",
+              padding: "64px"
+            }}
+            className="text-center"
+          >
+            <h2 className="text-4xl font-black mb-6">Start Selling Safely</h2>
+            <p className="text-lg text-[#94a3b8] mb-10 max-w-2xl mx-auto">Create your first deal in seconds. Protect your revenue and build trust with your customers instantly.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/dashboard" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }} className="px-8 py-4 rounded-xl font-bold text-white hover:opacity-90 transition-opacity whitespace-nowrap hidden sm:inline-block md:inline-block">
+                Create a Deal
+              </Link>
+              <Link href="/docs" style={{ background: "transparent", border: "1px solid", borderImageSource: "linear-gradient(135deg, #6366f1, #06b6d4)", borderImageSlice: 1 }} className="px-8 py-4 rounded-xl font-bold hover:bg-white/5 transition-colors border-[#6366f1] border hidden sm:inline-block md:inline-block">
+                Read Documentation
+              </Link>
+              <div className="sm:hidden flex flex-col gap-4">
+               <Link href="/dashboard" className="px-8 py-4 bg-indigo-500 rounded-xl font-bold text-white text-center">Create a Deal</Link>
+               <Link href="/docs" className="px-8 py-4 bg-transparent border border-indigo-500 rounded-xl font-bold text-center">Docs</Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+      
     </div>
   );
 }
