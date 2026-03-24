@@ -39,7 +39,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#030712]/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-indigo-500/10 bg-[#030712]/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(99,102,241,0.05)]">
       <div className="container mx-auto flex h-20 items-center justify-between px-6">
         
         {/* LOGO */}
@@ -47,7 +47,7 @@ export function Navbar() {
           <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/20 text-white transition-transform group-hover:scale-105">
             <Shield className="size-6" />
           </div>
-          <span className="text-xl font-black text-white tracking-tighter">SafeDeal</span>
+          <span className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">SafeDeal</span>
         </Link>
 
         {/* DESKTOP NAV */}
@@ -56,7 +56,7 @@ export function Navbar() {
             <Link 
               key={link.label} 
               href={link.href}
-              className="text-xs font-black uppercase tracking-widest text-[#94a3b8] hover:text-white transition-colors"
+              className="text-xs font-black uppercase tracking-widest text-[#94a3b8] hover:text-indigo-400 transition-colors"
             >
               {link.label}
             </Link>
@@ -71,7 +71,7 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {isConnected ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-full bg-white/5 border border-white/10 px-1.5 py-1.5 pr-4 text-white hover:bg-white/10 transition-all shadow-lg hover:shadow-indigo-500/10">
+              <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-full bg-white/5 border border-indigo-500/20 px-1.5 py-1.5 pr-4 text-white hover:border-indigo-400/50 transition-all shadow-lg hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]">
                 <div className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white font-black text-[10px] shadow-inner">
                   {publicKey?.slice(0, 1)}
                 </div>
@@ -110,7 +110,7 @@ export function Navbar() {
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => setModalOpen(true)}
-                className="hidden md:block px-4 py-2 text-xs font-bold text-[#94a3b8] hover:text-white transition-colors"
+                className="hidden md:block px-4 py-2 text-xs font-bold text-[#94a3b8] hover:text-indigo-400 transition-colors"
               >
                 Sign In
               </button>
@@ -125,7 +125,7 @@ export function Navbar() {
 
           {/* MOBILE MENU */}
           <Sheet>
-            <SheetTrigger className="lg:hidden rounded-xl bg-white/5 border border-white/10 p-2.5 text-white hover:bg-white/10 transition-all">
+            <SheetTrigger className="lg:hidden rounded-xl bg-indigo-500/10 border border-indigo-500/20 p-2.5 text-indigo-400 hover:bg-indigo-500/20 transition-all shadow-[0_0_15px_rgba(99,102,241,0.1)]">
               <Menu className="size-6" />
             </SheetTrigger>
             <SheetContent side="right" className="w-full sm:w-[350px] p-0 border-l border-white/10 bg-[#0f0f1a] text-white">
@@ -144,7 +144,7 @@ export function Navbar() {
                       <Link 
                         key={link.label} 
                         href={link.href}
-                        className="text-lg font-black text-slate-300 hover:text-white transition-colors"
+                        className="text-lg font-black text-slate-300 hover:text-indigo-400 transition-colors"
                       >
                         {link.label}
                       </Link>
