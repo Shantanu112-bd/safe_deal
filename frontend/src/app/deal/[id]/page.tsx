@@ -6,18 +6,17 @@ import {
   CheckCircle2,
   AlertTriangle,
   ShieldCheck,
-  ShieldAlert,
   Timer,
   ArrowLeft,
   Shield,
   Smartphone,
-  Info,
   ExternalLink,
   ChevronRight,
-  Loader2
+  Loader2,
+  Lock,
+  Zap
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GradientButton } from "@/components/ui/gradient-button";
 import { cn } from "@/lib/utils";
 import { useWallet } from "@/context/WalletContext";
 import { WalletConnect } from "@/components/wallet/WalletConnect";
@@ -30,19 +29,44 @@ import {
   raiseDispute,
   type DealData
 } from "@/lib/stellar";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
-type PageStep = "pay" | "locking" | "success" | "confirm_delivery" | "released" | "dispute_opened";
+// Mock toggle component for the gasless transaction step later
+function GaslessToggle({ onToggle }: { onToggle?: (v: boolean) => void }) {
+  const [enabled, setEnabled] = useState(true);
+  return (
+    <div 
+      className="flex items-center gap-3 p-4 rounded-xl mb-6 cursor-pointer border transition-colors"
+      style={{
+        background: enabled ? "rgba(99,102,241,0.1)" : "rgba(255,255,255,0.05)",
+        borderColor: enabled ? "rgba(99,102,241,0.3)" : "rgba(255,255,255,0.1)"
+      }}
+      onClick={() => {
+        const next = !enabled;
+        setEnabled(next);
+        onToggle?.(next);
+      }}
+    >
+      <Zap className={cn("w-5 h-5", enabled ? "text-indigo-400" : "text-slate-400")}/>
+      <div className="flex-1">
+        <p className="text-[#f8fafc] text-sm font-medium">
+          Gasless Transaction
+        </p>
+        <p className="text-[#94a3b8] text-xs">
+          SafeDeal covers your network fee
+        </p>
+      </div>
+      <div className={cn(
+        "text-xs px-3 py-1 rounded-full font-bold",
+        enabled ? "bg-indigo-500 text-white" : "bg-white/10 text-slate-400"
+      )}>
+        FREE
+      </div>
+    </div>
+  )
+}
 
+type PageStep = "pay" | "locking" | "success" | "confirm_delivery" | "released" | "dispute_opened";
 
 export default function BuyerPaymentPage({ params }: { params: { id: string } }) {
   const { isConnected, walletType, fraudScore, fraudLevel, publicKey } = useWallet();
@@ -63,7 +87,6 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   const [disputeDesc, setDisputeDesc] = useState("");
   const [disputeLoading, setDisputeLoading] = useState(false);
 
-  // Fetch deal from Soroban contract (on-chain) or localStorage (fallback)
   useEffect(() => {
     const fetchDeal = async () => {
       try {
@@ -95,7 +118,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
-    return `${h}h ${m}m ${s}s`;
+    return \`\${h}h \${m}m \${s}s\`;
   };
 
   const handlePay = async () => {
@@ -133,24 +156,19 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     setDisputeLoading(true);
 
     try {
-      // Build dispute transaction
       const result = await raiseDispute(
         params.id,
         publicKey,
         disputeReason,
-        ''  // evidence hash empty initially
+        ''
       );
 
       toast.success("Dispute raised — funds frozen pending review");
       setShowDisputeModal(false);
 
-      // Redirect to dispute page inside the frontend app 
-      // result might be a standard string or object from invokeContract based on how we wrote raiseDispute
-      // usually a txHash or something, but the prompt says result.disputeId. Let's just use params.id for now since we mapped deal->dispute
-      // The prompt actually expects `result.disputeId`
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const dId = result && (result as any).disputeId ? (result as any).disputeId : `DISP-${params.id}`;
-      router.push(`/dashboard/disputes/${dId}`);
+      const dId = result && (result as any).disputeId ? (result as any).disputeId : \`DISP-\${params.id}\`;
+      router.push(\`/dashboard/disputes/\${dId}\`);
     } catch (error) {
       toast.error("Failed to raise dispute");
       console.error(error);
@@ -159,53 +177,52 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     }
   };
 
+  // Convert fraud level to UI style
+  let trustStyle = {};
+  if (isBlocked) {
+    trustStyle = { border: "2px solid #ef4444", background: "rgba(239,68,68,0.05)" };
+  } else if (fraudScore < 20) {
+    trustStyle = {
+      border: "2px solid transparent",
+      background: "linear-gradient(#0f0f1a, #0f0f1a) padding-box, linear-gradient(135deg, #10b981, #06b6d4) border-box"
+    };
+  } else {
+    trustStyle = { border: "2px solid rgba(148,163,184,0.3)" };
+  }
+
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+      <div className="min-h-screen bg-[#030712] text-[#f8fafc] font-sans pb-20 selection:bg-[#10b981]/30">
 
-        {/* HEADER */}
-        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-6 h-16">
+        <header className="sticky top-0 z-50 bg-[#0f0f1a]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-6 h-16">
           <div className="flex items-center gap-2">
-            <Shield className="size-6 text-slate-900 fill-current" />
-            <span className="text-lg font-black tracking-tighter">SafeDeal</span>
+            <Shield className="size-6 text-[#10b981] fill-current" />
+            <span className="text-lg font-black tracking-tighter">SafeDeal Checkout</span>
           </div>
-          <Badge variant="outline" className="rounded-full border-orange-200 bg-orange-50 text-orange-600 font-black text-[10px] uppercase px-2 py-0.5 animate-pulse">
-            Testnet
-          </Badge>
+          <div className="px-3 py-1 rounded-full bg-white/5 text-[#94a3b8] text-xs font-bold border border-white/10">
+            TESTNET
+          </div>
         </header>
 
-        <main className="max-w-lg mx-auto p-4 lg:p-6 pb-28 lg:pb-6 space-y-6">
+        <main className="max-w-md mx-auto p-4 pt-8 shrink-0">
+          <button className="flex items-center gap-2 text-[#94a3b8] hover:text-white transition-colors mb-6 text-sm font-bold" onClick={() => window.history.back()}>
+            <ArrowLeft className="size-4" /> Back
+          </button>
 
-          <div className="flex items-center gap-2 text-slate-400">
-            <button className="p-2 hover:bg-white rounded-full transition-colors" onClick={() => window.history.back()}>
-              <ArrowLeft className="size-4" />
-            </button>
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Secure Checkout — Deal #{params.id}</span>
-          </div>
-
-          {/* LOADING */}
-          {loading && (
+          {loading ? (
             <div className="py-24 flex flex-col items-center text-center space-y-4">
-              <Loader2 className="size-10 text-slate-300 animate-spin" />
-              <p className="text-sm font-black text-slate-400 uppercase tracking-widest">Loading deal...</p>
+              <Loader2 className="size-10 text-slate-500 animate-spin" />
+              <p className="text-sm font-bold text-[#94a3b8]">Loading escrow vault...</p>
             </div>
-          )}
-
-          {/* DEAL NOT FOUND */}
-          {!loading && (notFound || !deal) && (
+          ) : notFound || !deal ? (
             <div className="py-24 flex flex-col items-center text-center space-y-4">
-              <div className="size-20 rounded-[2rem] bg-slate-100 flex items-center justify-center">
-                <Package className="size-10 text-slate-300" />
+              <div className="size-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center">
+                <Package className="size-10 text-slate-500" />
               </div>
-              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Deal Not Found</h2>
-              <p className="text-sm font-bold text-slate-400 max-w-xs mx-auto uppercase tracking-widest leading-relaxed">
-                Deal #{params.id} does not exist or has expired. Please check the link you received from the seller.
-              </p>
+              <h2 className="text-xl font-black text-white">Deal Not Found</h2>
+              <p className="text-sm font-bold text-[#94a3b8]">This payment link may have expired or is invalid.</p>
             </div>
-          )}
-
-          {/* DEAL FOUND — interactive flow */}
-          {!loading && deal && (
+          ) : (
             <AnimatePresence mode="wait">
               {step === "locking" ? (
                 <motion.div
@@ -215,10 +232,10 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                   exit={{ opacity: 0 }}
                   className="py-20 flex flex-col items-center text-center"
                 >
-                  <div className="size-24 rounded-full border-4 border-slate-100 border-t-emerald-500 animate-spin" />
-                  <h2 className="text-2xl font-black mt-8">Securing Escrow</h2>
-                  <p className="text-slate-500 font-bold mt-2 text-sm">
-                    Locking {deal.amountUSDC.toFixed(2)} USDC on Stellar...
+                  <div className="size-24 rounded-full border-4 border-white/10 border-t-[#10b981] animate-spin" />
+                  <h2 className="text-2xl font-black mt-8 text-white">Securing Funds</h2>
+                  <p className="text-[#94a3b8] font-bold mt-2 text-sm">
+                    Locking {deal.amountUSDC.toFixed(2)} USDC in smart contract...
                   </p>
                 </motion.div>
               ) : (
@@ -228,217 +245,140 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-6"
                 >
-                  {/* DEAL DETAILS */}
-                  <Card className="rounded-[2.5rem] bg-white border-slate-200 shadow-sm overflow-hidden">
-                    <CardContent className="p-8">
-                      <Badge className="mb-4 bg-slate-100 text-slate-700 border-none font-black text-[10px]">#{deal.id}</Badge>
-                      <h2 className="text-2xl font-black text-slate-900">{deal.title}</h2>
-                      <p className="text-slate-500 font-bold leading-relaxed mt-3 mb-6 text-sm">{deal.description}</p>
-                      <Separator className="mb-6" />
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Amount (USDC)</p>
-                          <span className="text-3xl font-black text-slate-900">{deal.amountUSDC.toFixed(2)}</span>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Seller</p>
-                          <span className="text-xs font-mono text-slate-600">
-                            {deal.sellerKey.slice(0, 8)}...{deal.sellerKey.slice(-6)}
-                          </span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* PROTECTION PILLARS */}
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { icon: ShieldCheck, title: "Secured", desc: "No payout until ship", color: "text-emerald-500" },
-                      { icon: Timer, title: "Countdown", desc: "Auto-refund if late", color: "text-orange-500" },
-                      { icon: Package, title: "Verified", desc: "Item as described", color: "text-blue-500" },
-                    ].map((g, i) => (
-                      <div key={i} className="bg-white rounded-2xl border border-slate-100 p-3 text-center">
-                        <div className={cn("size-8 rounded-lg bg-slate-50 flex items-center justify-center mx-auto mb-2", g.color)}>
-                          <g.icon className="size-4" />
-                        </div>
-                        <p className="text-[10px] font-black uppercase mb-1">{g.title}</p>
-                        <p className="text-[8px] font-bold text-slate-400">{g.desc}</p>
-                      </div>
-                    ))}
+                  {/* SELLER TRUST CARD */}
+                  <div style={trustStyle} className="rounded-2xl p-4 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                      <ShieldCheck className={cn("w-6 h-6", isBlocked ? "text-red-500" : "text-[#10b981]")} />
+                    </div>
+                    <div>
+                      <p className="text-[#f8fafc] font-black text-lg">
+                        {deal.sellerKey.slice(0, 6)}...{deal.sellerKey.slice(-4)}
+                      </p>
+                      <p className={cn("text-xs font-bold uppercase tracking-widest", isBlocked ? "text-red-400" : "text-[#10b981]")}>
+                        {isBlocked ? "High Risk Seller" : "Verified Merchant"}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* FRAUD CHECK */}
-                  {isConnected && (
-                    <Card className="rounded-[2.5rem] bg-slate-900 text-white p-6 border-none">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <ShieldAlert className="size-4 text-emerald-500" />
-                          <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">AI Fraud Check</span>
-                        </div>
-                        <div className={cn("text-[10px] font-black", isBlocked ? "text-red-400" : "text-slate-500")}>
-                          {fraudLevel?.toUpperCase()}
-                        </div>
-                      </div>
-                      <div className="bg-white/5 rounded-2xl p-4">
-                        <div className="flex items-center justify-between mb-2 text-xs font-bold">
-                          <span>Wallet Risk Level</span>
-                          <span className={isBlocked ? "text-red-400" : "text-emerald-400"}>{fraudScore}% (Low)</span>
-                        </div>
-                        <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${fraudScore}%` }}
-                            className={cn("h-full rounded-full", isBlocked ? "bg-red-500" : "bg-emerald-500")}
-                          />
-                        </div>
-                      </div>
-                    </Card>
-                  )}
-
-                  {/* WALLET & ACTION */}
-                  <div className="space-y-4 pt-4">
-                    {!isConnected ? (
-                      <div className="bg-white rounded-[2.5rem] border border-slate-200 p-8 text-center">
-                        <div className="size-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-6">
-                          <Smartphone className="size-8 text-slate-200" />
-                        </div>
-                        <h4 className="text-xl font-black text-slate-900 mb-2">Unlock Checkout</h4>
-                        <p className="text-slate-500 font-bold mb-8 text-sm">
-                          Connect your Stellar wallet to lock and secure funds in escrow.
+                  {/* WHITE CARD CONTAINER */}
+                  <div className="bg-white rounded-[2rem] p-6 text-slate-900 shadow-xl overflow-hidden relative">
+                    {/* Background decor */}
+                    <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#10b981]/10 rounded-full blur-3xl pointer-events-none" />
+                    
+                    <div className="text-center mb-8">
+                      <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mb-2">You are paying</p>
+                      <div className="py-2">
+                        <p style={{
+                          background: "linear-gradient(135deg, #10b981, #06b6d4)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          fontSize: "3rem",
+                          fontWeight: 800,
+                          lineHeight: 1.1
+                        }}>
+                          {deal.amountUSDC.toFixed(2)} <span className="text-2xl">USDC</span>
                         </p>
-                        <div className="flex justify-center">
-                          <WalletConnect />
-                        </div>
+                        <p className="text-[#94a3b8] text-[1.1rem] mt-2 font-medium">
+                          ≈ ₹{(deal.amountUSDC * 83.5).toFixed(0)} at today's rate
+                        </p>
                       </div>
-                    ) : step === "pay" ? (
-                      <div className="space-y-4">
-                        <div className="bg-amber-50 rounded-2xl p-4 border border-amber-100 flex gap-3 text-amber-700">
-                          <Info className="size-5 shrink-0" />
-                          <p className="text-[10px] font-bold leading-relaxed">
-                            Funds will be locked in the <span className="font-black">SafeDeal Smart Escrow</span>. Only release when you receive the item. Auto-refunds trigger after 48h if no confirmation.
+                    </div>
+
+                    <div className="space-y-2 mb-8 text-center">
+                      <p className="font-bold text-slate-800 text-lg">{deal.title}</p>
+                      <p className="text-slate-500 text-sm">{deal.description}</p>
+                    </div>
+
+                    {/* PROTECTION BADGES */}
+                    <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
+                      {["Funds Locked", "Auto-Refund in 48h", "Verified Escrow"].map((b, i) => (
+                        <div key={i} style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)" }} className="rounded-full px-4 py-2 text-[#10b981] text-[13px] font-bold flex items-center gap-1.5">
+                          <CheckCircle2 className="w-4 h-4" /> {b}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="pt-6 border-t border-slate-100">
+                      {!isConnected ? (
+                        <div className="text-center">
+                          <p className="text-slate-500 font-bold mb-4 text-sm">
+                            Connect your wallet to lock funds.
                           </p>
-                        </div>
-                        <div className="fixed bottom-0 left-0 right-0 p-4 bg-[#0a0f1a]/95 backdrop-blur-sm border-t border-[#1e293b] lg:relative lg:bottom-auto lg:border-0 lg:p-0 lg:bg-transparent">
-                          <GradientButton
-                            className="w-full rounded-full py-6 text-xl font-black"
-                            onClick={handlePay}
-                            disabled={isBlocked}
-                          >
-                            Pay {deal.amountUSDC.toFixed(2)} USDC & Lock
-                          </GradientButton>
-                        </div>
-                        {isBlocked && (
-                          <p className="text-center text-xs font-black text-red-500">Your wallet is currently blacklisted.</p>
-                        )}
-                      </div>
-                    ) : null}
-
-                    {step === "success" && (
-                      <div className="bg-white rounded-[2.5rem] border-2 border-emerald-500 p-8 text-center animate-in fade-in zoom-in">
-                        <div className="size-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/10">
-                          <CheckCircle2 className="size-10" />
-                        </div>
-                        <h4 className="text-2xl font-black text-slate-900 mb-2">Payment Locked!</h4>
-                        <p className="text-slate-500 font-bold mb-8 text-sm">
-                          The seller has been notified to ship your items. 48h countdown active.
-                        </p>
-                        <div className="bg-slate-50 rounded-2xl p-4 text-left">
-                          <div className="flex items-center justify-between text-[10px] font-black text-slate-400 mb-1">
-                            <span>ESCROW VAULT</span>
-                            <span className="text-emerald-500">ACTIVE</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-black text-slate-900">Auto-Refund Timer</span>
-                            <span className="text-sm font-mono text-slate-900">{formatTime(timeLeft)}</span>
+                          <div className="flex justify-center">
+                            <WalletConnect />
                           </div>
                         </div>
-                        <GradientButton
-                          variant="variant"
-                          className="w-full rounded-full py-5 text-lg font-black mt-8"
-                          onClick={() => setStep("confirm_delivery")}
-                        >
-                          Confirm Receipt
-                        </GradientButton>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* CONFIRM DELIVERY */}
-                  {(step === "confirm_delivery" || step === "released" || step === "dispute_opened") && (
-                    <Card className="rounded-[2.5rem] border-2 border-slate-900 bg-white shadow-2xl overflow-hidden">
-                      <CardHeader className="bg-slate-900 text-white p-8">
-                        <CardTitle className="text-2xl font-black">Release Payout?</CardTitle>
-                        <CardDescription className="text-slate-400 font-bold">Confirm item condition to finalize the deal.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="p-8 space-y-8">
-                        {step === "confirm_delivery" ? (
-                          <>
-                            <div className="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl">
-                              <Package className="size-10 text-slate-300" />
-                              <div>
-                                <p className="text-sm font-black text-slate-900">{deal.title}</p>
-                                <p className="text-xs font-bold text-slate-500">Ref: #{deal.id}</p>
+                      ) : step === "pay" ? (
+                        <>
+                          <div className="-mx-6 px-6 relative z-10">
+                            <GaslessToggle />
+                            
+                            <button
+                              disabled={isBlocked}
+                              onClick={handlePay}
+                              className="w-full text-white rounded-2xl flex items-center justify-center gap-2 transition-all hover:-translate-y-1 hover:shadow-[0_0_60px_rgba(16,185,129,0.5)] disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                              style={{
+                                background: "linear-gradient(135deg, #10b981, #059669)",
+                                boxShadow: "0 0 40px rgba(16,185,129,0.3)",
+                                height: "60px",
+                                fontSize: "18px",
+                                fontWeight: 700
+                              }}
+                            >
+                              <Lock className="w-5 h-5" /> Pay Securely
+                            </button>
+                            {isBlocked && (
+                              <p className="text-center text-xs font-black text-red-500 mt-4">Transaction blocked for safety.</p>
+                            )}
+                          </div>
+                        </>
+                      ) : null}
+                      
+                      {/* Success / Release Step */}
+                      {(step === "success" || step === "confirm_delivery" || step === "released" || step === "dispute_opened") && (
+                        <div className="text-center">
+                           {step === "success" || step === "confirm_delivery" ? (
+                             <>
+                              <div className="size-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 animate-pulse">
+                                <Lock className="size-8" />
                               </div>
-                            </div>
-                            <div className="grid gap-3">
-                              <GradientButton className="w-full rounded-full py-5 text-lg font-black" onClick={handleConfirmDelivery}>
-                                Yes, Release Funds Now
-                              </GradientButton>
-                              <button
-                                className="w-full py-4 text-xs font-black uppercase tracking-widest text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                              <h4 className="text-xl font-black text-slate-900 mb-2">Funds Secured</h4>
+                              <p className="text-slate-500 text-sm mb-6">Your money is safe in escrow. The seller has been notified to ship.</p>
+                              <button 
+                                onClick={handleConfirmDelivery}
+                                className="w-full bg-[#10b981] text-white rounded-xl py-4 font-bold text-lg mb-3 hover:bg-[#059669] transition-colors"
+                              >
+                                I Received My Item
+                              </button>
+                              <button 
                                 onClick={() => setShowDisputeModal(true)}
+                                className="text-xs text-red-500 font-bold uppercase tracking-widest hover:underline"
                               >
                                 Problem? Open Dispute
                               </button>
-                            </div>
-                          </>
-                        ) : step === "released" ? (
-                          <div className="text-center py-4">
-                            <CheckCircle2 className="size-16 text-emerald-500 mx-auto mb-6" />
-                            <h4 className="text-2xl font-black text-slate-900 mb-2">Deal Closed</h4>
-                            <p className="text-slate-500 font-bold text-sm">Funds have been released to the seller. Thank you for using SafeDeal!</p>
-                            <button
-                              className="mt-8 text-xs font-black uppercase tracking-widest text-[#0b50da] flex items-center gap-2 mx-auto"
-                              onClick={() => {
-                                if (payoutTxHash) {
-                                  window.open(`https://stellar.expert/explorer/testnet/tx/${payoutTxHash}`, "_blank");
-                                } else {
-                                  toast.error("Transaction hash not available");
-                                }
-                              }}
-                            >
-                              View on Stellar Expert <ExternalLink className="size-3" />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="text-center py-4">
-                            <AlertTriangle className="size-16 text-red-500 mx-auto mb-6" />
-                            <h4 className="text-2xl font-black text-slate-900 mb-2">Dispute Active</h4>
-                            <p className="text-slate-500 font-bold text-sm">The funds are frozen. Our compliance team will reach out to both parties shortly.</p>
-                            <button className="mt-8 text-xs font-black uppercase tracking-widest text-slate-900 flex items-center gap-2 mx-auto">
-                              Case #SD-{deal.id}-DIS <ChevronRight className="size-3" />
-                            </button>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  )}
+                             </>
+                           ) : step === "released" ? (
+                             <>
+                              <CheckCircle2 className="size-16 text-[#10b981] mx-auto mb-4" />
+                              <h4 className="text-2xl font-black text-slate-900 mb-2">Deal Closed</h4>
+                              <p className="text-slate-500 font-bold text-sm">Payment released to seller.</p>
+                             </>
+                           ) : (
+                             <>
+                              <AlertTriangle className="size-16 text-red-500 mx-auto mb-4" />
+                              <h4 className="text-2xl font-black text-slate-900 mb-2">Dispute Active</h4>
+                              <p className="text-slate-500 font-bold text-sm">Funds are frozen pending review.</p>
+                             </>
+                           )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
           )}
         </main>
-
-        {/* FOOTER NAV */}
-        <footer className="fixed bottom-0 inset-x-0 bg-white/80 backdrop-blur-lg border-t border-slate-100 p-4 lg:hidden">
-          <div className="flex items-center justify-between max-w-lg mx-auto">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-emerald-500" />
-              <span className="text-[10px] font-black uppercase text-slate-500">Secured Checkout</span>
-            </div>
-            <div className="text-[10px] font-black uppercase text-slate-400">Powered by Stellar</div>
-          </div>
-        </footer>
       </div>
 
       {/* DISPUTE MODAL */}
@@ -448,38 +388,38 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#030712]/80 backdrop-blur-md p-4"
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="w-full max-w-md bg-white rounded-[2.5rem] p-8 shadow-2xl relative"
+              className="w-full max-w-md bg-[#0f0f1a] rounded-[2rem] p-8 shadow-2xl relative border border-white/5"
             >
               <button
                 onClick={() => setShowDisputeModal(false)}
-                className="absolute top-6 right-6 p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-900 rounded-full transition-colors"
+                className="absolute top-6 right-6 p-2 text-[#94a3b8] hover:text-white rounded-full transition-colors"
               >
                 ✕
               </button>
 
               <div className="flex items-center gap-4 mb-6">
-                <div className="size-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center">
+                <div className="size-12 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center">
                   <AlertTriangle className="size-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-slate-900">Open Dispute</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Funds will be frozen</p>
+                  <h3 className="text-xl font-black text-white">Open Dispute</h3>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-red-400">Funds will be frozen</p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Problem Type</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Problem Type</label>
                   <select
                     value={disputeReason}
                     onChange={(e) => setDisputeReason(e.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1] transition-all"
                   >
                     <option>Item not received</option>
                     <option>Wrong item</option>
@@ -489,26 +429,26 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Describe the problem</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Describe the problem</label>
                   <textarea
                     value={disputeDesc}
                     onChange={(e) => setDisputeDesc(e.target.value)}
-                    placeholder="Provide details for the arbiter..."
-                    className="w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all resize-none min-h-[120px]"
+                    placeholder="Provide details..."
+                    className="w-full rounded-xl border border-white/10 bg-white/5 p-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1] transition-all resize-none min-h-[120px]"
                   />
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <GradientButton
+                  <button
                     onClick={handleOpenDispute}
                     disabled={disputeLoading}
-                    className="w-full rounded-2xl py-4 font-black"
+                    className="w-full rounded-xl py-4 font-black bg-red-500 text-white hover:bg-red-600 transition-colors"
                   >
                     {disputeLoading ? "Raising Dispute..." : "Submit Dispute"}
-                  </GradientButton>
+                  </button>
                   <button
                     onClick={() => setShowDisputeModal(false)}
-                    className="w-full py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors"
+                    className="w-full py-4 rounded-xl text-xs font-black uppercase tracking-widest text-[#94a3b8] hover:text-white transition-colors"
                   >
                     Cancel
                   </button>
@@ -518,7 +458,6 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
           </motion.div>
         )}
       </AnimatePresence>
-
     </ErrorBoundary>
   );
 }
