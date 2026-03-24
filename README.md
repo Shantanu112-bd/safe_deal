@@ -142,3 +142,21 @@ SafeDeal is connected to a complete CI/CD pipeline via **GitHub Actions**. Every
 ---
 
 Built with ❤️ for the Stellar community.
+
+---
+
+## Advanced Feature — Fee Sponsorship
+
+SafeDeal implements gasless transactions 
+using Stellar fee bump transactions.
+
+How it works:
+1. Buyer creates inner transaction (0 XLM needed)
+2. SafeDeal wraps it in a fee bump transaction
+3. SafeDeal pays the 0.00001 XLM network fee
+4. Buyer approves only their inner transaction
+5. SafeDeal submits the wrapped transaction
+
+Implementation: /frontend/src/lib/feeBump.ts  
+Standard used: Stellar fee bump (SEP protocol)  
+Benefit: Buyers need zero XLM to use SafeDeal

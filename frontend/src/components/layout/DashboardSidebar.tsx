@@ -30,7 +30,7 @@ export function DashboardSidebar() {
     { label: "My Deals", href: "/dashboard/deals", icon: ShoppingBag },
     { label: "History", href: "/dashboard/history", icon: History },
     { label: "Metrics", href: "/dashboard/metrics", icon: BarChart3 },
-    { label: "Security Audit", href: "/dashboard/security", icon: ShieldCheck },
+    { label: "Security", href: "/dashboard/security", icon: Shield },
     { label: "My Profile", href: "/dashboard/profile", icon: User },
     { label: "Settings", href: "/dashboard/settings", icon: Settings },
   ];
