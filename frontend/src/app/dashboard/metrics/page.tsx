@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react'
 import { monitor } from '@/lib/monitoring'
+import { getAccountTransactions } from '@/lib/indexer'
 import { 
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, 
@@ -18,6 +19,7 @@ export default function MetricsPage() {
   const [totalVolume, setTotalVolume] = useState(0)
   const [dauData, setDauData] = useState<{date: string, users: number}[]>([])
   const [volumeData, setVolumeData] = useState<{date: string, volume: number}[]>([])
+  const [txs, setTxs] = useState<any[]>([])
 
   useEffect(() => {
     setDau(monitor.getDAU())
@@ -25,6 +27,11 @@ export default function MetricsPage() {
     setTotalVolume(monitor.getTotalVolume())
     setDauData(monitor.getLast30DaysDAU())
     setVolumeData(monitor.getLast30DaysVolume())
+
+    const contractId = process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ID
+    if (contractId) {
+      getAccountTransactions(contractId, 20).then(setTxs)
+    }
   }, [])
 
   return (
@@ -276,6 +283,56 @@ export default function MetricsPage() {
           </table>
         </div>
       </div>
+
+      {/* On-chain Transaction Index */}
+      <div className="bg-[#0f0f1a] border border-white/10 rounded-2xl shadow-xl p-6">
+        <h2 className="text-white font-semibold mb-4">On-chain Transaction Index</h2>
+        <p className="text-slate-400 text-sm mb-4">
+          Last 20 transactions from Stellar Network (Escrow Contract)
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[#1e293b]">
+                <th className="text-left py-3 text-slate-400 font-medium">Tx Hash</th>
+                <th className="text-left py-3 text-slate-400 font-medium">Date & Time</th>
+                <th className="text-left py-3 text-slate-400 font-medium">Status</th>
+                <th className="text-left py-3 text-slate-400 font-medium">Explorer</th>
+              </tr>
+            </thead>
+            <tbody>
+              {txs.map((tx, i) => (
+                <tr key={i} className="border-b border-[#1e293b]/50 hover:bg-white/[0.02]">
+                  <td className="py-3 text-white font-mono text-xs">
+                    {tx.hash.slice(0, 16)}...
+                  </td>
+                  <td className="py-3 text-slate-400 text-xs">
+                    {new Date(tx.createdAt).toLocaleString()}
+                  </td>
+                  <td className="py-3">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${tx.successful ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+                      {tx.successful ? 'Successful' : 'Failed'}
+                    </span>
+                  </td>
+                  <td className="py-3">
+                    <a href={tx.explorerUrl} target="_blank" className="text-indigo-400 text-xs hover:underline cursor-pointer">
+                      View →
+                    </a>
+                  </td>
+                </tr>
+              ))}
+              {txs.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="py-8 text-center text-slate-500 text-sm">
+                    No transactions indexed yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   )
 }
