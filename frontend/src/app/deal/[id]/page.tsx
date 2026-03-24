@@ -19,6 +19,7 @@ import { WalletConnect } from "@/components/wallet/WalletConnect";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { monitor } from "@/lib/monitoring";
+import { isFeeSponsorshipEnabled } from "@/lib/feeBump";
 import {
   lockPayment,
   confirmDelivery as confirmOnChain,
@@ -305,6 +306,35 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                           <div className="-mx-6 px-6 relative z-10">
                             <GaslessToggle />
                             
+                            {isFeeSponsorshipEnabled() && (
+                              <div className="flex items-center gap-3 
+                                p-4 rounded-xl mb-4
+                                bg-indigo-500/10 
+                                border border-indigo-500/20">
+                                <div className="w-8 h-8 rounded-full 
+                                  bg-indigo-500/20 flex items-center 
+                                  justify-center">
+                                  <Zap className="w-4 h-4 
+                                    text-indigo-400"/>
+                                </div>
+                                <div className="flex-1 text-left">
+                                  <p className="text-white text-sm 
+                                    font-medium">
+                                    Gasless transaction
+                                  </p>
+                                  <p className="text-slate-400 text-xs">
+                                    SafeDeal covers the network fee. 
+                                    No XLM needed.
+                                  </p>
+                                </div>
+                                <span className="bg-indigo-500 text-white 
+                                  text-xs px-3 py-1 rounded-full 
+                                  font-medium">
+                                  FREE
+                                </span>
+                              </div>
+                            )}
+
                             <button
                               disabled={isBlocked}
                               onClick={handlePay}

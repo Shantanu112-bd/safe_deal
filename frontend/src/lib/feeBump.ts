@@ -1,42 +1,42 @@
 import { 
   TransactionBuilder,
   Networks,
-  BASE_FEE,
-  Transaction
+  Keypair,
+  BASE_FEE
 } from '@stellar/stellar-sdk'
 
-export async function createFeeBumpTransaction(
-  innerTransactionXDR: string,
-  feeSourcePublicKey: string
+const SAFEDEAL_FEE_ACCOUNT = 
+  process.env.NEXT_PUBLIC_FEE_SPONSOR_PUBLIC_KEY || ''
+
+export async function wrapWithFeeBump(
+  innerTransactionXDR: string
 ): Promise<string> {
-  const innerTx = TransactionBuilder
-    .fromXDR(innerTransactionXDR, Networks.TESTNET)
-  
-  const feeBumpTx = TransactionBuilder
-    .buildFeeBumpTransaction(
-      feeSourcePublicKey,
-      (Number(BASE_FEE) * 10).toString(),
-      innerTx as Transaction,
+  try {
+    const { TransactionBuilder } = 
+      await import('@stellar/stellar-sdk')
+    
+    const innerTx = TransactionBuilder.fromXDR(
+      innerTransactionXDR,
       Networks.TESTNET
     )
-  
-  return feeBumpTx.toXDR()
+    
+    const feeBumpTx = TransactionBuilder
+      .buildFeeBumpTransaction(
+        SAFEDEAL_FEE_ACCOUNT,
+        String(Number(BASE_FEE) * 10),
+        innerTx as any,
+        Networks.TESTNET
+      )
+    
+    return feeBumpTx.toEnvelope().toXDR('base64')
+  } catch (error) {
+    console.error('Fee bump error:', error)
+    throw error
+  }
 }
 
-export async function submitFeeBumpTransaction(
-  feeBumpXDR: string
-): Promise<string> {
-  const response = await fetch(
-    'https://horizon-testnet.stellar.org/transactions',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: `tx=${encodeURIComponent(feeBumpXDR)}`
-    }
+export function isFeeSponsorshipEnabled(): boolean {
+  return Boolean(
+    process.env.NEXT_PUBLIC_FEE_SPONSOR_PUBLIC_KEY
   )
-  
-  const result = await response.json()
-  return result.hash
 }
