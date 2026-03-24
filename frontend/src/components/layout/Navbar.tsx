@@ -56,7 +56,7 @@ export function Navbar() {
             <Link 
               key={link.label} 
               href={link.href}
-              className="text-xs font-black uppercase tracking-widest text-[#94a3b8] hover:text-indigo-400 transition-colors"
+              className="text-xs font-black uppercase tracking-widest text-slate-200 hover:text-indigo-400 transition-colors"
             >
               {link.label}
             </Link>
@@ -110,7 +110,7 @@ export function Navbar() {
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => setModalOpen(true)}
-                className="hidden md:block px-4 py-2 text-xs font-bold text-[#94a3b8] hover:text-indigo-400 transition-colors"
+                className="hidden md:block px-4 py-2 text-xs font-bold text-slate-200 hover:text-indigo-400 transition-colors"
               >
                 Sign In
               </button>
