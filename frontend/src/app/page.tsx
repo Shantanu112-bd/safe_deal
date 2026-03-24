@@ -124,9 +124,29 @@ export default function LandingPage() {
           >
             Every Deal,<br/>Guaranteed Safe
           </motion.h1>
-          <motion.p {...fadeIn} className="text-[#94a3b8] text-lg lg:text-xl max-w-2xl mx-auto mb-16 font-medium">
+          <motion.p {...fadeIn} className="text-[#94a3b8] text-lg lg:text-xl max-w-2xl mx-auto mb-12 font-medium">
             The AI-protected escrow platform for WhatsApp merchants in India. Don't lose money to fake screenshots and non-delivery ever again.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
+          >
+            <Link 
+              href="/dashboard/deals"
+              className="px-8 py-4 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] hover:opacity-90 rounded-2xl font-black text-white text-lg shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all hover:scale-105"
+            >
+              Create a Deal
+            </Link>
+            <Link 
+              href="/docs"
+              className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl font-bold text-white text-lg transition-all"
+            >
+              Read Documentation
+            </Link>
+          </motion.div>
 
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
