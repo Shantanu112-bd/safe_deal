@@ -77,6 +77,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(172800); // 48 hours
+  const [txHash, setTxHash] = useState<string | null>(null);
   
   const router = useRouter();
 
@@ -119,9 +120,17 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     try {
       const result = await lockPayment(params.id, deal.amountUSDC, walletType, publicKey || undefined, isGasless);
       if (result.success) {
+        if (result.txHash) setTxHash(result.txHash);
         setStep("success");
         toast.success("Payment locked in escrow!");
         monitor.paymentLocked(params.id, deal.amountUSDC);
+        
+        // Trigger generic Webhook/Push Notification
+        fetch('/api/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'locked', dealId: deal.id, amount: deal.amountUSDC, merchantId: deal.sellerKey })
+        }).catch(() => {});
       }
     } catch (err) {
       setStep("pay");
@@ -134,10 +143,19 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
     try {
       const result = await confirmOnChain(params.id, walletType, publicKey || undefined);
       if (result.success) {
-        if (result.txHash) 
+        if (result.txHash) setTxHash(result.txHash);
         setStep("released");
         toast.success("Funds released to seller. Thank you!");
         if (deal) monitor.paymentReleased(params.id, deal.amountUSDC);
+        
+        // Trigger generic Webhook/Push Notification for delivery confirmation
+        if (deal) {
+          fetch('/api/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'released', dealId: deal.id, amount: deal.amountUSDC, merchantId: deal.sellerKey })
+          }).catch(() => {});
+        }
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Failed to release funds on-chain.";
@@ -245,9 +263,15 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                       <ShieldCheck className={cn("w-6 h-6", isBlocked ? "text-red-500" : "text-[#10b981]")} />
                     </div>
                     <div>
-                      <p className="text-[#f8fafc] font-black text-lg">
+                      <a 
+                        href={`https://stellar.expert/explorer/testnet/account/${deal.sellerKey}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-[#f8fafc] font-black text-lg hover:text-[#10b981] transition-colors"
+                        title="View address on Stellar Expert"
+                      >
                         {deal.sellerKey.slice(0, 6)}...{deal.sellerKey.slice(-4)}
-                      </p>
+                      </a>
                       <p className={cn("text-xs font-bold uppercase tracking-widest", isBlocked ? "text-red-400" : "text-[#10b981]")}>
                         {isBlocked ? "High Risk Seller" : "Verified Merchant"}
                       </p>
@@ -366,7 +390,17 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                                 <Lock className="size-8" />
                               </div>
                               <h4 className="text-xl font-black text-slate-900 mb-2">Funds Secured</h4>
-                              <p className="text-slate-500 text-sm mb-6">Your money is safe in escrow. The seller has been notified to ship.</p>
+                              <p className="text-slate-500 text-sm mb-4">Your money is safe in escrow. The seller has been notified to ship.</p>
+                              {txHash && (
+                                <a 
+                                  href={`https://stellar.expert/explorer/testnet/tx/${txHash}`} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer" 
+                                  className="block bg-[#10b981]/10 text-[#10b981] rounded-xl py-3 mb-4 font-bold text-sm hover:bg-[#10b981]/20 transition-colors"
+                                >
+                                  View Transaction on Stellar Expert
+                                </a>
+                              )}
                               <button 
                                 onClick={handleConfirmDelivery}
                                 className="w-full bg-[#10b981] text-white rounded-xl py-4 font-bold text-lg mb-3 hover:bg-[#059669] transition-colors"
@@ -384,7 +418,17 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                              <>
                               <CheckCircle2 className="size-16 text-[#10b981] mx-auto mb-4" />
                               <h4 className="text-2xl font-black text-slate-900 mb-2">Deal Closed</h4>
-                              <p className="text-slate-500 font-bold text-sm">Payment released to seller.</p>
+                              <p className="text-slate-500 font-bold text-sm mb-4">Payment released to seller.</p>
+                              {txHash && (
+                                <a 
+                                  href={`https://stellar.expert/explorer/testnet/tx/${txHash}`} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer" 
+                                  className="block bg-[#10b981]/10 text-[#10b981] rounded-xl py-3 mb-2 font-bold text-sm hover:bg-[#10b981]/20 transition-colors"
+                                >
+                                  View Transaction on Stellar Expert
+                                </a>
+                              )}
                              </>
                            ) : (
                              <>

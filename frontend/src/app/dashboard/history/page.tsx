@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { useWallet } from "@/context/WalletContext";
-import { getSellerDeals, type DealData } from "@/lib/stellar";
+import { type DealData } from "@/lib/stellar";
 import { GradientButton } from "@/components/ui/gradient-button";
 import Link from "next/link";
 import { TableSkeleton } from "@/components/ui/loading-skeletons";
@@ -44,19 +44,45 @@ export default function HistoryPage() {
     const loadHistory = async () => {
       try {
         setLoading(true);
-        // Also check localStorage for local testing parity
+        // Fetch local deals to maintain parity with un-deployed/fallback environments
         const stored = localStorage.getItem('safedeal_deals');
         const localDeals: DealData[] = stored ? JSON.parse(stored) : [];
-        const combinedDeals = localDeals.length > 0 ? localDeals : await getSellerDeals(publicKey);
+        const relatedLocalDeals = localDeals.filter(d => d.sellerKey === publicKey || d.buyerKey === publicKey);
+
+        // Fetch indexed on-chain deals instantaneously from the new Backend API instead of pulling raw Soroban RPC mapping
+        let sellerDeals: DealData[] = [];
+        let buyerDeals: DealData[] = [];
         
-        const completed = combinedDeals.filter(d =>
-          d.status === 'Completed' ||
-          d.status === 'Refunded' ||
-          d.status === 'Disputed' ||
-          d.status === 'Cancelled'
-        );
+        try {
+          const sellerRes = await fetch(`/api/indexer?publicKey=${publicKey}&role=seller`);
+          const buyerRes = await fetch(`/api/indexer?publicKey=${publicKey}&role=buyer`);
+          
+          if (sellerRes.ok) {
+            const data = await sellerRes.json();
+            if (data.success) sellerDeals = data.deals;
+          }
+          
+          if (buyerRes.ok) {
+            const data = await buyerRes.json();
+            if (data.success) buyerDeals = data.deals;
+          }
+        } catch (error) {
+          console.warn("Indexer fetch failed, defaulting to local cache logic", error);
+        }
+        
+        // Combine and deduplicate
+        const allDeals = [...relatedLocalDeals, ...sellerDeals, ...buyerDeals];
+        const uniqueMap = new Map<string, DealData>();
+        for (const d of allDeals) {
+           if (!uniqueMap.has(d.id)) {
+              uniqueMap.set(d.id, d);
+           }
+        }
+        
+        const combinedDeals = Array.from(uniqueMap.values());
+        
         // Sort descending by created string
-        setHistory(completed.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())); 
+        setHistory(combinedDeals.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())); 
       } catch (err) {
         console.error("Failed to load history:", err);
       } finally {
@@ -68,12 +94,12 @@ export default function HistoryPage() {
   }, [publicKey]);
 
   const totalEarned = history
-    .filter(d => d.status === 'Completed')
+    .filter(d => d.sellerKey === publicKey && d.status === 'Completed')
     .reduce((sum, d) => sum + d.amountUSDC, 0);
 
   const stats = [
-    { label: "Lifetime Earnings", val: `${totalEarned.toFixed(2)} USDC`, sub: history.length > 0 ? `${history.filter(d => d.status === 'Completed').length} completed deals` : "No completed deals yet", icon: CheckCircle2, iconColor: "text-emerald-400 font-bold", glow: "shadow-[0_0_20px_rgba(52,211,153,0.15)]" },
-    { label: "Successful Settlements", val: history.filter(d => d.status === 'Completed').length.toString(), sub: "—", icon: ArrowDownLeft, iconColor: "text-blue-400 font-bold", glow: "shadow-[0_0_20px_rgba(96,165,250,0.15)]" },
+    { label: "Lifetime Earnings", val: `${totalEarned.toFixed(2)} USDC`, sub: history.length > 0 ? `${history.filter(d => d.sellerKey === publicKey && d.status === 'Completed').length} completed deals` : "No completed deals yet", icon: CheckCircle2, iconColor: "text-emerald-400 font-bold", glow: "shadow-[0_0_20px_rgba(52,211,153,0.15)]" },
+    { label: "Total Transactions", val: history.length.toString(), sub: "—", icon: ArrowDownLeft, iconColor: "text-blue-400 font-bold", glow: "shadow-[0_0_20px_rgba(96,165,250,0.15)]" },
     { label: "Wallet USDC Balance", val: `${parseFloat(usdcBalance || "0").toFixed(2)} USDC`, sub: `${parseFloat(xlmBalance || "0").toFixed(2)} XLM available`, icon: Calendar, iconColor: "text-indigo-400 font-bold", glow: "shadow-[0_0_20px_rgba(129,140,248,0.15)]" },
   ];
 
@@ -81,6 +107,40 @@ export default function HistoryPage() {
     deal.title.toLowerCase().includes(search.toLowerCase()) || 
     deal.id.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleExportCSV = () => {
+    if (filteredHistory.length === 0) return;
+
+    const headers = ["Transaction ID", "Deal Title", "Role", "Date", "Status", "Amount USDC"];
+    
+    const rows = filteredHistory.map(deal => {
+      const date = new Date(deal.createdAt).toLocaleString();
+      const role = deal.sellerKey === publicKey ? "Seller" : "Buyer";
+      const amountSign = 
+        deal.sellerKey === publicKey ? (deal.status === "Completed" ? "+" : "") 
+        : (deal.status !== "WaitingForPayment" && deal.status !== "Cancelled" ? "-" : "");
+      
+      const amountStr = `${amountSign}${deal.amountUSDC.toFixed(2)}`;
+      
+      return [
+        `"${deal.id}"`,
+        `"${deal.title.replace(/"/g, '""')}"`,
+        `"${role}"`,
+        `"${date}"`,
+        `"${deal.status}"`,
+        `"${amountStr}"`
+      ].join(",");
+    });
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `SafeDeal_History_${new Date().toLocaleDateString().replace(/\//g, "-")}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <ErrorBoundary>
@@ -90,7 +150,10 @@ export default function HistoryPage() {
             <h1 className="text-xl lg:text-2xl font-black text-white">Transaction History</h1>
             <p className="text-[10px] font-black text-[#94a3b8] uppercase tracking-widest mt-0.5">Audited record of all finalized settlements</p>
           </div>
-          <button className="hidden sm:flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-300 hover:bg-white/10 transition-all shadow-sm">
+          <button 
+            onClick={handleExportCSV}
+            className="hidden sm:flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-300 hover:bg-white/10 transition-all shadow-sm"
+          >
             <Download className="size-4" />
             Export CSV
           </button>
@@ -159,8 +222,8 @@ export default function HistoryPage() {
                         </span>
                       </div>
                       <div className="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
-                        <p className="text-emerald-400 font-bold text-sm tracking-wide">
-                          +{deal.amountUSDC.toFixed(2)} USDC
+                        <p className={cn("font-bold text-sm tracking-wide", deal.sellerKey === publicKey ? "text-emerald-400" : "text-white")}>
+                          {deal.sellerKey === publicKey ? "+" : "-"}{deal.amountUSDC.toFixed(2)} USDC
                         </p>
                         <p className="text-[#94a3b8] text-[10px] uppercase font-black tracking-widest truncate max-w-[100px]">
                           {deal.id.split('-').pop() || deal.id}
@@ -245,8 +308,8 @@ export default function HistoryPage() {
                                 </span>
                              </td>
                              <td className="px-8 py-6 text-right">
-                               <span className={cn("text-sm font-black", deal.status === "Completed" ? "text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.3)]" : "text-white")}>
-                                 {deal.status === "Completed" ? "+" : ""}{deal.amountUSDC.toFixed(2)} USDC
+                               <span className={cn("text-sm font-black", deal.sellerKey === publicKey && deal.status === "Completed" ? "text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.3)]" : "text-white")}>
+                                 {deal.sellerKey === publicKey ? (deal.status === "Completed" ? "+" : "") : (deal.status !== "WaitingForPayment" && deal.status !== "Cancelled" ? "-" : "")}{deal.amountUSDC.toFixed(2)} USDC
                                </span>
                              </td>
                           </tr>
