@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { getSellerDeals, getBuyerDeals, DealData } from '@/lib/stellar'; // We will reuse the core RPC logic but isolate it server-side
 
