@@ -4,21 +4,25 @@
 
 ---
 
-## ✅ Submission Checklist
-Ensure your project meets all requirements before submitting.
+## 🌟 Bridging the Trust Gap
 
-- [x] **Public GitHub repository**: [Shantanu112-bd/Safe-Deal](https://github.com/Shantanu112-bd/Safe-Deal)
-- [x] **README with complete documentation**
-- [x] **Architecture document included** (See [Architecture Section](#architecture))
-- [x] **Live demo link**: [https://safe-deal-ten.vercel.app](https://safe-deal-ten.vercel.app)
-- [x] **Demo video link**: [Watch on Loom](https://www.loom.com/share/a7b6d6d5c42942d094961dda5a7eaebe)
-- [x] **List of 5+ user wallet addresses**: (See [Wallets Section](#30-active-user-wallets))
-- [x] **User feedback documentation**: [See Feedback Section](#-user-feedback)
+Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, yet millions of deals fail due to a lack of **Trust**. Buyers are afraid to pay upfront, and merchants are afraid to ship without payment.
+
+**SafeDeal** solves this by providing an immutable Layer-2 trust layer built on **Stellar**, ensuring every transaction is protected by a secure, AI-analyzed smart escrow.
+
+---
+
+## 💎 Core Pillars
+
+| 🛡️ Secure Smart Escrow | 🤖 AI Risk Analysis | ⛽ Gasless Web3 UX |
+| :--- | :--- | :--- |
+| USDC funds are locked in an immutable Soroban contract and only released when the buyer confirms delivery. | Our "AI Shield" analyzes wallet history to flag potential scams *before* you even initiate a deal. | Buyers need exactly **zero XLM** to get started. We use Fee Sponsorship to keep the experience fast and frictionless. |
 
 ---
 
 ## 🔗 Project Links
-- **Live Demo**: [https://safe-deal-ten.vercel.app](https://safe-deal-ten.vercel.app)
+- **Live Demo**: [https://safe-deal-ten.vercel.app](https://safe-deal-ten.vercel.app) 
+**Demo video link**: [Watch on Loom](https://www.loom.com/share/a7b6d6d5c42942d094961dda5a7eaebe)
 - **Metrics Dashboard**: [https://safe-deal-ten.vercel.app/dashboard/metrics](https://safe-deal-ten.vercel.app/dashboard/metrics)
 - **Security Checklist**: [https://safe-deal-ten.vercel.app/dashboard/security](https://safe-deal-ten.vercel.app/dashboard/security)
 - **Documentation**: [https://safe-deal-ten.vercel.app/docs](https://safe-deal-ten.vercel.app/docs)
