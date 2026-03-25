@@ -2,6 +2,11 @@
 
 > **AI-protected decentralized escrow payment platform for WhatsApp and Instagram merchants. Built on Stellar blockchain.**
 
+[![Vercel Deploy](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel&logoColor=white)](https://safe-deal-ten.vercel.app)
+[![CI/CD](https://github.com/Shantanu112-bd/safe_deal/actions/workflows/deploy.yml/badge.svg)](https://github.com/Shantanu112-bd/safe_deal/actions/workflows/deploy.yml)
+[![Stellar Network](https://img.shields.io/badge/Network-Stellar%20Testnet-blueviolet?logo=stellar&logoColor=white)](https://stellar.expert/explorer/testnet)
+[![License](https://img.shields.io/badge/License-MIT-green)](./LICENSE)
+
 ---
 
 ## 🌟 Bridging the Trust Gap
