@@ -11,7 +11,7 @@ Ensure your project meets all requirements before submitting.
 - [x] **README with complete documentation**
 - [x] **Architecture document included** (See [Architecture Section](#architecture))
 - [x] **Live demo link**: [https://safe-deal-ten.vercel.app](https://safe-deal-ten.vercel.app)
-- [ ] **Demo video link**: `[Add Demo Video Link Here]`
+- [x] **Demo video link**: [Watch on Loom](https://www.loom.com/share/a7b6d6d5c42942d094961dda5a7eaebe)
 - [x] **List of 5+ user wallet addresses**: (See [Wallets Section](#30-active-user-wallets))
 - [x] **User feedback documentation**: [See Feedback Section](#-user-feedback)
 
@@ -47,24 +47,15 @@ Ensure your project meets all requirements before submitting.
 
 ---
 
-## 🗣️ User Feedback
+### 🗣️ User Feedback (Response Sheet)
 
-During the development and Testnet phase of the SafeDeal MVP, we collected feedback from 5 early beta testers across our target merchant and buyer demographics.
-
-1. **Wallet**: `GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52`
-   - **Feedback**: "Stellar escrow saves merchants from scams."
-
-2. **Wallet**: `GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H`
-   - **Feedback**: "Giving buyers confidence in shop purchases."
-
-3. **Wallet**: `GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D`
-   - **Feedback**: "AI Shield provides incredible deal security."
-
-4. **Wallet**: `GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ`
-   - **Feedback**: "Smooth UI feels like regular checkout."
-
-5. **Wallet**: `GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI`
-   - **Feedback**: "Instant finality and accurate dispute resolution."
+| # | Verified Wallet Address | Feedback Summary (Anonymized) |
+|---|---|---|
+| 1 | [`GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | "Stellar escrow saves merchants from scams." |
+| 2 | [`GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | "Giving buyers confidence in shop purchases." |
+| 3 | [`GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D`](https://stellar.expert/explorer/testnet/account/GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D) | "AI Shield provides incredible deal security." |
+| 4 | [`GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ`](https://stellar.expert/explorer/testnet/account/GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ) | "Smooth UI feels like regular checkout." |
+| 5 | [`GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI) | "Instant finality and accurate dispute resolution." |
 
 ### Overall Metrics (Beta Phase)
 - **Total Beta Transactions**: 42 
