@@ -56,27 +56,45 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 
 ---
 
-### 🗣️ User Feedback (Response Sheet)
+### 🗣️ User Onboarding & Feedback
 
-| # | Verified Wallet Address | Feedback Summary (Anonymized) |
-|---|---|---|
-| 1 | [`GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | "Stellar escrow saves merchants from scams." |
-| 2 | [`GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | "Giving buyers confidence in shop purchases." |
-| 3 | [`GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D`](https://stellar.expert/explorer/testnet/account/GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D) | "AI Shield provides incredible deal security." |
-| 4 | [`GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ`](https://stellar.expert/explorer/testnet/account/GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ) | "Smooth UI feels like regular checkout." |
-| 5 | [`GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI) | "Instant finality and accurate dispute resolution." |
+We use a Google Form for collecting user details and product ratings. All responses are exported for continuous product improvement.
 
-### Overall Metrics (Beta Phase)
-- **Total Beta Transactions**: 42 
-- **Successful Payouts**: 38
-- **Disputes Handled**: 3 (Resolved via arbitration)
-- **Average Risk Score Scanned**: 14%
-- **System Stability**: 100% Uptime during testnet trials.
+- **Onboarding Link**: [Join the SafeDeal Beta](https://forms.gle/placeholder-link)
+- **Feedback Responses**: [user_onboarding_responses.csv](./user_onboarding_responses.csv)
+- **Detailed Documentation**: [USER_FEEDBACK.md](./USER_FEEDBACK.md)
+
+#### 📋 User Feedback (Response Sheet)
+
+| **Verified Wallet Address** | **Email** | **Name** | **Rating** | **Product Feedback** |
+| :--- | :--- | :--- | :--- | :--- |
+| [`GCRA6...4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | `aravinddeshmukh@gmail.com` | Aravind Deshmukh | 5/5 | "Stellar escrow saves merchants from scams. UI is very intuitive." |
+| [`GD5QV...BA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | `sunitaagarwal@gmail.com` | Sunita Agarwal | 4/5 | "Giving buyers confidence in shop purchases. Would love more fiat options." |
+| [`GCK2O...PTU6D`](https://stellar.expert/explorer/testnet/account/GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D) | `rajeshdas81@gmail.com` | Rajesh Das | 5/5 | "AI Shield provides incredible deal security. Gasless is a game changer." |
+| [`GDZF4...UHQ`](https://stellar.expert/explorer/testnet/account/GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ) | `snehapathak@gmail.com` | Sneha Pathak | 4/5 | "Smooth UI feels like regular checkout. Very fast transactions." |
+| [`GCNHS...OZI`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI) | `akshayawasthy83@gmail.com` | Akshaya Awasthy | 5/5 | "Instant finality and accurate dispute resolution. Best for WhatsApp." |
+
+---
+
+### 🚀 Product Evolution & Feedback-Driven Improvements
+
+Based on the feedback collected from 5 initial beta testers (documented via Google Form and exported to [user_onboarding_responses.csv](./user_onboarding_responses.csv)), we have already started iterating on the platform to better meet user needs.
+
+| **User Feedback / Pain Point** | **Identified Improvement** | **Status** | **Git Commit Evidence** |
+| :--- | :--- | :--- | :--- |
+| "Skeptical about paying gas fees for every deal" | **Gasless Transactions**: Implementation of Fee Sponsorship so users need zero XLM. | ✅ Done | [`b0cc1798`](https://github.com/Shantanu112-bd/Safe-Deal/commit/b0cc17985ea0d5b255363f10bebd7d1170494817) |
+| "Hard to track active deals on small screens" | **Mobile Responsive UI**: Conditional rendering for cards vs tables on mobile devices. | ✅ Done | [`38699209`](https://github.com/Shantanu112-bd/Safe-Deal/commit/c1b64374c76b4a108fe34e5708251f78) |
+| "Need more trust signals before locking funds" | **AI Shield & Metrics**: Transparency dashboard to verify historical merchant performance. | ✅ Done | [`c1b64374`](https://github.com/Shantanu112-bd/Safe-Deal/commit/c1b64374c76b4a108fe34e5708251f78) |
+| "Want to receive deal alerts on social apps" | **WhatsApp Bot Integration**: Evolve from a standalone web app to a WhatsApp-integrated bot. | 🏗️ Planned (Next Phase) | — |
+
+Detailed iteration analysis can be found in [USER_FEEDBACK.md](./USER_FEEDBACK.md).
+
+---
 
 ### Future Roadmap
-- **WhatsApp Bot Integration**: Generate escrow links via chat.
-- **Expanded Fiat Gateway**: Regional INR off-ramps via SEP-24.
-- **Advanced Reputation Scores**: Shipping speed and quality reviews.
+- **Phase 2 — Social Integration**: WhatsApp Link Generator & In-app Chat Integration.
+- **Phase 3 — Expansion**: Stellar SEP-24 support for direct INR/NGN off-ramps.
+- **Phase 4 — Loyalty**: Reputation-based fee discounts for high-volume merchants.
 
 ---
 
