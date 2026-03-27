@@ -1,7 +1,7 @@
 # SafeDeal User Feedback Documentation 🗣️
 
 ## User Onboarding (Google Form)
-We have implemented a user onboarding Google Form to collect details from new users.
+We have implemented a user onboarding [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link) to collect details from new users.
 - **Fields Collected**: Wallet Address, Email, Name, Product Rating (1-5), Product Feedback.
 - **Data Export**: Responses are exported into a consolidated sheet for analysis.
 - **Exported File**: [user_onboarding_responses.csv](./user_onboarding_responses.csv)

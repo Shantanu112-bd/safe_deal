@@ -60,7 +60,7 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 
 We use a Google Form for collecting user details and product ratings. All responses are exported for continuous product improvement.
 
-- **Onboarding Link**: [Join the SafeDeal Beta](https://forms.gle/placeholder-link)
+- **Onboarding Link**: [Join the SafeDeal Beta](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link)
 - **Feedback Responses**: [user_onboarding_responses.csv](./user_onboarding_responses.csv)
 - **Detailed Documentation**: [USER_FEEDBACK.md](./USER_FEEDBACK.md)
 
