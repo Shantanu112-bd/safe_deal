@@ -173,9 +173,14 @@ Based on the first round of beta tester feedback, we have completed **Iteration 
    - **Rating**: 5/5
    - **Feedback**: "Excellent escrow platform, very trustworthy and easy to use."
 
+31. **Sarthak Dhere** (`sarthakdhere0217@gmail.com`)
+   - **Wallet**: `GCRYPAQB3TFLQE727TA3R723QIEPTP5KCMP7OMH4HVXNLCEUKPD4AZJP`
+   - **Rating**: 5/5
+   - **Feedback**: "nice application"
+
 ## Overall Metrics (Beta Phase)
 
-- **Total Verified Beta Testers**: 30 (all wallet addresses verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet))
+- **Total Verified Beta Testers**: 31 (all wallet addresses verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet))
 - **Total Beta Transactions**: 42 
 - **Successful Payouts**: 40
 - **Disputes Handled**: 2 (Successfully resolved via arbitration)

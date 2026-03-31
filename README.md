@@ -66,7 +66,7 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 > - 📖 **Detailed Analysis**: [**USER_FEEDBACK.md**](./USER_FEEDBACK.md)
 > - 🤝 **Join Beta**: [SafeDeal Testnet Beta Form](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link)
 
-#### 📋 All 30 Verified Beta Testers — Wallet Addresses
+#### 📋 All 31 Verified Beta Testers — Wallet Addresses
 
 > All wallets are verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet).
 
@@ -102,6 +102,7 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 | 28 | [`GCK2X3IZ...TU1D`](https://stellar.expert/explorer/testnet/account/GCK2X3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU1D) | Ayyush Gaikwad | 5/5 | "Smooth process overall." |
 | 29 | [`GCATAASN...J3LDY`](https://stellar.expert/explorer/testnet/account/GCATAASNFHODIKA4VTIEZHONZB3BGZJL42FXHHZ3VS6YKX2PCDIJ3LDY) | Harshal Jagdale | 5/5 | "Amazing UI — just need to improve internal dashboard settings." |
 | 30 | [`GCWTPJMI...E752`](https://stellar.expert/explorer/testnet/account/GCWTPJMIGGAIBTGKTIMTEEHGNPH6ITOJ7GFUFGCGSWQD6NOE4BSDE752) | Pratik More | 5/5 | "Excellent escrow platform, very trustworthy and easy to use." |
+| 31 | [`GCRYPAQB...AZJP`](https://stellar.expert/explorer/testnet/account/GCRYPAQB3TFLQE727TA3R723QIEPTP5KCMP7OMH4HVXNLCEUKPD4AZJP) | Sarthak Dhere | 5/5 | "Nice application." |
 
 > 📊 Full data with emails: [user_onboarding_responses.csv](./user_onboarding_responses.csv) | Detailed analysis: [USER_FEEDBACK.md](./USER_FEEDBACK.md)
 
