@@ -32,7 +32,7 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 - **Metrics Dashboard**: [https://safe-deal-ten.vercel.app/dashboard/metrics](https://safe-deal-ten.vercel.app/dashboard/metrics)
 - **Security Checklist**: [https://safe-deal-ten.vercel.app/dashboard/security](https://safe-deal-ten.vercel.app/dashboard/security)
 - **Documentation**: [https://safe-deal-ten.vercel.app/docs](https://safe-deal-ten.vercel.app/docs)
-- **Community Contribution**: [Twitter post: https://x.com/SafeDeal_Stellar/status/176214041]
+- **Community Contribution**: [Twitter post: https://x.com/ShantanuUd51163/status/2038944828822819140?s=20](https://x.com/ShantanuUd51163/status/2038944828822819140?s=20)
 
 ---
 
