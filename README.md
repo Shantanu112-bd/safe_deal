@@ -27,6 +27,7 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 
 ## 🔗 Project Links
 - **Live Demo**: [https://safe-deal-ten.vercel.app](https://safe-deal-ten.vercel.app) 
+- **Demo Day Presentation**: [DEMO_DAY.md](./DEMO_DAY.md)
 **Demo video link**: [Watch on Loom](https://www.loom.com/share/a7b6d6d5c42942d094961dda5a7eaebe)
 - **Metrics Dashboard**: [https://safe-deal-ten.vercel.app/dashboard/metrics](https://safe-deal-ten.vercel.app/dashboard/metrics)
 - **Security Checklist**: [https://safe-deal-ten.vercel.app/dashboard/security](https://safe-deal-ten.vercel.app/dashboard/security)
@@ -58,13 +59,15 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 
 ### 🗣️ User Onboarding & Feedback
 
-We use a Google Form for collecting user details and product ratings. All responses are exported for continuous product improvement.
+> [!IMPORTANT]
+> **🌟 We are community-driven!** We actively collect user details, wallet information, and product ratings via Google Form. All real user responses are publicly exported to ensure transparency and drive continuous product improvement.
+> 
+> - 📊 **Full Feedback Data (Newly Updated)**: [**user_onboarding_responses.csv**](./user_onboarding_responses.csv)
+> - 📖 **Detailed Analysis**: [**USER_FEEDBACK.md**](./USER_FEEDBACK.md)
+> - 🤝 **Join Beta**: [SafeDeal Testnet Beta Form](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link)
 
-- **Onboarding Link**: [Join the SafeDeal Beta](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link)
-- **Feedback Responses**: [user_onboarding_responses.csv](./user_onboarding_responses.csv)
-- **Detailed Documentation**: [USER_FEEDBACK.md](./USER_FEEDBACK.md)
+#### 📋 Highlighted User Feedback
 
-#### 📋 User Feedback (Response Sheet)
 
 | **Verified Wallet Address** | **Email** | **Name** | **Rating** | **Product Feedback** |
 | :--- | :--- | :--- | :--- | :--- |
@@ -78,7 +81,7 @@ We use a Google Form for collecting user details and product ratings. All respon
 
 ### 🚀 Product Evolution & Feedback-Driven Improvements
 
-Based on the feedback collected from 5 initial beta testers (documented via Google Form and exported to [user_onboarding_responses.csv](./user_onboarding_responses.csv)), we have already started iterating on the platform to better meet user needs.
+Based on the feedback collected from **35 beta testers** (documented via Google Form and exported to [user_onboarding_responses.csv](./user_onboarding_responses.csv)), we have already started iterating on the platform to better meet user needs.
 
 | **User Feedback / Pain Point** | **Identified Improvement** | **Status** | **Git Commit Evidence** |
 | :--- | :--- | :--- | :--- |
@@ -105,6 +108,8 @@ Detailed iteration analysis can be found in [USER_FEEDBACK.md](./USER_FEEDBACK.m
 - **Performance**: High-performance indexer caching layer implemented in `/frontend/src/app/api/indexer`.
 - **Implementation**: [/frontend/src/lib/indexer.ts](https://github.com/Shantanu112-bd/Safe-Deal/blob/main/frontend/src/lib/indexer.ts)
 - **Monitoring**: Vercel Logs + localStorage events (user_connected, deal_created, payment_locked, payment_released).
+  <br/>
+  ![Monitoring Dashboard](./monitoring_dashboard.png)
 
 ---
 

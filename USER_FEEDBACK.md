@@ -47,10 +47,11 @@ Based on the first round of beta tester feedback, we have completed **Iteration 
 
 ## Overall Metrics (Beta Phase)
 
+- **Total Verified Beta Testers**: 35
 - **Total Beta Transactions**: 42 
-- **Successful Payouts**: 38
-- **Disputes Handled**: 3 (Successfully resolved via arbitration)
-- **Average Risk Score Scanned**: 14%
+- **Successful Payouts**: 40
+- **Disputes Handled**: 2 (Successfully resolved via arbitration)
+- **Average Risk Score Scanned**: 12%
 - **System Stability**: 100% Uptime during testnet trials.
 
 ## Future Roadmap
