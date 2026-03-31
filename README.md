@@ -86,8 +86,8 @@ Based on the feedback collected from **35 beta testers** (documented via Google 
 | **User Feedback / Pain Point** | **Identified Improvement** | **Status** | **Git Commit Evidence** |
 | :--- | :--- | :--- | :--- |
 | "Skeptical about paying gas fees for every deal" | **Gasless Transactions**: Implementation of Fee Sponsorship so users need zero XLM. | ✅ Done | [`b0cc1798`](https://github.com/Shantanu112-bd/Safe-Deal/commit/b0cc17985ea0d5b255363f10bebd7d1170494817) |
-| "Hard to track active deals on small screens" | **Mobile Responsive UI**: Conditional rendering for cards vs tables on mobile devices. | ✅ Done | [`38699209`](https://github.com/Shantanu112-bd/Safe-Deal/commit/c1b64374c76b4a108fe34e5708251f78) |
-| "Need more trust signals before locking funds" | **AI Shield & Metrics**: Transparency dashboard to verify historical merchant performance. | ✅ Done | [`c1b64374`](https://github.com/Shantanu112-bd/Safe-Deal/commit/c1b64374c76b4a108fe34e5708251f78) |
+| "Hard to track active deals on small screens" | **Mobile Responsive UI**: Conditional rendering for cards vs tables on mobile devices. | ✅ Done | [`2d844061`](https://github.com/Shantanu112-bd/Safe-Deal/commit/2d844061be20a2f3f03a89077bce757ee21e24c0) |
+| "Need more trust signals before locking funds" | **AI Shield & Metrics**: Transparency dashboard to verify historical merchant performance. | ✅ Done | [`65a8b825`](https://github.com/Shantanu112-bd/Safe-Deal/commit/65a8b825d2e0508b66d09728bc10077026357ccc) |
 | "Want to receive deal alerts on social apps" | **WhatsApp Bot Integration**: Evolve from a standalone web app to a WhatsApp-integrated bot. | 🏗️ Planned (Next Phase) | — |
 
 Detailed iteration analysis can be found in [USER_FEEDBACK.md](./USER_FEEDBACK.md).
