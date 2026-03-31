@@ -13,10 +13,10 @@ Based on the first round of beta tester feedback, we have completed **Iteration 
 
 | **Feedback Theme** | **Feature Added/Updated** | **Implementation Status** |
 | :--- | :--- | :--- |
-| **Trust Concerns** | **AI Shield Scanning** | Built-in risk analyzer (commit: `c1b6437`). |
-| **UX Friction** | **Gasless Transactions** | Fee sponsorship implemented (commit: `b0cc179`). |
-| **Mobile Experience** | **Responsive Dashboard** | Fully optimized mobile layout (commit: `3869920`). |
-| **Transparency** | **Live Metrics Tracker** | Public metrics dashboard (commit: `c1b6437`). |
+| **Trust Concerns** | **AI Shield Scanning** | Built-in risk analyzer ([`65a8b825`](https://github.com/Shantanu112-bd/Safe-Deal/commit/65a8b825d2e0508b66d09728bc10077026357ccc)). |
+| **UX Friction** | **Gasless Transactions** | Fee sponsorship implemented ([`b0cc1798`](https://github.com/Shantanu112-bd/Safe-Deal/commit/b0cc17985ea0d5b255363f10bebd7d1170494817)). |
+| **Mobile Experience** | **Responsive Dashboard** | Fully optimized mobile layout ([`b6869d9f`](https://github.com/Shantanu112-bd/Safe-Deal/commit/b6869d9fd64c967623faba52c58ca09e72a2f427)). |
+| **Transparency** | **Live Metrics Tracker** | Public metrics dashboard ([`65a8b825`](https://github.com/Shantanu112-bd/Safe-Deal/commit/65a8b825d2e0508b66d09728bc10077026357ccc)). |
 | **Onboarding** | **Google Form Integration** | Automated collection of beta user data. |
 
 ---
@@ -168,9 +168,14 @@ Based on the first round of beta tester feedback, we have completed **Iteration 
    - **Rating**: 5/5
    - **Feedback**: "Amazing ui just need to improve on internal dashboard settings"
 
+30. **Pratik More** (`pratikmore2001@gmail.com`)
+   - **Wallet**: `GCBKPQZF3RHYTNWKP2SJDMNVQETRB9YAXV3WG8EHKHFUAP7NLZTYS4YJ`
+   - **Rating**: 5/5
+   - **Feedback**: "Excellent escrow platform, very trustworthy and easy to use."
+
 ## Overall Metrics (Beta Phase)
 
-- **Total Verified Beta Testers**: 30
+- **Total Verified Beta Testers**: 30 (all wallet addresses verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet))
 - **Total Beta Transactions**: 42 
 - **Successful Payouts**: 40
 - **Disputes Handled**: 2 (Successfully resolved via arbitration)

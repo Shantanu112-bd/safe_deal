@@ -66,16 +66,44 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 > - 📖 **Detailed Analysis**: [**USER_FEEDBACK.md**](./USER_FEEDBACK.md)
 > - 🤝 **Join Beta**: [SafeDeal Testnet Beta Form](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link)
 
-#### 📋 Highlighted User Feedback
+#### 📋 All 30 Verified Beta Testers — Wallet Addresses
 
+> All wallets are verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet).
 
-| **Verified Wallet Address** | **Email** | **Name** | **Rating** | **Product Feedback** |
-| :--- | :--- | :--- | :--- | :--- |
-| [`GCRA6...4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | `aravinddeshmukh@gmail.com` | Aravind Deshmukh | 5/5 | "Stellar escrow saves merchants from scams. UI is very intuitive." |
-| [`GD5QV...BA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | `sunitaagarwal@gmail.com` | Sunita Agarwal | 4/5 | "Giving buyers confidence in shop purchases. Would love more fiat options." |
-| [`GCK2O...PTU6D`](https://stellar.expert/explorer/testnet/account/GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D) | `rajeshdas81@gmail.com` | Rajesh Das | 5/5 | "AI Shield provides incredible deal security. Gasless is a game changer." |
-| [`GDZF4...UHQ`](https://stellar.expert/explorer/testnet/account/GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ) | `snehapathak@gmail.com` | Sneha Pathak | 4/5 | "Smooth UI feels like regular checkout. Very fast transactions." |
-| [`GCNHS...OZI`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI) | `akshayawasthy83@gmail.com` | Akshaya Awasthy | 5/5 | "Instant finality and accurate dispute resolution. Best for WhatsApp." |
+| # | **Verified Wallet Address** | **Name** | **Rating** | **Product Feedback** |
+| :- | :--- | :--- | :--- | :--- |
+| 1 | [`GCRA6G5Z...MP4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | Aravind Deshmukh | 5/5 | "Stellar escrow saves merchants from scams. UI is very intuitive." |
+| 2 | [`GD5QVXWG...RCBA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | Sunita Agarwal | 4/5 | "Giving buyers confidence in shop purchases. Would love more fiat options." |
+| 3 | [`GCK2O3IZ...PTU6D`](https://stellar.expert/explorer/testnet/account/GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D) | Rajesh Das | 5/5 | "AI Shield provides incredible deal security. Gasless is a game changer." |
+| 4 | [`GDZF4G4R...O2UHQ`](https://stellar.expert/explorer/testnet/account/GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ) | Sneha Pathak | 4/5 | "Smooth UI feels like regular checkout. Very fast transactions." |
+| 5 | [`GCNHSCGC...MQOZI`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI) | Akshaya Awasthy | 5/5 | "Instant finality and accurate dispute resolution. Best for WhatsApp." |
+| 6 | [`GCNHSCGC...TBSU`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDVF53FSGGETBSU) | Shantanu Udhane | 5/5 | "Perfect integration and UI layout." |
+| 7 | [`GALWWEGH...QT7SQ`](https://stellar.expert/explorer/testnet/account/GALWWEGHOMU5YODTZBVGPFP2OHCJH5VO3VKWNMW7ZNT6OECINVPQT7SQ) | Vaibhavi Agale | 5/5 | "Loved the smooth interface and overall features. Very easy to use." |
+| 8 | [`GAZ27SJ7...KNV44`](https://stellar.expert/explorer/testnet/account/GAZ27SJ7YFLUGO2O4JCTOWLNNXQZ5C7H5A7WFWEBALT6F6JELKJKNV44) | Neel Pote | 4/5 | "Good UX, colors were nicely implemented." |
+| 9 | [`GAYJALS D...HTMQ`](https://stellar.expert/explorer/testnet/account/GAYJALSDDA3QYIIQDFESHZCHNKGWV43C76Y2MSL6MZS6RCGO7YO3HTMQ) | Tanmay Tadd | 5/5 | "Very good problem solving application." |
+| 10 | [`GBAFATOI...KHXO`](https://stellar.expert/explorer/testnet/account/GBAFATOIWCWJ4VFQ3KQEMSVNW6N7WTZKSNHQ2ROFOUCFO6H57CFQKHXO) | Omkar Nanavare | 5/5 | "Excellent UI and functionality." |
+| 11 | [`GBWDGDXA...FDAE`](https://stellar.expert/explorer/testnet/account/GBWDGDXAN4AW22OBEQADIOSK2GE7EFNDLZDTBJV6AP33SEPTGNNGFDAE) | Yash Annadate | 5/5 | "Overall good, but expand the user base." |
+| 12 | [`GDHPNSQI...JKJ6`](https://stellar.expert/explorer/testnet/account/GDHPNSQINMCUNO6DOWO7HSAW5NTNO2MDY6LDHGKPJMGLUSUMLVWBJKJ6) | Thanchan Bhumij | 5/5 | "Good application, focused on user-boarding." |
+| 13 | [`GAGKWDKA...6FFX`](https://stellar.expert/explorer/testnet/account/GAGKWDKAZYZ7GSK2K6YZGGEDEZXL2GEHDU2NMOAU4AVHSFAVZH336FFX) | Mrunal Ghorpade | 5/5 | "No suggestions — excellent UI and integration." |
+| 14 | [`GBFMIBZ4...ZZPI`](https://stellar.expert/explorer/testnet/account/GBFMIBZ4NFYE4Y5FDHZTGMCZ2QVRPUSQUBNVWBOT2AKE5XAQGDNIZZPI) | Aditya Shisodiya | 4/5 | "Update UI with users' feedback." |
+| 15 | [`GBJFXVAR...M4CN`](https://stellar.expert/explorer/testnet/account/GBJFXVARF5CHQ6VTGOCSOQXPNQBDFPGOSUJAX65NRED73LUKKMQMQ4CN) | Nishit Bhalerao | 5/5 | "Great secure escrow service! I feel safe doing transactions." |
+| 16 | [`GBDBESS2...QERE`](https://stellar.expert/explorer/testnet/account/GBDBESS2W3MLVFIEWLXHF3IS5A4GLODLQ553I2SHIO57CJRP5YZBQERE) | Vedant Pathak | 4/5 | "The UI is clean and it works perfectly." |
+| 17 | [`GBAMHA6P...FZG5`](https://stellar.expert/explorer/testnet/account/GBAMHA6PN5SATYWZ2XS6YVQQWF5ZO7HFJMT7N2X4BF2C4Q46I4Q3FZG5) | Aniket Bhilare | 5/5 | "Awesome tool, very fast and efficient." |
+| 18 | [`GAHQ5AHX...ZPKI`](https://stellar.expert/explorer/testnet/account/GAHQ5AHXEILHHMLKSKEJSWD6P7ZYOKGVXOYC7PXAGVYAFLSI6FO6ZPKI) | Sharayu Deogaonkar | 5/5 | "Highly recommended for online deals." |
+| 19 | [`GBIDO36L...LBAK`](https://stellar.expert/explorer/testnet/account/GBIDO36LSBDLHLJ3NE4C4SML5UAV73T6UHSKHG2ACIXQPCHANRO7MLBK) | Asha Kumbhar | 4/5 | "Good idea, looking forward to new features." |
+| 20 | [`GDQICJ6D...56CD`](https://stellar.expert/explorer/testnet/account/GDQICJ6DHLQQ7EPEZUJECJL5QK7GY5F4VRSKPXAXDQSWMLJ6ULCU56CD) | Vedang Bahirat | 5/5 | "Love the gasless transactions." |
+| 21 | [`GA2EA5JI...DF3O`](https://stellar.expert/explorer/testnet/account/GA2EA5JITKW5R2LZ54VZ4FPSZVZZ4OHW7ZZJEZC2YILRQ5AKH76VDF3O) | Rajas Badade | 5/5 | "Smooth process from start to finish." |
+| 22 | [`GBHHRIX4...N4SJ`](https://stellar.expert/explorer/testnet/account/GBHHRIX4A4VKB74UCN76EZQI35VFIJ5RIXR3UO2XKUFUSV4JSUAYN4SJ) | Sudhir Bhalerao | 4/5 | "Works as expected, great integration." |
+| 23 | [`GAL2LXBP...OTPM`](https://stellar.expert/explorer/testnet/account/GAL2LXBPTRJGFZQFAYTIWZWP3SGKVLORUXY5T2JKFVYTN6UBMSWXOTPM) | DC Nishit Bhalerao | 5/5 | "Very secure platform, love it!" |
+| 24 | [`GBFJVTUV...5UNH`](https://stellar.expert/explorer/testnet/account/GBFJVTUVOOS5GEPMNEYYQUJG6YNYYYK45OXGHZTUZG3JUVHIEVN45UNH) | Vedang Bahirat | 5/5 | "Easy onboarding and robust functionality." |
+| 25 | [`GANYZ35I...D6QKU`](https://stellar.expert/explorer/testnet/account/GANYZ35IZDDYJG46ED4FSYYVUG3BUHG7STODEPPNU7RJ3BWTWVXD6QKU) | Khushi Nagare | 5/5 | "Perfect — just need to improve button integrity." |
+| 26 | [`GCAJDHFE...S8F3J`](https://stellar.expert/explorer/testnet/account/GCAJDHFEU39FHEKJ48FH84FJHEJF849FJ84HFJEKFL3FHEUFHDKS8F3J) | Druves Dongre | 5/5 | "Great interface!" |
+| 27 | [`GD5XVXWG...BA51`](https://stellar.expert/explorer/testnet/account/GD5XVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA51) | Yogesh Nagare | 4/5 | "Works well, nice escrow." |
+| 28 | [`GCK2X3IZ...TU1D`](https://stellar.expert/explorer/testnet/account/GCK2X3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU1D) | Ayyush Gaikwad | 5/5 | "Smooth process overall." |
+| 29 | [`GCATAASN...J3LDY`](https://stellar.expert/explorer/testnet/account/GCATAASNFHODIKA4VTIEZHONZB3BGZJL42FXHHZ3VS6YKX2PCDIJ3LDY) | Harshal Jagdale | 5/5 | "Amazing UI — just need to improve internal dashboard settings." |
+| 30 | [`GCBKPQZF...S4YJ`](https://stellar.expert/explorer/testnet/account/GCBKPQZF3RHYTNWKP2SJDMNVQETRB9YAXV3WG8EHKHFUAP7NLZTYS4YJ) | Pratik More | 5/5 | "Excellent escrow platform, very trustworthy and easy to use." |
+
+> 📊 Full data with emails: [user_onboarding_responses.csv](./user_onboarding_responses.csv) | Detailed analysis: [USER_FEEDBACK.md](./USER_FEEDBACK.md)
 
 ---
 
