@@ -85,9 +85,9 @@ Based on the feedback collected from **35 beta testers** (documented via Google 
 
 | **User Feedback / Pain Point** | **Identified Improvement** | **Status** | **Git Commit Evidence** |
 | :--- | :--- | :--- | :--- |
-| "Skeptical about paying gas fees for every deal" | **Gasless Transactions**: Implementation of Fee Sponsorship so users need zero XLM. | ✅ Done | [`b0cc1798`](https://github.com/Shantanu112-bd/Safe-Deal/commit/b0cc17985ea0d5b255363f10bebd7d1170494817) |
-| "Hard to track active deals on small screens" | **Mobile Responsive UI**: Conditional rendering for cards vs tables on mobile devices. | ✅ Done | [`2d844061`](https://github.com/Shantanu112-bd/Safe-Deal/commit/2d844061be20a2f3f03a89077bce757ee21e24c0) |
-| "Need more trust signals before locking funds" | **AI Shield & Metrics**: Transparency dashboard to verify historical merchant performance. | ✅ Done | [`65a8b825`](https://github.com/Shantanu112-bd/Safe-Deal/commit/65a8b825d2e0508b66d09728bc10077026357ccc) |
+| "Skeptical about paying gas fees for every deal" | **Gasless Transactions**: Fee Sponsorship so users need zero XLM to transact. | ✅ Done | [`b0cc1798`](https://github.com/Shantanu112-bd/Safe-Deal/commit/b0cc17985ea0d5b255363f10bebd7d1170494817) — *feat: fee sponsorship gasless transactions using Stellar fee bump* |
+| "Hard to track active deals on small screens" | **Mobile Responsive UI**: Hamburger navbar, mobile stats grid, and touch-friendly deal cards. | ✅ Done | [`b6869d9f`](https://github.com/Shantanu112-bd/Safe-Deal/commit/b6869d9fd64c967623faba52c58ca09e72a2f427) — *feat: mobile navbar with hamburger menu - build verified* |
+| "Need more trust signals before locking funds" | **Metrics Dashboard**: DAU charts, volume tracking, and merchant wallet table for full transparency. | ✅ Done | [`65a8b825`](https://github.com/Shantanu112-bd/Safe-Deal/commit/65a8b825d2e0508b66d09728bc10077026357ccc) — *feat: metrics dashboard with DAU charts, volume tracking, and user wallet table* |
 | "Want to receive deal alerts on social apps" | **WhatsApp Bot Integration**: Evolve from a standalone web app to a WhatsApp-integrated bot. | 🏗️ Planned (Next Phase) | — |
 
 Detailed iteration analysis can be found in [USER_FEEDBACK.md](./USER_FEEDBACK.md).
