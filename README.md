@@ -101,7 +101,7 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 | 27 | [`GD5XVXWG...BA51`](https://stellar.expert/explorer/testnet/account/GD5XVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA51) | Yogesh Nagare | 4/5 | "Works well, nice escrow." |
 | 28 | [`GCK2X3IZ...TU1D`](https://stellar.expert/explorer/testnet/account/GCK2X3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU1D) | Ayyush Gaikwad | 5/5 | "Smooth process overall." |
 | 29 | [`GCATAASN...J3LDY`](https://stellar.expert/explorer/testnet/account/GCATAASNFHODIKA4VTIEZHONZB3BGZJL42FXHHZ3VS6YKX2PCDIJ3LDY) | Harshal Jagdale | 5/5 | "Amazing UI — just need to improve internal dashboard settings." |
-| 30 | [`GCBKPQZF...S4YJ`](https://stellar.expert/explorer/testnet/account/GCBKPQZF3RHYTNWKP2SJDMNVQETRB9YAXV3WG8EHKHFUAP7NLZTYS4YJ) | Pratik More | 5/5 | "Excellent escrow platform, very trustworthy and easy to use." |
+| 30 | [`GCWTPJMI...E752`](https://stellar.expert/explorer/testnet/account/GCWTPJMIGGAIBTGKTIMTEEHGNPH6ITOJ7GFUFGCGSWQD6NOE4BSDE752) | Pratik More | 5/5 | "Excellent escrow platform, very trustworthy and easy to use." |
 
 > 📊 Full data with emails: [user_onboarding_responses.csv](./user_onboarding_responses.csv) | Detailed analysis: [USER_FEEDBACK.md](./USER_FEEDBACK.md)
 

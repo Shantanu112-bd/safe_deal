@@ -169,7 +169,7 @@ Based on the first round of beta tester feedback, we have completed **Iteration 
    - **Feedback**: "Amazing ui just need to improve on internal dashboard settings"
 
 30. **Pratik More** (`pratikmore2001@gmail.com`)
-   - **Wallet**: `GCBKPQZF3RHYTNWKP2SJDMNVQETRB9YAXV3WG8EHKHFUAP7NLZTYS4YJ`
+   - **Wallet**: `GCWTPJMIGGAIBTGKTIMTEEHGNPH6ITOJ7GFUFGCGSWQD6NOE4BSDE752`
    - **Rating**: 5/5
    - **Feedback**: "Excellent escrow platform, very trustworthy and easy to use."
 
