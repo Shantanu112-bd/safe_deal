@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <ErrorBoundary>
-      <div className="flex flex-col lg:flex-row min-h-screen bg-[#030712]">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-[#050505]">
         <DashboardSidebar />
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden pb-20 lg:pb-0">
           {children}

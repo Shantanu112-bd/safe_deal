@@ -144,15 +144,15 @@ export default function HistoryPage() {
 
   return (
     <ErrorBoundary>
-      <div className="flex-1 min-w-0 bg-[#030712] text-white pb-20 font-sans min-h-screen">
-        <header className="sticky top-0 z-30 border-b border-white/5 bg-[#030712]/80 backdrop-blur-xl px-6 lg:px-10 h-20 flex items-center justify-between">
+      <div className="flex-1 min-w-0 bg-[#050505] text-white pb-20 font-sans min-h-screen">
+        <header className="sticky top-0 z-30 border-b border-white/[0.08] bg-[#050505]/80 backdrop-blur-md px-6 lg:px-10 h-20 flex items-center justify-between">
           <div>
-            <h1 className="text-xl lg:text-2xl font-black text-white">Transaction History</h1>
-            <p className="text-[10px] font-black text-[#94a3b8] uppercase tracking-widest mt-0.5">Audited record of all finalized settlements</p>
+            <h1 className="text-xl lg:text-2xl font-black text-white uppercase tracking-tight">Transaction History</h1>
+            <p className="text-[10px] font-bold text-[#999] uppercase tracking-[0.2em] mt-0.5">Audited record of all finalized settlements</p>
           </div>
           <button 
             onClick={handleExportCSV}
-            className="hidden sm:flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-300 hover:bg-white/10 transition-all shadow-sm"
+            className="hidden sm:flex items-center gap-2 rounded-xl border border-white/[0.1] glass px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white/70 hover:text-white transition-all duration-200"
           >
             <Download className="size-4" />
             Export CSV
@@ -164,19 +164,19 @@ export default function HistoryPage() {
           {/* SUMMARY CARDS */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {stats.map((stat, i) => (
-              <div key={i} className={cn("bg-white/5 rounded-[2rem] border border-white/10 p-8 hover:bg-white/10 transition-all", stat.glow)}>
+              <div key={i} className={cn("glass-card rounded-2xl p-8 hover:border-white/20 transition-all duration-200", stat.glow)}>
                 <div className="flex items-start justify-between mb-6">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">{stat.label}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">{stat.label}</p>
                   <stat.icon className={cn("size-6 drop-shadow-lg", stat.iconColor)} />
                 </div>
                 <h2 className="text-3xl font-black text-white">{stat.val}</h2>
-                <p className="text-xs font-bold text-slate-400 mt-2 uppercase tracking-widest">{stat.sub}</p>
+                <p className="text-xs font-bold text-[#999] mt-2 uppercase tracking-[0.2em]">{stat.sub}</p>
               </div>
             ))}
           </div>
 
           {/* FILTER ROW */}
-          <div className="bg-[#0f0f1a] rounded-3xl sm:rounded-[2.5rem] border border-white/10 p-3 sm:p-4 shadow-xl flex flex-col md:flex-row md:items-center gap-4">
+          <div className="glass-card rounded-2xl p-3 sm:p-4 flex flex-col md:flex-row md:items-center gap-4">
             <div className="relative flex-1 group">
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 size-4 text-[#94a3b8] group-focus-within:text-indigo-400 transition-colors" />
               <input
@@ -184,16 +184,16 @@ export default function HistoryPage() {
                 placeholder="Search by Deal ID, Item, or Transaction Reference..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-[#030712] border border-white/5 rounded-2xl pl-12 pr-6 py-4 text-xs font-bold text-white placeholder-[#94a3b8] focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all outline-none"
+                className="w-full bg-[#050505] border border-white/[0.08] rounded-xl pl-12 pr-6 py-4 text-xs font-bold text-white placeholder-[#999] focus:ring-2 focus:ring-[#06B6D4]/50 transition-all duration-200 outline-none"
               />
             </div>
 
             <div className="flex gap-2">
-              <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#030712] px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-300 hover:bg-white/5 hover:text-white transition-colors min-h-[44px]">
+              <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-[#050505] px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors duration-200 min-h-[44px]">
                 <Calendar className="size-4" />
                 Date
               </button>
-              <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#030712] px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-300 hover:bg-white/5 hover:text-white transition-colors min-h-[44px]">
+              <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-[#050505] px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors duration-200 min-h-[44px]">
                 <Filter className="size-4" />
                 Status
               </button>
@@ -204,11 +204,11 @@ export default function HistoryPage() {
           {loading ? (
              <TableSkeleton /> 
           ) : (
-            <div className="bg-[#0f0f1a] rounded-[2.5rem] border border-white/10 shadow-xl overflow-hidden p-6 sm:p-0">
+            <div className="glass-card rounded-2xl overflow-hidden p-6 sm:p-0">
               {isMobile ? (
                 <div className="flex flex-col gap-3">
                   {filteredHistory.map(deal => (
-                    <div key={deal.id} className="bg-[#030712] rounded-2xl p-5 border border-white/5 shadow-inner">
+                    <div key={deal.id} className="bg-[#050505] rounded-2xl p-5 border border-white/[0.08]">
                       <div className="flex justify-between items-start mb-4">
                         <p className="font-bold text-white text-base">{deal.title}</p>
                         <span className={cn(
@@ -245,20 +245,20 @@ export default function HistoryPage() {
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[800px] text-left border-collapse">
+                  <table className="w-full min-w-[800px] text-left border-collapse" style={{borderCollapse:'collapse'}}>
                     <thead>
-                      <tr className="bg-[#030712] border-b border-white/10">
-                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Transaction</th>
-                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Deal Reference</th>
-                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Date & Time</th>
-                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Status</th>
-                        <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-[#94a3b8] text-right">Settlement</th>
+                      <tr className="bg-[#050505] border-b border-white/[0.08]">
+                        <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Transaction</th>
+                        <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Deal Reference</th>
+                        <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Date & Time</th>
+                        <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Status</th>
+                        <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] text-right">Settlement</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
                       {filteredHistory.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="px-8 py-32 text-center bg-[#030712]">
+                          <td colSpan={5} className="px-8 py-32 text-center bg-[#050505]">
                             <div className="flex flex-col items-center space-y-4">
                               <div className="size-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
                                 <FileText className="size-8 text-[#94a3b8]" />
@@ -284,7 +284,7 @@ export default function HistoryPage() {
                           <tr key={deal.id} className="hover:bg-white/5 transition-colors group">
                              <td className="px-8 py-6">
                               <div className="flex items-center gap-4">
-                                <div className="size-10 rounded-xl bg-[#030712] border border-white/10 flex items-center justify-center text-[#94a3b8] group-hover:bg-indigo-500/20 group-hover:text-indigo-400 group-hover:border-indigo-500/30 transition-all shadow-sm">
+                                <div className="size-10 rounded-xl bg-[#050505] border border-white/[0.08] flex items-center justify-center text-[#999] group-hover:bg-[#06B6D4]/20 group-hover:text-[#06B6D4] group-hover:border-[#06B6D4]/30 transition-all duration-200">
                                   <CheckCircle2 className="size-4" />
                                 </div>
                                 <span className="text-sm font-black text-white">{deal.title}</span>
@@ -330,7 +330,7 @@ export default function HistoryPage() {
                 <button disabled className="size-[44px] rounded-xl border border-white/10 bg-white/5 flex items-center justify-center text-[#94a3b8] cursor-not-allowed">
                   <ChevronLeft className="size-5" />
                 </button>
-                <button className="size-[44px] rounded-xl text-[10px] font-black bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/20">
+                <button className="size-[44px] rounded-xl text-[10px] font-bold accent-gradient text-white">
                   1
                 </button>
                 <button disabled className="size-[44px] rounded-xl border border-white/10 bg-white/5 flex items-center justify-center text-[#94a3b8] cursor-not-allowed">

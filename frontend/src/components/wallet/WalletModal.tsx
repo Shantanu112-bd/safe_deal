@@ -52,8 +52,8 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl">
-        <div className="bg-slate-900 px-8 py-10 text-white relative">
+      <DialogContent className="sm:max-w-md rounded-2xl p-0 overflow-hidden border-none shadow-2xl">
+        <div className="bg-[#111] px-8 py-10 text-white relative border border-white/[0.08] rounded-2xl">
           <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
             <Wallet className="size-32" />
           </div>
@@ -69,7 +69,7 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
               >
                 <div className="space-y-2">
                   <DialogTitle className="text-3xl font-black italic-none">Secure Connect</DialogTitle>
-                  <DialogDescription className="text-slate-400 font-bold italic-none">
+                  <DialogDescription className="text-[#999] font-bold italic-none">
                     Select your preferred Stellar wallet to continue.
                   </DialogDescription>
                 </div>
@@ -77,34 +77,34 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
                 <div className="grid gap-4">
                   <button
                     onClick={() => handleConnect("freighter")}
-                    className="flex items-center justify-between group rounded-[2rem] bg-white/5 border border-white/10 p-5 transition-all hover:bg-white/10 hover:border-emerald-500/50"
+                    className="flex items-center justify-between group rounded-2xl glass p-5 transition-all duration-200 hover:border-[#06B6D4]/50"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="size-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                      <div className="size-12 rounded-xl bg-white/10 flex items-center justify-center">
                          <div className="size-6 bg-white/20 rounded flex items-center justify-center font-black text-[10px]">F</div>
                       </div>
                       <div className="text-left">
                         <p className="font-black text-white italic-none">Freighter</p>
-                        <p className="text-[10px] uppercase font-black tracking-widest text-slate-500 italic-none">Safe Browser Extension</p>
+                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#999] italic-none">Safe Browser Extension</p>
                       </div>
                     </div>
-                    <ArrowRight className="size-5 text-slate-700 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="size-5 text-[#999] group-hover:text-[#06B6D4] group-hover:translate-x-1 transition-all duration-200" />
                   </button>
 
                   <button
                     onClick={() => handleConnect("albedo")}
-                    className="flex items-center justify-between group rounded-[2rem] bg-white/5 border border-white/10 p-5 transition-all hover:bg-white/10 hover:border-emerald-500/50"
+                    className="flex items-center justify-between group rounded-2xl glass p-5 transition-all duration-200 hover:border-[#06B6D4]/50"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="size-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                      <div className="size-12 rounded-xl bg-white/10 flex items-center justify-center">
                          <div className="size-6 bg-white/20 rounded flex items-center justify-center font-black text-[10px]">A</div>
                       </div>
                       <div className="text-left">
                         <p className="font-black text-white italic-none">Albedo</p>
-                        <p className="text-[10px] uppercase font-black tracking-widest text-slate-500 italic-none">Web Browser Wallet</p>
+                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#999] italic-none">Web Browser Wallet</p>
                       </div>
                     </div>
-                    <ArrowRight className="size-5 text-slate-700 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="size-5 text-[#999] group-hover:text-[#06B6D4] group-hover:translate-x-1 transition-all duration-200" />
                   </button>
                 </div>
 
@@ -118,11 +118,11 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
                 <div className="flex items-center justify-center gap-4 pt-4 opacity-40">
                    <div className="flex items-center gap-1.5 grayscale">
                       <ShieldCheck className="size-3" />
-                      <span className="text-[8px] font-black uppercase tracking-widest">End-to-End Encryption</span>
+                      <span className="text-[8px] font-bold uppercase tracking-[0.2em]">End-to-End Encryption</span>
                    </div>
                    <div className="flex items-center gap-1.5 grayscale">
                       <Zap className="size-3" />
-                      <span className="text-[8px] font-black uppercase tracking-widest">Instant Settlement</span>
+                      <span className="text-[8px] font-bold uppercase tracking-[0.2em]">Instant Settlement</span>
                    </div>
                 </div>
               </motion.div>
@@ -137,14 +137,14 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
                 className="flex flex-col items-center justify-center py-10 space-y-6"
               >
                 <div className="relative">
-                   <div className="size-24 rounded-full border-4 border-white/5 border-t-emerald-500 animate-spin" />
+                   <div className="size-24 rounded-full border-4 border-white/5 border-t-[#06B6D4] animate-spin" />
                    <div className="absolute inset-0 flex items-center justify-center">
                       <Wallet className="size-8 text-white" />
                    </div>
                 </div>
                 <div className="text-center space-y-2">
                   <h3 className="text-2xl font-black italic-none">Verifying Account</h3>
-                  <p className="text-slate-400 font-bold italic-none">Waiting for signature on Stellar...</p>
+                  <p className="text-[#999] font-bold italic-none">Waiting for signature on Stellar...</p>
                 </div>
               </motion.div>
             )}
@@ -161,7 +161,7 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
                 </div>
                 <div className="text-center space-y-2">
                   <h3 className="text-2xl font-black italic-none">Secured & Linked</h3>
-                  <p className="text-slate-400 font-bold italic-none">Your wallet is ready for SafeDeal.</p>
+                  <p className="text-[#999] font-bold italic-none">Your wallet is ready for SafeDeal.</p>
                 </div>
               </motion.div>
             )}

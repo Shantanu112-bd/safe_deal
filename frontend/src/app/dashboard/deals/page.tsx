@@ -74,18 +74,18 @@ export default function ActiveDealsPage() {
 
   return (
     <ErrorBoundary>
-      <div className="flex-1 min-w-0 bg-[#0f0f1a] min-h-screen text-slate-200 pb-20 font-sans">
-        <header className="sticky top-0 z-30 border-b border-white/5 bg-[#030712]/80 backdrop-blur-md px-6 lg:px-10 h-20 flex items-center justify-between">
+      <div className="flex-1 min-w-0 bg-[#050505] min-h-screen text-white pb-20 font-sans">
+        <header className="sticky top-0 z-30 border-b border-white/[0.08] bg-[#050505]/80 backdrop-blur-md px-6 lg:px-10 h-20 flex items-center justify-between">
           <div>
-            <h1 className="text-xl lg:text-2xl font-black text-white">My Deals</h1>
-            <p className="text-[10px] font-black text-[#94a3b8] uppercase tracking-widest mt-0.5">
+            <h1 className="text-xl lg:text-2xl font-black text-white uppercase tracking-tight">My Deals</h1>
+            <p className="text-[10px] font-bold text-[#999] uppercase tracking-[0.2em] mt-0.5">
               {filteredDeals.length > 0
                 ? `${filteredDeals.length} deal${filteredDeals.length !== 1 ? "s" : ""}`
                 : "No deals yet"}
             </p>
           </div>
           <button
-            className="rounded-xl px-6 py-3 text-sm font-bold bg-gradient-to-r from-indigo-500 to-purple-500 !text-white hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center shadow-[0_0_20px_rgba(99,102,241,0.3)]"
+            className="accent-gradient rounded-xl px-6 py-3 text-sm font-bold !text-white hover:scale-[1.02] transition-transform duration-200 disabled:opacity-50 flex items-center uppercase tracking-wider"
             onClick={() => setShowCreate(true)}
             disabled={!isConnected}
           >
@@ -96,16 +96,16 @@ export default function ActiveDealsPage() {
 
         <main className="mx-auto max-w-7xl px-6 lg:px-10 py-10 space-y-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 w-fit flex-wrap gap-1">
+            <div className="flex glass-card p-1 rounded-xl w-fit flex-wrap gap-1">
               {(["all", "WaitingForPayment", "Locked", "Disputed"] as Status[]).map((s) => (
                 <button
                   key={s}
                   onClick={() => setFilter(s)}
                   className={cn(
-                    "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
+                    "px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-200",
                     filter === s
-                      ? "bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]"
-                      : "text-slate-400 hover:text-white"
+                      ? "accent-gradient text-white"
+                      : "text-[#999] hover:text-white"
                   )}
                 >
                   {s}
@@ -114,13 +114,13 @@ export default function ActiveDealsPage() {
             </div>
 
             <div className="relative group max-w-xs w-full">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400 group-focus-within:text-indigo-400 transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-[#999] group-focus-within:text-[#06B6D4] transition-colors duration-200" />
               <input
                 type="text"
                 placeholder="Search deals..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-[#030712] pl-11 pr-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all placeholder:text-slate-500"
+                className="w-full rounded-xl border border-white/[0.08] bg-[#111] pl-11 pr-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/50 transition-all duration-200 placeholder:text-[#999]"
               />
             </div>
           </div>
@@ -138,12 +138,12 @@ export default function ActiveDealsPage() {
               ))
             ) : (
               <div className="py-24 flex flex-col items-center text-center space-y-6 md:col-span-2 lg:col-span-3">
-                <div className="size-20 rounded-[2rem] bg-white/5 border border-white/10 flex items-center justify-center text-slate-500">
+                <div className="size-20 rounded-2xl glass-card flex items-center justify-center text-[#999]">
                   <ShoppingBag className="size-10" />
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-xl font-black text-white uppercase tracking-tight">No deals found</h3>
-                  <p className="text-sm font-bold text-[#94a3b8] max-w-xs mx-auto uppercase tracking-widest">
+                  <p className="text-sm font-light text-[#999] max-w-xs mx-auto">
                     {!isConnected
                       ? "Connect your wallet to view deals."
                       : "Create your first deal to get started"}

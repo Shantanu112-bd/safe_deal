@@ -7,8 +7,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { PageTracker } from "@/components/PageTracker";
 
 export const metadata: Metadata = {
-  title: "SafeDeal | Secure Escrow Payments",
-  description: "The trusted middleman for WhatsApp and Instagram commerce.",
+  title: "SafeDeal — Secure Escrow on Stellar",
+  description: "AI-protected escrow for WhatsApp and Instagram commerce. Zero fraud. Instant settlement. Built on Stellar.",
 };
 
 export default function RootLayout({
@@ -22,9 +22,12 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
       </head>
-      <body style={{ fontFamily: 'Inter, system-ui, Arial, sans-serif' }}>
+      <body
+        className="bg-[#050505] text-white antialiased selection:bg-[#7C3AED]/30 selection:text-white"
+        style={{ fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -33,19 +36,9 @@ export default function RootLayout({
         >
           <WalletProvider>
             <PageTracker />
-            <div className="relative flex min-h-screen flex-col overflow-hidden bg-[#030712] text-white">
-              {/* Attractive Background Glow Effects */}
-              <div className="pointer-events-none fixed inset-0 z-0">
-                <div className="absolute top-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full bg-primary/30 blur-[120px] animate-pulse" style={{ animationDuration: '4s' }} />
-                <div className="absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-blue-500/30 blur-[100px] animate-pulse" style={{ animationDuration: '6s' }} />
-                <div className="absolute top-[40%] left-[80%] h-[30%] w-[30%] rounded-full bg-emerald-500/20 blur-[100px] animate-pulse" style={{ animationDuration: '5s' }} />
-                <div className="absolute inset-0 bg-[#030712]/60 backdrop-blur-[2px]" />
-              </div>
-              
-              <div className="relative z-10 flex min-h-screen flex-col">
-                <Navbar />
-                <main className="flex-1 relative">{children}</main>
-              </div>
+            <div className="relative flex min-h-screen flex-col overflow-x-hidden">
+              <Navbar />
+              <main className="flex-1 relative z-10">{children}</main>
             </div>
             <Toaster position="bottom-right" className="italic-none" />
           </WalletProvider>

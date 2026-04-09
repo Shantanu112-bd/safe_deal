@@ -2,191 +2,170 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { 
-  Shield, 
-  Menu, 
-  X, 
-  LayoutDashboard,
-  User,
-  Settings
-} from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { WalletModal } from "@/components/wallet/WalletModal";
 import { useWallet } from "@/context/WalletContext";
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetTrigger 
-} from "@/components/ui/sheet";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+
+/* ── PROPER SVG LOGO ── */
+function SafeDealLogo({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Shield body */}
+      <path
+        d="M20 2L4 10v12c0 9.94 6.82 19.24 16 21.6C29.18 41.24 36 31.94 36 22V10L20 2z"
+        fill="currentColor"
+        opacity="0.15"
+      />
+      <path
+        d="M20 2L4 10v12c0 9.94 6.82 19.24 16 21.6C29.18 41.24 36 31.94 36 22V10L20 2z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      {/* Inner lock keyhole */}
+      <circle cx="20" cy="18" r="4" stroke="currentColor" strokeWidth="1.5" fill="none" />
+      <path
+        d="M18 21h4l1 7h-6l1-7z"
+        fill="currentColor"
+        opacity="0.6"
+      />
+      {/* Check accent */}
+      <path
+        d="M14 18l4 4 8-8"
+        stroke="url(#logoGrad)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+      <defs>
+        <linearGradient id="logoGrad" x1="14" y1="14" x2="26" y2="22">
+          <stop stopColor="#06B6D4" />
+          <stop offset="1" stopColor="#EC4899" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 
 export function Navbar() {
+  const pathname = usePathname();
   const { isConnected, publicKey, disconnect } = useWallet();
   const [modalOpen, setModalOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isDashboard = pathname?.startsWith("/dashboard");
 
   const navLinks = [
-    { label: "How it Works", href: "/#how-it-works" },
-    { label: "For Merchants", href: "/#merchants" },
-    { label: "For Buyers", href: "/#buyers" },
+    { label: "How It Works", href: "/#how-it-works" },
+    { label: "Features", href: "/#features" },
     { label: "Pricing", href: "/#pricing" },
     { label: "Docs", href: "/docs" },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-indigo-500/20 bg-[#030712] shadow-[0_4px_30px_rgba(99,102,241,0.1)]">
-      <div className="container mx-auto flex h-20 items-center justify-between px-6">
-        
-        {/* LOGO */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/20 text-white transition-transform group-hover:scale-105">
-            <Shield className="size-6" />
-          </div>
-          <span className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">SafeDeal</span>
-        </Link>
+    <>
+      <header
+        className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/[0.08]"
+        style={{ padding: "1rem 2rem" }}
+      >
+        <div className="max-w-[90rem] mx-auto flex items-center justify-between">
+          {/* LOGO */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <SafeDealLogo className="w-8 h-8 text-white group-hover:text-[#06B6D4] transition-colors duration-200" />
+            <div className="flex items-center gap-2">
+              <span className="text-base font-black tracking-tight text-white uppercase">
+                SafeDeal
+              </span>
+              <div className="w-1.5 h-1.5 rounded-full bg-red-500 live-dot" />
+            </div>
+          </Link>
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.label} 
-              href={link.href}
-              className="text-xs font-black uppercase tracking-widest text-slate-200 hover:text-indigo-400 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="flex items-center gap-2 rounded-full bg-orange-500/10 px-3 py-1 text-[10px] font-black text-orange-400 border border-orange-500/20 italic-none">
-             <div className="size-1.5 rounded-full bg-orange-400 animate-pulse" />
-             TESTNET
-          </div>
-        </nav>
-
-        {/* WALLET BUTTON */}
-        <div className="flex items-center gap-4">
-          {isConnected ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-full bg-white/5 border border-indigo-500/20 px-1.5 py-1.5 pr-4 text-white hover:border-indigo-400/50 transition-all shadow-lg hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]">
-                <div className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white font-black text-[10px] shadow-inner">
-                  {publicKey?.slice(0, 1)}
-                </div>
-                <span className="text-xs font-black font-mono tracking-tight">
-                  {publicKey?.slice(0, 4)}...{publicKey?.slice(-4)}
-                </span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-white/10 bg-[#0f0f1a] shadow-2xl backdrop-blur-xl text-slate-200">
-                <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] px-3 py-2 italic-none">Safe Account</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-white/5" />
-                <DropdownMenuItem className="p-0 focus:bg-white/5 rounded-xl cursor-pointer">
-                  <Link href="/dashboard" className="flex w-full items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-bold text-white hover:text-indigo-400 transition-colors">
-                    <LayoutDashboard className="size-4" /> Dashboard
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="p-0 focus:bg-white/5 rounded-xl cursor-pointer">
-                  <Link href="/merchant/profile" className="flex w-full items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-bold text-white hover:text-indigo-400 transition-colors">
-                    <User className="size-4" /> Storefront
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="p-0 focus:bg-white/5 rounded-xl cursor-pointer">
-                  <Link href="/dashboard/settings" className="flex w-full items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-bold text-white hover:text-indigo-400 transition-colors">
-                    <Settings className="size-4" /> Settings
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-white/5" />
-                <DropdownMenuItem 
-                  onClick={disconnect}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-bold text-red-400 focus:bg-red-500/10 focus:text-red-300 cursor-pointer"
+          {/* CENTER NAV (hidden on mobile & dashboard) */}
+          {!isDashboard && (
+            <nav className="hidden lg:flex items-center gap-10">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/80 hover:text-white transition-colors duration-200"
                 >
-                  <X className="size-4" /> Disconnect
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className="flex items-center gap-3">
-              <button 
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          )}
+
+          {/* RIGHT: CTA */}
+          <div className="flex items-center gap-4">
+            {isConnected ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/dashboard"
+                  className="hidden md:flex items-center gap-2 rounded-full glass px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={disconnect}
+                  className="rounded-full glass px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-red-400 transition-colors duration-200"
+                >
+                  {publicKey?.slice(0, 4)}…{publicKey?.slice(-4)}
+                </button>
+              </div>
+            ) : (
+              <button
                 onClick={() => setModalOpen(true)}
-                className="hidden md:block px-4 py-2 text-xs font-bold text-slate-200 hover:text-indigo-400 transition-colors"
-              >
-                Sign In
-              </button>
-              <button 
-                onClick={() => setModalOpen(true)}
-                className="rounded-xl px-6 py-2.5 text-xs font-black tracking-widest uppercase shadow-xl shadow-indigo-500/20 bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 hover:scale-105 transition-all"
+                className="accent-gradient rounded-full px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200"
               >
                 Get Started
               </button>
-            </div>
-          )}
+            )}
 
-          {/* MOBILE MENU */}
-          <Sheet>
-            <SheetTrigger className="lg:hidden rounded-xl bg-indigo-500/10 border border-indigo-500/20 p-2.5 text-indigo-400 hover:bg-indigo-500/20 transition-all shadow-[0_0_15px_rgba(99,102,241,0.1)]">
-              <Menu className="size-6" />
-            </SheetTrigger>
-            <SheetContent side="right" className="w-full sm:w-[350px] p-0 border-l border-white/10 bg-[#0f0f1a] text-white">
-               <div className="flex h-full flex-col p-8">
-                  <header className="flex items-center justify-between mb-12">
-                     <div className="flex items-center gap-2.5">
-                        <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
-                           <Shield className="size-6" />
-                        </div>
-                        <span className="text-xl font-black text-white">SafeDeal</span>
-                     </div>
-                  </header>
-
-                  <nav className="flex flex-col gap-6">
-                    {navLinks.map((link) => (
-                      <Link 
-                        key={link.label} 
-                        href={link.href}
-                        className="text-lg font-black text-slate-300 hover:text-indigo-400 transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </nav>
-
-                  <div className="mt-auto space-y-6">
-                     <div className="rounded-3xl bg-white/5 p-6 border border-white/10">
-                        <div className="flex items-center gap-2 mb-4">
-                           <div className="size-1.5 rounded-full bg-orange-400 animate-pulse" />
-                           <span className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Stellar Testnet Node</span>
-                        </div>
-                        <p className="text-xs font-bold text-slate-400 leading-relaxed italic-none">
-                           All transactions are processed on the Stellar Testnet for maximum security and zero real cost.
-                        </p>
-                     </div>
-                     
-                     {!isConnected ? (
-                        <button 
-                           onClick={() => setModalOpen(true)}
-                           className="w-full rounded-2xl py-4 font-black uppercase tracking-widest text-xs bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/20"
-                        >
-                           Get Started
-                        </button>
-                     ) : (
-                        <div className="grid grid-cols-2 gap-3">
-                           <Link href="/dashboard" className="rounded-2xl py-4 font-black uppercase tracking-widest text-[10px] bg-white/10 hover:bg-white/20 text-center transition-colors">
-                              Dashboard
-                           </Link>
-                           <button onClick={disconnect} className="rounded-2xl border border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 font-black uppercase tracking-widest text-[10px] transition-colors">
-                              Disconnect
-                           </button>
-                        </div>
-                     )}
-                  </div>
-               </div>
-            </SheetContent>
-          </Sheet>
+            {/* Mobile hamburger */}
+            {!isDashboard && (
+              <button
+                className="lg:hidden text-white p-2"
+                onClick={() => setMobileOpen(!mobileOpen)}
+              >
+                {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+
+        {/* MOBILE DROPDOWN */}
+        {mobileOpen && !isDashboard && (
+          <div className="lg:hidden mt-4 rounded-2xl glass p-6 space-y-4 mx-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm font-bold uppercase tracking-[0.2em] text-white/80 hover:text-white py-2 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+            {!isConnected && (
+              <button
+                onClick={() => { setModalOpen(true); setMobileOpen(false); }}
+                className="w-full accent-gradient rounded-xl py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white mt-2"
+              >
+                Get Started
+              </button>
+            )}
+          </div>
+        )}
+      </header>
 
       <WalletModal open={modalOpen} onOpenChange={setModalOpen} />
-    </header>
+    </>
   );
 }

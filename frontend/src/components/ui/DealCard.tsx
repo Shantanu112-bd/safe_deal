@@ -13,12 +13,12 @@ interface DealCardProps {
 const statusColors: Record<string, string> = {
   WaitingForPayment: "bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.6)] animate-pulse",
   Locked: "bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)] animate-pulse",
-  Shipped: "bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.6)]",
-  Completed: "bg-indigo-500",
+  Shipped: "bg-[#06B6D4] shadow-[0_0_15px_rgba(6,182,212,0.6)]",
+  Completed: "bg-[#EC4899]",
   Disputed: "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)] animate-pulse",
-  Refunded: "bg-slate-500",
-  Cancelled: "bg-slate-500",
-  Expired: "bg-slate-700",
+  Refunded: "bg-[#999]",
+  Cancelled: "bg-[#999]",
+  Expired: "bg-[#666]",
 };
 
 export function DealCard({ deal, onRefresh }: DealCardProps) {
@@ -72,7 +72,7 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
   };
 
   return (
-    <div className="group block rounded-[2rem] bg-white/5 border border-white/5 p-6 backdrop-blur-md transition-all hover:-translate-y-1 hover:bg-white/10 hover:border-white/10 shadow-lg relative overflow-hidden">
+    <div className="group block rounded-2xl glass-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-white/20 relative overflow-hidden">
       
       {/* Background Glow */}
       <div className={cn("absolute -top-16 -right-16 w-32 h-32 rounded-full blur-[40px] opacity-20 pointer-events-none transition-colors", statusColors[displayStatus]?.split(" ")[0])} />
@@ -81,36 +81,36 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
         
         <div>
           <div className="flex justify-between items-start mb-4">
-            <div className="size-12 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+            <div className="size-12 rounded-2xl bg-[#111] border border-white/[0.08] flex items-center justify-center text-xl group-hover:scale-110 transition-transform duration-200">
               🛍️
             </div>
-            <div className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/5">
-              <div className={cn("size-2 rounded-full", statusColors[displayStatus] || "bg-slate-500")} />
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#f8fafc]">{displayStatus}</span>
+            <div className="flex items-center gap-2 bg-[#111] px-3 py-1.5 rounded-full border border-white/[0.05]">
+              <div className={cn("size-2 rounded-full", statusColors[displayStatus] || "bg-[#999]")} />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">{displayStatus}</span>
             </div>
           </div>
 
-          <p className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] mb-1">Deal #{deal.id}</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] mb-1">Deal #{deal.id}</p>
           <h3 className="text-xl font-black text-white tracking-tight mb-2 line-clamp-1">{deal.title}</h3>
           
           <div className="flex items-center flex-wrap gap-2 pt-1">
-            <span className="text-sm font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-lg">
+            <span className="text-sm font-black accent-gradient-text bg-[#06B6D4]/10 border border-[#06B6D4]/20 px-3 py-1 rounded-lg">
               {deal.amountUSDC.toFixed(2)} USDC
             </span>
-            <span className="text-xs font-bold text-slate-400 bg-white/5 border border-white/5 px-3 py-1 rounded-lg">
+            <span className="text-xs font-bold text-[#999] bg-white/[0.03] border border-white/[0.05] px-3 py-1 rounded-lg">
               ≈ ₹{inrAmount}
             </span>
           </div>
 
           {(displayStatus === "Locked" || displayStatus === "Shipped" || displayStatus === "Completed" || displayStatus === "Disputed") && deal.buyerKey && (
-             <div className="mt-3 text-xs font-mono font-bold text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-500/20 inline-block">
+             <div className="mt-3 text-xs font-mono font-bold text-[#06B6D4] bg-[#06B6D4]/10 px-3 py-1.5 rounded-lg border border-[#06B6D4]/20 inline-block">
                Buyer: {deal.buyerKey.slice(0, 5)}...{deal.buyerKey.slice(-4)}
              </div>
           )}
         </div>
 
         <div>
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#94a3b8] mb-4 pb-4 border-b border-white/5">
+          <div className="flex items-center justify-between text-[10px] font-bold text-[#999] mb-4 pb-4 border-b border-white/[0.05]">
             <div className="flex items-center gap-1.5">
               <Clock className="size-3" />
               {timeAgo(deal.createdAt)}
@@ -124,10 +124,10 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
           <div className="flex items-center gap-2">
             {displayStatus === "WaitingForPayment" && (
               <>
-                <button onClick={handleShare} className="flex-1 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-black transition-colors flex items-center justify-center gap-2">
+                <button onClick={handleShare} className="flex-1 py-3 rounded-xl accent-gradient text-white text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02]">
                   <Share2 className="size-3.5" /> Share
                 </button>
-                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl glass text-white text-xs font-bold transition-all duration-200 text-center hover:border-white/20">
                   Details
                 </Link>
               </>
@@ -135,10 +135,10 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
 
             {displayStatus === "Locked" && (
               <>
-                <button onClick={markShipped} className="flex-1 py-3 bg-emerald-500 hover:bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.3)] text-white rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-2">
+                <button onClick={markShipped} className="flex-1 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2">
                   <CheckCircle2 className="size-3.5" /> Shipped?
                 </button>
-                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl glass text-white text-xs font-bold transition-all duration-200 text-center hover:border-white/20">
                   Details
                 </Link>
               </>
@@ -146,10 +146,10 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
 
             {displayStatus === "Shipped" && (
               <>
-                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+                <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl glass text-white text-xs font-bold transition-all duration-200 text-center hover:border-white/20">
                   View Details
                 </Link>
-                <span className="flex-1 text-[10px] font-black uppercase tracking-widest text-[#94a3b8] flex items-center justify-center gap-1.5">
+                <span className="flex-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] flex items-center justify-center gap-1.5">
                   <Info className="size-3" /> Waiting
                 </span>
               </>
@@ -157,7 +157,7 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
 
             {displayStatus === "Completed" && (
               <>
-                <button className="flex-1 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl text-xs font-black transition-colors text-center">
+                <button className="flex-1 py-3 accent-gradient text-white rounded-xl text-xs font-bold transition-all duration-200 text-center hover:scale-[1.02]">
                   Withdraw
                 </button>
               </>
@@ -165,14 +165,14 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
 
             {displayStatus === "Disputed" && (
               <>
-                <Link href={`/dashboard/disputes/${deal.id}`} className="flex-1 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-2">
+                <Link href={`/dashboard/disputes/${deal.id}`} className="flex-1 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2">
                   <ShieldAlert className="size-3.5" /> View Dispute
                 </Link>
               </>
             )}
             
             {(displayStatus === "Expired" || displayStatus === "Cancelled" || displayStatus === "Refunded") && (
-              <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-black transition-colors text-center">
+              <Link href={`/deal/${deal.id}`} target="_blank" className="flex-1 py-3 rounded-xl glass text-white text-xs font-bold transition-all duration-200 text-center hover:border-white/20">
                 History
               </Link>
             )}

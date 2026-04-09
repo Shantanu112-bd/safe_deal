@@ -31,7 +31,7 @@ function Section({ id, title, children }: { id: string, title: string, children:
       <h2 className="text-2xl font-black text-white mb-6 flex items-center gap-3">
         {title}
       </h2>
-      <div className="text-slate-400 leading-relaxed text-sm sm:text-base selection:bg-indigo-500/30">
+      <div className="text-[#999] leading-relaxed text-sm sm:text-base selection:bg-[#06B6D4]/30">
         {children}
       </div>
     </div>
@@ -52,12 +52,12 @@ export default function DocsPage() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-[#0a0a0f] text-slate-300 font-sans selection:bg-indigo-500/30 overflow-x-hidden">
+      <div className="min-h-screen bg-[#050505] text-[#ccc] font-sans selection:bg-[#06B6D4]/30 overflow-x-hidden">
         {/* HEADER SECTION */}
-        <div className="relative border-b border-white/5 bg-[#0f0f1a]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="relative border-b border-white/[0.08] bg-[#050505]/80 backdrop-blur-md sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform">
+              <div className="flex size-8 items-center justify-center rounded-lg accent-gradient text-white group-hover:scale-110 transition-transform">
                 <Shield className="size-5" />
               </div>
               <span className="text-lg font-black text-white tracking-tight italic-none group-hover:translate-x-0.5 transition-transform">SafeDeal Docs</span>
@@ -71,9 +71,9 @@ export default function DocsPage() {
             </button>
 
             <div className="hidden lg:flex items-center gap-4">
-              <Link href="/dashboard" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">Go to Dashboard</Link>
+              <Link href="/dashboard" className="text-sm font-bold text-[#999] hover:text-white transition-colors duration-200">Go to Dashboard</Link>
               <div className="h-4 w-px bg-white/10"></div>
-              <Link href="/deal/demo" className="px-4 py-2 rounded-lg bg-indigo-500 text-white text-xs font-black shadow-lg shadow-indigo-500/20 hover:bg-indigo-600 transition-colors">LIVE DEMO</Link>
+              <Link href="/deal/demo" className="px-4 py-2 rounded-lg accent-gradient text-white text-xs font-bold hover:scale-[1.02] transition-transform duration-200 uppercase tracking-wider">LIVE DEMO</Link>
             </div>
           </div>
 
@@ -83,7 +83,7 @@ export default function DocsPage() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="lg:hidden border-t border-white/5 bg-[#0f0f1a] overflow-hidden"
+                className="lg:hidden border-t border-white/[0.08] bg-[#050505] overflow-hidden"
               >
                 <div className="p-4 grid grid-cols-2 gap-2">
                   {sections.map(s => (
@@ -95,7 +95,7 @@ export default function DocsPage() {
                       }}
                       className={cn(
                         "flex items-center gap-2 p-3 rounded-xl text-left text-xs transition-all",
-                        activeSection === s.id ? "bg-indigo-500 text-white font-black" : "bg-white/5 text-slate-400"
+                        activeSection === s.id ? "accent-gradient text-white font-bold" : "bg-white/[0.03] text-[#999]"
                       )}
                     >
                       <s.icon className="w-4 h-4" />
@@ -121,11 +121,11 @@ export default function DocsPage() {
                     className={cn(
                       "w-full flex items-center gap-3 p-3 rounded-xl transition-all group",
                       activeSection === s.id 
-                        ? "bg-gradient-to-r from-indigo-500/20 to-transparent border-l-4 border-indigo-500 text-white font-black" 
-                        : "text-slate-500 hover:text-slate-200 hover:bg-white/5 border-l-4 border-transparent"
+                        ? "bg-gradient-to-r from-[#06B6D4]/20 to-transparent border-l-4 border-[#06B6D4] text-white font-bold" 
+                        : "text-[#999] hover:text-white hover:bg-white/[0.03] border-l-4 border-transparent"
                     )}
                   >
-                    <s.icon className={cn("w-4 h-4 transition-colors", activeSection === s.id ? "text-indigo-400" : "group-hover:text-indigo-400")} />
+                    <s.icon className={cn("w-4 h-4 transition-colors", activeSection === s.id ? "text-[#06B6D4]" : "group-hover:text-[#06B6D4]")} />
                     <span className="text-sm">{s.title}</span>
                   </button>
                 ))}
@@ -147,7 +147,7 @@ export default function DocsPage() {
                     { title: "Close", desc: "Funds release only on delivery." }
                   ].map((step, i) => (
                     <div key={i} className="bg-white/5 border border-white/5 p-4 rounded-2xl">
-                      <p className="text-indigo-400 font-black mb-1">STEP {i+1}</p>
+                      <p className="text-[#06B6D4] font-bold mb-1">STEP {i+1}</p>
                       <p className="text-white font-bold text-sm mb-1">{step.title}</p>
                       <p className="text-xs text-slate-500 leading-relaxed">{step.desc}</p>
                     </div>
@@ -159,24 +159,24 @@ export default function DocsPage() {
             <Section id="getting-started" title="2. Getting started for merchants">
               <div className="bg-[#0f0f1a] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-8">
                 <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center shrink-0 font-black text-sm">1</div>
+                  <div className="w-8 h-8 rounded-full accent-gradient text-white flex items-center justify-center shrink-0 font-bold text-sm">1</div>
                   <div>
                     <h3 className="text-white font-bold mb-1">Install Freighter Wallet</h3>
                     <p className="text-sm">Download the Freighter extension. This is your vault. It keeps your USDC and identity safe. <strong>Never</strong> share your recovery phrase with anyone.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center shrink-0 font-black text-sm">2</div>
+                  <div className="w-8 h-8 rounded-full accent-gradient text-white flex items-center justify-center shrink-0 font-bold text-sm">2</div>
                   <div>
                     <h3 className="text-white font-bold mb-1">Get Testnet USDC</h3>
                     <p className="text-sm">Access the Stellar Laboratory or built-in faucet to fund your test wallet. In the real world, you can bridge funds from any bank account.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center shrink-0 font-black text-sm">3</div>
+                  <div className="w-8 h-8 rounded-full accent-gradient text-white flex items-center justify-center shrink-0 font-bold text-sm">3</div>
                   <div>
                     <h3 className="text-white font-bold mb-1">Complete your Profile</h3>
-                    <p className="text-sm">Head to the <Link href="/dashboard/profile" className="text-indigo-400 hover:underline">Profile</Link> tab. Enter your business name and contact details so SafeDeal AI can verify your merchant status.</p>
+                    <p className="text-sm">Head to the <Link href="/dashboard/profile" className="text-[#06B6D4] hover:underline">Profile</Link> tab. Enter your business name and contact details so SafeDeal AI can verify your merchant status.</p>
                   </div>
                 </div>
               </div>
@@ -187,7 +187,7 @@ export default function DocsPage() {
               <div className="space-y-4">
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
                   <p className="text-white font-bold text-sm mb-2">WhatsApp Message Template</p>
-                  <pre className="text-xs bg-black/40 p-4 rounded-xl text-indigo-300 overflow-x-auto">
+                  <pre className="text-xs bg-black/40 p-4 rounded-xl text-[#06B6D4] overflow-x-auto">
                     {`Hey! Let's use SafeDeal for this. 
 Your funds stay in escrow until you verify delivery.
 
@@ -196,10 +196,10 @@ Link: https://safedeal.app/deal/901`}
                   </pre>
                 </div>
                 <ul className="grid sm:grid-cols-2 gap-3 text-xs">
-                  <li className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/5"><CheckCircle2 className="w-4 h-4 text-indigo-400" /> Set clear expiry times (e.g., 48h)</li>
-                  <li className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/5"><CheckCircle2 className="w-4 h-4 text-indigo-400" /> Always include item description</li>
-                  <li className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/5"><CheckCircle2 className="w-4 h-4 text-indigo-400" /> Set amount in USDC</li>
-                  <li className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/5"><CheckCircle2 className="w-4 h-4 text-indigo-400" /> Share via WhatsApp or DM</li>
+                  <li className="flex items-center gap-2 bg-white/[0.03] p-3 rounded-xl border border-white/[0.05]"><CheckCircle2 className="w-4 h-4 text-[#06B6D4]" /> Set clear expiry times (e.g., 48h)</li>
+                  <li className="flex items-center gap-2 bg-white/[0.03] p-3 rounded-xl border border-white/[0.05]"><CheckCircle2 className="w-4 h-4 text-[#06B6D4]" /> Always include item description</li>
+                  <li className="flex items-center gap-2 bg-white/[0.03] p-3 rounded-xl border border-white/[0.05]"><CheckCircle2 className="w-4 h-4 text-[#06B6D4]" /> Set amount in USDC</li>
+                  <li className="flex items-center gap-2 bg-white/[0.03] p-3 rounded-xl border border-white/[0.05]"><CheckCircle2 className="w-4 h-4 text-[#06B6D4]" /> Share via WhatsApp or DM</li>
                 </ul>
               </div>
             </Section>

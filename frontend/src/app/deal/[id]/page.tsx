@@ -36,8 +36,8 @@ function GaslessToggle({ onToggle }: { onToggle?: (v: boolean) => void }) {
     <div 
       className="flex items-center gap-3 p-4 rounded-xl mb-6 cursor-pointer border transition-colors"
       style={{
-        background: enabled ? "rgba(99,102,241,0.1)" : "rgba(255,255,255,0.05)",
-        borderColor: enabled ? "rgba(99,102,241,0.3)" : "rgba(255,255,255,0.1)"
+        background: enabled ? "rgba(6,182,212,0.1)" : "rgba(255,255,255,0.05)",
+        borderColor: enabled ? "rgba(6,182,212,0.3)" : "rgba(255,255,255,0.1)"
       }}
       onClick={() => {
         const next = !enabled;
@@ -45,18 +45,18 @@ function GaslessToggle({ onToggle }: { onToggle?: (v: boolean) => void }) {
         onToggle?.(next);
       }}
     >
-      <Zap className={cn("w-5 h-5", enabled ? "text-indigo-400" : "text-slate-400")}/>
+      <Zap className={cn("w-5 h-5", enabled ? "text-[#06B6D4]" : "text-[#999]")}/>
       <div className="flex-1">
-        <p className="text-[#f8fafc] text-sm font-medium">
+        <p className="text-white text-sm font-medium">
           Gasless Transaction
         </p>
-        <p className="text-[#94a3b8] text-xs">
+        <p className="text-[#999] text-xs">
           SafeDeal covers your network fee
         </p>
       </div>
       <div className={cn(
         "text-xs px-3 py-1 rounded-full font-bold",
-        enabled ? "bg-indigo-500 text-white" : "bg-white/10 text-slate-400"
+        enabled ? "accent-gradient text-white" : "bg-white/10 text-[#999]"
       )}>
         FREE
       </div>
@@ -196,7 +196,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
   } else if (fraudScore < 20) {
     trustStyle = {
       border: "2px solid transparent",
-      background: "linear-gradient(#0f0f1a, #0f0f1a) padding-box, linear-gradient(135deg, #10b981, #06b6d4) border-box"
+      background: "linear-gradient(#111111, #111111) padding-box, linear-gradient(135deg, #10b981, #06b6d4) border-box"
     };
   } else {
     trustStyle = { border: "2px solid rgba(148,163,184,0.3)" };
@@ -204,35 +204,35 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-[#030712] text-[#f8fafc] font-sans pb-20 selection:bg-[#10b981]/30">
+      <div className="min-h-screen bg-[#050505] text-white font-sans pb-20 selection:bg-[#10b981]/30">
 
-        <header className="sticky top-0 z-50 bg-[#0f0f1a]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-6 h-16">
+        <header className="sticky top-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/[0.08] flex items-center justify-between px-6 h-16">
           <div className="flex items-center gap-2">
             <Shield className="size-6 text-[#10b981] fill-current" />
             <span className="text-lg font-black tracking-tighter">SafeDeal Checkout</span>
           </div>
-          <div className="px-3 py-1 rounded-full bg-white/5 text-[#94a3b8] text-xs font-bold border border-white/10">
+          <div className="px-3 py-1 rounded-full glass text-[#999] text-xs font-bold">
             TESTNET
           </div>
         </header>
 
         <main className="max-w-md mx-auto p-4 pt-8 shrink-0">
-          <button className="flex items-center gap-2 text-[#94a3b8] hover:text-white transition-colors mb-6 text-sm font-bold" onClick={() => window.history.back()}>
+          <button className="flex items-center gap-2 text-[#999] hover:text-white transition-colors duration-200 mb-6 text-sm font-bold" onClick={() => window.history.back()}>
             <ArrowLeft className="size-4" /> Back
           </button>
 
           {loading ? (
             <div className="py-24 flex flex-col items-center text-center space-y-4">
               <Loader2 className="size-10 text-slate-500 animate-spin" />
-              <p className="text-sm font-bold text-[#94a3b8]">Loading escrow vault...</p>
+              <p className="text-sm font-bold text-[#999]">Loading escrow vault...</p>
             </div>
           ) : notFound || !deal ? (
             <div className="py-24 flex flex-col items-center text-center space-y-4">
-              <div className="size-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <div className="size-20 rounded-3xl glass flex items-center justify-center">
                 <Package className="size-10 text-slate-500" />
               </div>
               <h2 className="text-xl font-black text-white">Deal Not Found</h2>
-              <p className="text-sm font-bold text-[#94a3b8]">This payment link may have expired or is invalid.</p>
+              <p className="text-sm font-bold text-[#999]">This payment link may have expired or is invalid.</p>
             </div>
           ) : (
             <AnimatePresence mode="wait">
@@ -334,13 +334,13 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                             {isFeeSponsorshipEnabled() && (
                               <div className="flex items-center gap-3 
                                 p-4 rounded-xl mb-4
-                                bg-indigo-500/10 
-                                border border-indigo-500/20">
+                                bg-[#06B6D4]/10 
+                                border border-[#06B6D4]/20">
                                 <div className="w-8 h-8 rounded-full 
-                                  bg-indigo-500/20 flex items-center 
+                                  bg-[#06B6D4]/20 flex items-center 
                                   justify-center">
                                   <Zap className="w-4 h-4 
-                                    text-indigo-400"/>
+                                    text-[#06B6D4]"/>
                                 </div>
                                 <div className="flex-1 text-left">
                                   <p className="text-white text-sm 
@@ -352,9 +352,9 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                                     No XLM needed.
                                   </p>
                                 </div>
-                                <span className="bg-indigo-500 text-white 
+                                <span className="accent-gradient text-white 
                                   text-xs px-3 py-1 rounded-full 
-                                  font-medium">
+                                  font-bold">
                                   FREE
                                 </span>
                               </div>
@@ -455,17 +455,17 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#030712]/80 backdrop-blur-md p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#050505]/80 backdrop-blur-md p-4"
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="w-full max-w-md bg-[#0f0f1a] rounded-[2rem] p-8 shadow-2xl relative border border-white/5"
+              className="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl relative"
             >
               <button
                 onClick={() => setShowDisputeModal(false)}
-                className="absolute top-6 right-6 p-2 text-[#94a3b8] hover:text-white rounded-full transition-colors"
+                className="absolute top-6 right-6 p-2 text-[#999] hover:text-white rounded-full transition-colors duration-200"
               >
                 ✕
               </button>
@@ -476,17 +476,17 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                 </div>
                 <div>
                   <h3 className="text-xl font-black text-white">Open Dispute</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-red-400">Funds will be frozen</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">Funds will be frozen</p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Problem Type</label>
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Problem Type</label>
                   <select
                     value={disputeReason}
                     onChange={(e) => setDisputeReason(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1] transition-all"
+                    className="w-full rounded-xl border border-white/[0.08] bg-white/[0.05] px-4 py-3 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/50 transition-all"
                   >
                     <option>Item not received</option>
                     <option>Wrong item</option>
@@ -496,12 +496,12 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8]">Describe the problem</label>
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Describe the problem</label>
                   <textarea
                     value={disputeDesc}
                     onChange={(e) => setDisputeDesc(e.target.value)}
                     placeholder="Provide details..."
-                    className="w-full rounded-xl border border-white/10 bg-white/5 p-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1] transition-all resize-none min-h-[120px]"
+                    className="w-full rounded-xl border border-white/[0.08] bg-white/[0.05] p-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/50 transition-all resize-none min-h-[120px]"
                   />
                 </div>
 
@@ -515,7 +515,7 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
                   </button>
                   <button
                     onClick={() => setShowDisputeModal(false)}
-                    className="w-full py-4 rounded-xl text-xs font-black uppercase tracking-widest text-[#94a3b8] hover:text-white transition-colors"
+                    className="w-full py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] text-[#999] hover:text-white transition-colors duration-200"
                   >
                     Cancel
                   </button>
