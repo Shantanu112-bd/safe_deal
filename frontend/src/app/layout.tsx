@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { WalletProvider } from "@/context/WalletContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/layout/Navbar";
 import { PageTracker } from "@/components/PageTracker";
+
+const inter = Inter({ 
+  subsets: ["latin"], 
+  weight: ["300", "400", "500", "700", "900"],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "SafeDeal — Secure Escrow on Stellar",
@@ -17,16 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={inter.className}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
       </head>
       <body
         className="bg-[#050505] text-white antialiased selection:bg-[#7C3AED]/30 selection:text-white"
-        style={{ fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}
       >
         <ThemeProvider
           attribute="class"

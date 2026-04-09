@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ShieldCheck,
   Lock,
   Zap,
   BadgeCheck,
-  CheckCircle2,
   ArrowRight,
   Check,
 } from "lucide-react";
@@ -197,10 +197,12 @@ export default function LandingPage() {
                 key={f.face}
                 className={`cube-face cube-face--${f.face} rounded-2xl overflow-hidden`}
               >
-                <img
+                <Image
                   src={f.img}
                   alt={f.title}
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  fill
+                  className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                   <span className="text-xl md:text-2xl font-bold tracking-[0.2em] text-white uppercase">
@@ -327,10 +329,12 @@ export default function LandingPage() {
                 <div className="w-3 h-3 rounded-full bg-green-500" />
               </div>
               <div className="aspect-video overflow-hidden">
-                <img
+                <Image
                   src={caseStudies[0].img}
                   alt={caseStudies[0].title}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                  fill
+                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                  unoptimized
                 />
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
@@ -356,10 +360,12 @@ export default function LandingPage() {
                 className="relative rounded-2xl overflow-hidden border border-white/10 group"
               >
                 <div className="aspect-[4/3] overflow-hidden">
-                  <img
+                  <Image
                     src={cs.img}
                     alt={cs.title}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                    unoptimized
                   />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">

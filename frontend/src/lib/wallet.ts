@@ -62,8 +62,9 @@ export const getBalances = async (publicKey: string) => {
     }
 
     return { xlmBalance, usdcBalance };
-  } catch (error: any) {
-    if (error?.response?.status !== 404) {
+  } catch (error: unknown) {
+    const err = error as { response?: { status?: number } };
+    if (err?.response?.status !== 404) {
       console.error("Error fetching balances:", error);
     }
     return { xlmBalance: "0", usdcBalance: "0" };
