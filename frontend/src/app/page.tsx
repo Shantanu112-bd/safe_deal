@@ -11,7 +11,10 @@ import {
   BadgeCheck,
   ArrowRight,
   Check,
+  Plus,
 } from "lucide-react";
+import { CreateDealModal } from "@/components/deal/CreateDealModal";
+import { useWallet } from "@/context/WalletContext";
 
 /* ─── ANIMATION CONFIG ─── */
 const cinBezier = [0.16, 1, 0.3, 1] as const;
@@ -157,6 +160,8 @@ function PriceCalculator() {
    MAIN LANDING PAGE
    ═══════════════════════════════════════ */
 export default function LandingPage() {
+  const { isConnected } = useWallet();
+  const [showCreate, setShowCreate] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -244,13 +249,22 @@ export default function LandingPage() {
                 The AI-protected escrow platform for social commerce.
                 Zero fraud. Instant settlement. Built on Stellar.
               </p>
-              <Link
-                href="/dashboard"
-                className="accent-gradient rounded-full px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200 flex items-center gap-3"
-              >
-                Launch App
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <button
+                  onClick={() => isConnected ? setShowCreate(true) : window.location.href = "/dashboard"}
+                  className="glass-card rounded-full px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white hover:bg-white/[0.08] transition-all duration-200 flex items-center gap-3"
+                >
+                  <Plus className="w-4 h-4" />
+                  Create Deal
+                </button>
+                <Link
+                  href="/dashboard"
+                  className="accent-gradient rounded-full px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200 flex items-center gap-3"
+                >
+                  Launch App
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -585,6 +599,8 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <CreateDealModal open={showCreate} onClose={() => setShowCreate(false)} />
     </div>
   );
 }

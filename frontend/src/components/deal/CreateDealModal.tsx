@@ -180,7 +180,7 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#050505]/80 backdrop-blur-md"
         onClick={onClose}
       />
       
@@ -189,24 +189,24 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="relative w-full sm:max-w-lg max-sm:fixed max-sm:bottom-0 max-sm:inset-x-0 max-sm:top-auto max-sm:rounded-t-2xl max-sm:rounded-b-none max-sm:translate-y-0 bg-white shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+        className="relative w-full sm:max-w-lg max-sm:fixed max-sm:bottom-0 max-sm:inset-x-0 max-sm:top-auto max-sm:rounded-t-2xl max-sm:rounded-b-none max-sm:translate-y-0 bg-[#111] border border-white/[0.08] shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-100 px-8 py-6 bg-white/80 backdrop-blur-md">
+        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-white/[0.08] px-8 py-6 bg-[#111]/80 backdrop-blur-md">
           <div>
              <div className="flex items-center gap-2 mb-1">
-                <div className={cn("size-1.5 rounded-full transition-colors", step >= 1 ? "bg-emerald-500" : "bg-slate-200")} />
-                <div className={cn("size-1.5 rounded-full transition-colors", step >= 2 ? "bg-emerald-500" : "bg-slate-200")} />
-                <div className={cn("size-1.5 rounded-full transition-colors", step === 3 ? "bg-emerald-500" : "bg-slate-200")} />
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Step {step} of 3</span>
+                <div className={cn("size-1.5 rounded-full transition-colors", step >= 1 ? "bg-[#06B6D4]" : "bg-white/[0.1]")} />
+                <div className={cn("size-1.5 rounded-full transition-colors", step >= 2 ? "bg-[#06B6D4]" : "bg-white/[0.1]")} />
+                <div className={cn("size-1.5 rounded-full transition-colors", step === 3 ? "bg-[#06B6D4]" : "bg-white/[0.1]")} />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] ml-2">Step {step} of 3</span>
              </div>
-             <h2 className="text-xl font-black text-slate-900">
-                {step === 1 && "New Deal Details"}
+             <h2 className="text-xl font-black text-white uppercase tracking-tight">
+                {step === 1 && "Deal Details"}
                 {step === 2 && "Final Review"}
                 {step === 3 && "Deal is Live!"}
              </h2>
           </div>
-          <button onClick={onClose} className="rounded-full p-2 text-slate-400 hover:bg-slate-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+          <button onClick={onClose} className="rounded-xl p-2 text-[#999] hover:bg-white/[0.05] transition-colors flex items-center justify-center">
             <X className="size-6" />
           </button>
         </div>
@@ -221,54 +221,54 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-6"
                 >
-                   <div className="space-y-4">
+                    <div className="space-y-4">
                       <div className="grid gap-2">
-                         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Item Name</label>
+                         <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] ml-1">Item Name</label>
                          <div className="relative">
-                            <ShoppingBag className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                            <ShoppingBag className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-[#999]" />
                             <input 
                               type="text" 
                               value={itemName}
                               onChange={(e) => setItemName(e.target.value)}
                               placeholder="e.g. Handmade Silver Earrings"
-                              className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
+                              className="w-full rounded-xl border border-white/[0.08] bg-[#050505] pl-11 pr-4 py-3.5 text-sm font-bold text-white placeholder:text-[#444] focus:border-[#06B6D4] focus:outline-none transition-all"
                             />
                          </div>
                       </div>
 
                       <div className="grid gap-2">
-                         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Description</label>
+                         <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] ml-1">Description</label>
                          <textarea 
                            value={description}
                            onChange={(e) => setDescription(e.target.value)}
                            rows={3}
                            placeholder="Describe the item condition, size, etc."
-                           className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:outline-none transition-all resize-none min-h-[44px]"
+                           className="w-full rounded-xl border border-white/[0.08] bg-[#050505] px-4 py-3.5 text-sm font-bold text-white placeholder:text-[#444] focus:border-[#06B6D4] focus:outline-none transition-all resize-none"
                          />
                       </div>
 
                       <div className="grid sm:grid-cols-2 gap-4">
                          <div className="grid gap-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Amount (USDC)</label>
+                            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] ml-1">Amount (USDC)</label>
                             <div className="relative">
-                               <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                               <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-[#999]" />
                                <input 
                                  type="number"
                                  value={amountUsdc}
                                  onChange={(e) => setAmountUsdc(e.target.value)}
-                                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-black text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
+                                 className="w-full rounded-xl border border-white/[0.08] bg-[#050505] pl-11 pr-4 py-3.5 text-sm font-black text-white focus:border-[#06B6D4] focus:outline-none transition-all"
                                />
                             </div>
-                            <p className="text-[10px] font-black text-emerald-600 ml-1 uppercase tracking-widest">≈ ₹{inrAmount.toLocaleString()}</p>
+                            <p className="text-[10px] font-bold text-emerald-400 ml-1 uppercase tracking-[0.2em]">≈ ₹{inrAmount.toLocaleString()}</p>
                          </div>
                          <div className="grid gap-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Category</label>
+                            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] ml-1">Category</label>
                             <div className="relative">
-                               <Tag className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                               <Tag className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-[#999]" />
                                <select 
                                  value={category}
                                  onChange={(e) => setCategory(e.target.value)}
-                                 className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
+                                 className="w-full appearance-none rounded-xl border border-white/[0.08] bg-[#050505] pl-11 pr-4 py-3.5 text-sm font-bold text-white focus:border-[#06B6D4] focus:outline-none transition-all"
                                >
                                   {["Jewelry", "Clothing", "Electronics", "Art", "Services", "Food", "Other"].map(opt => (
                                     <option key={opt}>{opt}</option>
@@ -279,13 +279,13 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                       </div>
 
                       <div className="grid gap-2">
-                         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Deal Expiry</label>
+                         <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] ml-1">Deal Expiry</label>
                          <div className="relative">
-                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-[#999]" />
                             <select 
                               value={expiryPreset}
                               onChange={(e) => setExpiryPreset(e.target.value)}
-                              className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3.5 text-sm font-bold text-slate-900 focus:bg-white focus:border-slate-900 focus:outline-none transition-all min-h-[44px]"
+                              className="w-full appearance-none rounded-xl border border-white/[0.08] bg-[#050505] pl-11 pr-4 py-3.5 text-sm font-bold text-white focus:border-[#06B6D4] focus:outline-none transition-all"
                             >
                                <option value="24h">24 hours</option>
                                <option value="3d">3 days</option>
@@ -296,14 +296,14 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                       </div>
 
                        <div className="grid gap-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Item Photo (Optional)</label>
+                          <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999] ml-1">Item Photo (Optional)</label>
                           <div className="flex items-center justify-center w-full">
-                             <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-100 border-dashed rounded-[1.5rem] cursor-pointer bg-slate-50/50 hover:bg-slate-50 transition-all group min-h-[44px]">
+                             <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-white/[0.08] border-dashed rounded-xl cursor-pointer bg-white/[0.02] hover:bg-white/[0.05] transition-all group">
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                   <div className="size-10 rounded-xl bg-white shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                                      <Plus className="size-5 text-slate-400" />
+                                   <div className="size-10 rounded-xl bg-white/[0.05] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                      <Plus className="size-5 text-[#999]" />
                                    </div>
-                                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Upload JPG, PNG</p>
+                                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Upload JPG, PNG</p>
                                 </div>
                                 <input type="file" className="hidden" accept="image/*" />
                              </label>
@@ -311,7 +311,7 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                        </div>
                     </div>
 
-                   <GradientButton className="w-full rounded-2xl py-4 font-black uppercase tracking-widest text-xs min-h-[44px]" onClick={handleNext}>
+                   <GradientButton className="w-full rounded-xl py-4 font-black uppercase tracking-widest text-xs" onClick={handleNext}>
                       Continue to Review
                       <ChevronRight className="ml-2 size-4" />
                    </GradientButton>
@@ -326,30 +326,30 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-6"
                 >
-                   <div className="rounded-3xl border border-slate-100 bg-slate-50 p-6 space-y-6">
+                   <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 space-y-6">
                       <div className="flex items-start justify-between">
                          <div className="space-y-1">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Merchant Payout</p>
-                            <h3 className="text-2xl font-black text-slate-900">{sellerCut.toFixed(2)} USDC</h3>
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Merchant Payout</p>
+                            <h3 className="text-2xl font-black text-white">{sellerCut.toFixed(2)} USDC</h3>
                          </div>
                          <div className="text-right space-y-1">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Buyer Total</p>
-                            <p className="text-lg font-bold text-slate-600">{parsedAmount.toFixed(2)} USDC</p>
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Buyer Total</p>
+                            <p className="text-lg font-bold text-[#999]">{parsedAmount.toFixed(2)} USDC</p>
                          </div>
                       </div>
 
-                      <div className="space-y-3 pt-6 border-t border-slate-200/50">
+                      <div className="space-y-3 pt-6 border-t border-white/[0.08]">
                          <div className="flex justify-between text-xs font-bold">
-                            <span className="text-slate-500">Item:</span>
-                            <span className="text-slate-900">{itemName}</span>
+                            <span className="text-[#999]">Item:</span>
+                            <span className="text-white">{itemName}</span>
                          </div>
                          <div className="flex justify-between text-xs font-bold">
-                            <span className="text-slate-500">SafeDeal Fee (1%):</span>
-                            <span className="text-emerald-600">-{safedealFee.toFixed(2)} USDC</span>
+                            <span className="text-[#999]">SafeDeal Fee (1%):</span>
+                            <span className="text-emerald-400">-{safedealFee.toFixed(2)} USDC</span>
                          </div>
                          <div className="flex justify-between text-xs font-bold">
-                            <span className="text-slate-500">Expiry:</span>
-                            <span className="text-slate-900">{expiryLabel}</span>
+                            <span className="text-[#999]">Expiry:</span>
+                            <span className="text-white">{expiryLabel}</span>
                          </div>
                       </div>
                    </div>
@@ -357,13 +357,13 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                    <div className="flex flex-col sm:flex-row gap-4">
                       <button 
                         onClick={handleBack}
-                        className="flex-1 rounded-2xl border border-slate-200 py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors min-h-[44px]"
+                        className="flex-1 rounded-xl border border-white/[0.08] py-4 text-xs font-black uppercase tracking-widest text-[#999] hover:bg-white/[0.05] transition-colors"
                       >
                          <ArrowLeft className="inline-block mr-2 size-3.5" />
                          Back
                       </button>
                       <GradientButton 
-                        className="flex-[2] rounded-2xl py-4 font-black uppercase tracking-widest text-xs min-h-[44px]" 
+                        className="flex-[2] rounded-xl py-4 font-black uppercase tracking-widest text-xs" 
                         onClick={handleConfirmCreate}
                         disabled={isCreating}
                       >
@@ -384,30 +384,30 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                   className="space-y-8"
                 >
                    <div className="flex flex-col items-center text-center">
-                      <div className="size-16 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4 ring-8 ring-emerald-50">
+                      <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-4 ring-8 ring-emerald-500/5">
                          <Check className="size-8" />
                       </div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-emerald-600 mb-1">Success!</p>
-                      <h3 className="text-2xl font-black text-slate-900">Deal ID: {dealId}</h3>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#06B6D4] mb-1">Success!</p>
+                      <h3 className="text-2xl font-black text-white uppercase tracking-tight">Deal ID: {dealId}</h3>
                    </div>
 
-                   <div className="flex flex-col sm:flex-row items-center gap-8 p-8 rounded-[2rem] bg-slate-900 text-white relative overflow-hidden">
-                      <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+                   <div className="flex flex-col sm:flex-row items-center gap-8 p-8 rounded-2xl bg-[#050505] text-white border border-white/[0.08] relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
                          <QrCode className="size-32" />
                       </div>
                       
-                      <div className="bg-white p-4 rounded-2xl shrink-0 shadow-xl">
+                      <div className="bg-white p-4 rounded-xl shrink-0 shadow-xl">
                         <QRCode value={dealUrl} size={150} />
                       </div>
 
                       <div className="flex-1 min-w-0 space-y-4 w-full">
                          <div className="space-y-1">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Shareable Link</p>
-                            <div className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10">
-                               <span className="flex-1 truncate font-mono text-xs font-bold text-emerald-400">{dealUrl}</span>
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">Shareable Link</p>
+                            <div className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/[0.08]">
+                               <span className="flex-1 truncate font-mono text-xs font-bold text-[#06B6D4]">{dealUrl}</span>
                                <button 
                                  onClick={handleCopyLink}
-                                 className="size-10 flex items-center justify-center rounded-lg bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
+                                 className="size-10 flex items-center justify-center rounded-lg accent-gradient text-white shadow-lg"
                                >
                                   {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
                                </button>
@@ -443,14 +443,14 @@ export function CreateDealModal({ open, onClose, onDealCreated }: Props) {
                    <div className="flex flex-col sm:flex-row gap-4">
                       <button 
                         onClick={handleCopyLink}
-                        className="flex-1 rounded-2xl border border-slate-200 py-4 text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-colors min-h-[44px]"
+                        className="flex-1 rounded-xl border border-white/[0.08] py-4 text-xs font-black uppercase tracking-widest text-[#999] hover:bg-white/[0.05] transition-colors"
                       >
                         <Copy className="inline-block mr-2 size-3.5" />
                         Copy Link
                       </button>
                       <GradientButton 
                         variant="variant"
-                        className="flex-1 rounded-2xl py-4 font-black uppercase tracking-widest text-xs min-h-[44px]" 
+                        className="flex-1 rounded-xl py-4 font-black uppercase tracking-widest text-xs" 
                         onClick={onClose}
                       >
                         Back to Dashboard

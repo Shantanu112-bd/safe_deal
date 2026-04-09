@@ -5,7 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { WalletModal } from "@/components/wallet/WalletModal";
+import { CreateDealModal } from "@/components/deal/CreateDealModal";
 import { useWallet } from "@/context/WalletContext";
+import { Plus } from "lucide-react";
 
 /* ── PROPER SVG LOGO ── */
 function SafeDealLogo({ className = "" }: { className?: string }) {
@@ -58,6 +60,7 @@ export function Navbar() {
   const pathname = usePathname();
   const { isConnected, publicKey, disconnect } = useWallet();
   const [modalOpen, setModalOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isDashboard = pathname?.startsWith("/dashboard");
@@ -106,6 +109,13 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             {isConnected ? (
               <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setCreateOpen(true)}
+                  className="hidden md:flex items-center gap-2 rounded-full accent-gradient px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Create Deal
+                </button>
                 <Link
                   href="/dashboard"
                   className="hidden md:flex items-center gap-2 rounded-full glass px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200"
@@ -166,6 +176,7 @@ export function Navbar() {
       </header>
 
       <WalletModal open={modalOpen} onOpenChange={setModalOpen} />
+      <CreateDealModal open={createOpen} onClose={() => setCreateOpen(false)} />
     </>
   );
 }
