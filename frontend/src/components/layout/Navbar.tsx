@@ -109,13 +109,15 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             {isConnected ? (
               <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setCreateOpen(true)}
-                  className="hidden md:flex items-center gap-2 rounded-full accent-gradient px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  Create Deal
-                </button>
+                {!pathname?.startsWith("/deal/") && (
+                  <button
+                    onClick={() => setCreateOpen(true)}
+                    className="hidden md:flex items-center gap-2 rounded-full accent-gradient px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Create Deal
+                  </button>
+                )}
                 <Link
                   href="/dashboard"
                   className="hidden md:flex items-center gap-2 rounded-full glass px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.02] transition-transform duration-200"
