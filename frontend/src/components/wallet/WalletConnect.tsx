@@ -19,12 +19,12 @@ export const WalletConnect = () => {
       <button
         onClick={() => setIsModalOpen(true)}
         className={cn(
-          "relative flex items-center gap-3 overflow-hidden rounded-2xl px-5 py-3.5 transition-all duration-300",
+          "relative flex items-center gap-3 overflow-hidden rounded-xl px-5 py-3 transition-all duration-300 glass-card",
           !isConnected 
-            ? "bg-slate-900 text-white shadow-xl shadow-slate-900/10 hover:bg-slate-800" 
+            ? "hover:bg-white/[0.08] text-white" 
             : isBlocked 
-              ? "bg-red-50 border-2 border-red-100 text-red-600"
-              : "bg-emerald-50 border-2 border-emerald-100 text-emerald-700"
+              ? "bg-red-500/10 border border-red-500/30 text-red-400"
+              : "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400"
         )}
       >
         <div className={cn(
@@ -33,28 +33,28 @@ export const WalletConnect = () => {
         )}>
           {!isConnected ? (
             <>
-              <Wallet className="size-5" />
-              <span className="text-sm font-black uppercase tracking-widest italic-none">Connect Wallet</span>
+              <Wallet className="size-4 text-[#06B6D4]" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em]">Connect Wallet</span>
             </>
           ) : isBlocked ? (
             <>
-              <ShieldAlert className="size-5 italic-none" />
-              <div className="text-left italic-none">
-                <p className="text-[10px] font-black uppercase leading-none mb-0.5 italic-none">Blocked</p>
-                <p className="text-xs font-bold font-mono italic-none">{publicKey?.slice(0, 6)}...{publicKey?.slice(-4)}</p>
+              <ShieldAlert className="size-4" />
+              <div className="text-left">
+                <p className="text-[9px] font-black uppercase leading-none mb-0.5">Blocked</p>
+                <p className="text-[11px] font-bold font-mono">{publicKey?.slice(0, 6)}...{publicKey?.slice(-4)}</p>
               </div>
             </>
           ) : (
             <>
-              <div className="relative italic-none">
-                <ShieldCheck className="size-5 italic-none" />
-                <div className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-emerald-500 animate-pulse italic-none" />
+              <div className="relative">
+                <ShieldCheck className="size-4" />
+                <div className="absolute -right-0.5 -top-0.5 size-1.5 rounded-full bg-emerald-500 animate-pulse" />
               </div>
-              <div className="text-left italic-none">
-                <p className="text-[10px] font-black uppercase leading-none mb-0.5 italic-none">
+              <div className="text-left">
+                <p className="text-[9px] font-black uppercase leading-none mb-1 text-[#999]">
                   {riskScore !== null ? `Risk: ${riskScore}%` : "Verified"}
                 </p>
-                <p className="text-xs font-bold font-mono italic-none">{publicKey?.slice(0, 6)}...{publicKey?.slice(-4)}</p>
+                <p className="text-[11px] font-bold font-mono text-white">{publicKey?.slice(0, 6)}...{publicKey?.slice(-4)}</p>
               </div>
             </>
           )}
