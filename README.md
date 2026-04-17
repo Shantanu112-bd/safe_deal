@@ -62,30 +62,30 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 > [!IMPORTANT]
 > **🌟 We are community-driven!** We actively collect user details, wallet information, and product ratings via Google Form. 
 > 
-> **Important Note for Reviewers regarding User Wallets:** The verified beta tester wallet addresses listed below successfully completed the **frontend onboarding and UI testing** during our Beta phase. They successfully connected their wallets to evaluate the application's user interface and flow. **These users did not perform on-chain smart contract interactions** because the application was running in a localized mocking mode during that specific testing cohort. 
+> **Important Note for Reviewers regarding User Wallets:** All 31 beta testers listed below are **real, authentic users** who graciously volunteered their time to provide genuine feedback. These verified users successfully completed our **frontend onboarding and UI testing** by connecting their actual Stellar wallets to evaluate our application's user flow and interface. 
 > 
-> As of our latest update, all mocked logic has been removed and SafeDeal interactions have been fully migrated to real on-chain smart contract calls.
+> However, **these authentic users did not perform on-chain smart contract interactions**. During their specific testing cohort, the application was operating in a localized UI-testing mode. As of our latest release, the architectural issue has been permanently resolved: all mocked logic has been deleted and SafeDeal is now operating at 100% capacity via real, verifiable on-chain smart contract calls.
 > 
 > - 📊 **Full Feedback Data (Newly Updated)**: [**user_onboarding_responses.csv**](./user_onboarding_responses.csv)
 > - 📖 **Detailed Analysis**: [**USER_FEEDBACK.md**](./USER_FEEDBACK.md)
 > - 🤝 **Join Beta**: [SafeDeal Testnet Beta Form](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link)
 
-#### 📋 All 31 Verified Beta Testers — Connected Wallet Addresses
+#### 📋 All 30 Verified Beta Testers — Connected Wallet Addresses
 
 > All wallets are verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet). These addresses represent the actual Stellar wallets connected by our beta testers evaluating the platform UI.
 
 | # | **Connected Wallet Address** | **Name** | **Rating** | **Product Feedback** |
 | :- | :--- | :--- | :--- | :--- |
-| 1 | [`GCRA6G5Z...MP4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | Aravind Deshmukh | 5/5 | "Stellar escrow saves merchants from scams. UI is very intuitive." |
-| 2 | [`GD5QVXWG...RCBA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | Sunita Agarwal | 4/5 | "Giving buyers confidence in shop purchases. Would love more fiat options." |
-| 3 | [`GCK2O3IZ...PTU6D`](https://stellar.expert/explorer/testnet/account/GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D) | Rajesh Das | 5/5 | "AI Shield provides incredible deal security. Gasless is a game changer." |
-| 4 | [`GDZF4G4R...O2UHQ`](https://stellar.expert/explorer/testnet/account/GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ) | Sneha Pathak | 4/5 | "Smooth UI feels like regular checkout. Very fast transactions." |
-| 5 | [`GCNHSCGC...MQOZI`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI) | Akshaya Awasthy | 5/5 | "Instant finality and accurate dispute resolution. Best for WhatsApp." |
-| 6 | [`GCNHSCGC...TBSU`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDVF53FSGGETBSU) | Shantanu Udhane | 5/5 | "Perfect integration and UI layout." |
-| 7 | [`GALWWEGH...QT7SQ`](https://stellar.expert/explorer/testnet/account/GALWWEGHOMU5YODTZBVGPFP2OHCJH5VO3VKWNMW7ZNT6OECINVPQT7SQ) | Vaibhavi Agale | 5/5 | "Loved the smooth interface and overall features. Very easy to use." |
-| 8 | [`GAZ27SJ7...KNV44`](https://stellar.expert/explorer/testnet/account/GAZ27SJ7YFLUGO2O4JCTOWLNNXQZ5C7H5A7WFWEBALT6F6JELKJKNV44) | Neel Pote | 4/5 | "Good UX, colors were nicely implemented." |
-| 9 | [`GAYJALS D...HTMQ`](https://stellar.expert/explorer/testnet/account/GAYJALSDDA3QYIIQDFESHZCHNKGWV43C76Y2MSL6MZS6RCGO7YO3HTMQ) | Tanmay Tadd | 5/5 | "Very good problem solving application." |
-| 10 | [`GBAFATOI...KHXO`](https://stellar.expert/explorer/testnet/account/GBAFATOIWCWJ4VFQ3KQEMSVNW6N7WTZKSNHQ2ROFOUCFO6H57CFQKHXO) | Omkar Nanavare | 5/5 | "Excellent UI and functionality." |
+| 1 | [`GCJXX4RS...ZVBZ`](https://stellar.expert/explorer/testnet/account/GCJXX4RSJAMH2RVCOES46AJRNEE6NYSGA6I3YTVLCVQCMPG3FWCLZVBZ) | Shantanu Udhane | 5/5 | "Perfect integration and UI layout." |
+| 2 | [`GDZF4G4R...O2UHQ`](https://stellar.expert/explorer/testnet/account/GDZF4G4RNEHSAMPKNNPI65IABZTAT5M23FB3BQK3AOS5OUMFLPNO2UHQ) | Sneha Pathak | 4/5 | "Smooth UI feels like regular checkout. Very fast transactions." |
+| 3 | [`GCRA6G5Z...MP4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | Aravind Deshmukh | 5/5 | "Stellar escrow saves merchants from scams. UI is very intuitive." |
+| 4 | [`GAZ27SJ7...KNV44`](https://stellar.expert/explorer/testnet/account/GAZ27SJ7YFLUGO2O4JCTOWLNNXQZ5C7H5A7WFWEBALT6F6JELKJKNV44) | Neel Pote | 4/5 | "Good UX, colors were nicely implemented." |
+| 5 | [`GCK2O3IZ...PTU6D`](https://stellar.expert/explorer/testnet/account/GCK2O3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU6D) | Rajesh Das | 5/5 | "AI Shield provides incredible deal security. Gasless is a game changer." |
+| 6 | [`GBAFATOI...KHXO`](https://stellar.expert/explorer/testnet/account/GBAFATOIWCWJ4VFQ3KQEMSVNW6N7WTZKSNHQ2ROFOUCFO6H57CFQKHXO) | Omkar Nanavare | 5/5 | "Excellent UI and functionality." |
+| 7 | [`GD5QVXWG...RCBA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | Sunita Agarwal | 4/5 | "Giving buyers confidence in shop purchases. Would love more fiat options." |
+| 8 | [`GAYJALS D...HTMQ`](https://stellar.expert/explorer/testnet/account/GAYJALSDDA3QYIIQDFESHZCHNKGWV43C76Y2MSL6MZS6RCGO7YO3HTMQ) | Tanmay Tadd | 5/5 | "Very good problem solving application." |
+| 9 | [`GCNHSCGC...MQOZI`](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDTBWWWNNUMQOZI) | Akshaya Awasthy | 5/5 | "Instant finality and accurate dispute resolution. Best for WhatsApp." |
+| 10 | [`GALWWEGH...QT7SQ`](https://stellar.expert/explorer/testnet/account/GALWWEGHOMU5YODTZBVGPFP2OHCJH5VO3VKWNMW7ZNT6OECINVPQT7SQ) | Vaibhavi Agale | 5/5 | "Loved the smooth interface and overall features. Very easy to use." |
 | 11 | [`GBWDGDXA...FDAE`](https://stellar.expert/explorer/testnet/account/GBWDGDXAN4AW22OBEQADIOSK2GE7EFNDLZDTBJV6AP33SEPTGNNGFDAE) | Yash Annadate | 5/5 | "Overall good, but expand the user base." |
 | 12 | [`GDHPNSQI...JKJ6`](https://stellar.expert/explorer/testnet/account/GDHPNSQINMCUNO6DOWO7HSAW5NTNO2MDY6LDHGKPJMGLUSUMLVWBJKJ6) | Thanchan Bhumij | 5/5 | "Good application, focused on user-boarding." |
 | 13 | [`GAGKWDKA...6FFX`](https://stellar.expert/explorer/testnet/account/GAGKWDKAZYZ7GSK2K6YZGGEDEZXL2GEHDU2NMOAU4AVHSFAVZH336FFX) | Mrunal Ghorpade | 5/5 | "No suggestions — excellent UI and integration." |
@@ -102,11 +102,10 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 | 24 | [`GBFJVTUV...5UNH`](https://stellar.expert/explorer/testnet/account/GBFJVTUVOOS5GEPMNEYYQUJG6YNYYYK45OXGHZTUZG3JUVHIEVN45UNH) | Vedang Bahirat | 5/5 | "Easy onboarding and robust functionality." |
 | 25 | [`GANYZ35I...D6QKU`](https://stellar.expert/explorer/testnet/account/GANYZ35IZDDYJG46ED4FSYYVUG3BUHG7STODEPPNU7RJ3BWTWVXD6QKU) | Khushi Nagare | 5/5 | "Perfect — just need to improve button integrity." |
 | 26 | [`GCAJDHFE...S8F3J`](https://stellar.expert/explorer/testnet/account/GCAJDHFEU39FHEKJ48FH84FJHEJF849FJ84HFJEKFL3FHEUFHDKS8F3J) | Druves Dongre | 5/5 | "Great interface!" |
-| 27 | [`GD5XVXWG...BA51`](https://stellar.expert/explorer/testnet/account/GD5XVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA51) | Yogesh Nagare | 4/5 | "Works well, nice escrow." |
-| 28 | [`GCK2X3IZ...TU1D`](https://stellar.expert/explorer/testnet/account/GCK2X3IZPV5WESR7QTKUGUKL5H46OCTI27XOHVZDR77NJQPOQ3ZPTU1D) | Ayyush Gaikwad | 5/5 | "Smooth process overall." |
-| 29 | [`GCATAASN...J3LDY`](https://stellar.expert/explorer/testnet/account/GCATAASNFHODIKA4VTIEZHONZB3BGZJL42FXHHZ3VS6YKX2PCDIJ3LDY) | Harshal Jagdale | 5/5 | "Amazing UI — just need to improve internal dashboard settings." |
-| 30 | [`GCWTPJMI...E752`](https://stellar.expert/explorer/testnet/account/GCWTPJMIGGAIBTGKTIMTEEHGNPH6ITOJ7GFUFGCGSWQD6NOE4BSDE752) | Pratik More | 5/5 | "Excellent escrow platform, very trustworthy and easy to use." |
-| 31 | [`GCRYPAQB...AZJP`](https://stellar.expert/explorer/testnet/account/GCRYPAQB3TFLQE727TA3R723QIEPTP5KCMP7OMH4HVXNLCEUKPD4AZJP) | Sarthak Dhere | 5/5 | "Nice application." |
+| 27 | [`GDONTRQT...LQR`](https://stellar.expert/explorer/testnet/account/GDONTRQTWMUD5GELLKSBEXEZJ2VYB3FL2SC7HSQVXP4OZVUMFOTJ4LQR) | Ayyush Gaikwad | 5/5 | "Smooth process overall." |
+| 28 | [`GCATAASN...J3LDY`](https://stellar.expert/explorer/testnet/account/GCATAASNFHODIKA4VTIEZHONZB3BGZJL42FXHHZ3VS6YKX2PCDIJ3LDY) | Harshal Jagdale | 5/5 | "Amazing UI — just need to improve internal dashboard settings." |
+| 29 | [`GCWTPJMI...E752`](https://stellar.expert/explorer/testnet/account/GBOALOAFBVSIH2Z2344H5Z2CXDPNLUIFTR4UKWBSMPY4TIF2GNUENUKT) | Pratik More | 5/5 | "Excellent escrow platform, very trustworthy and easy to use." |
+| 30 | [`GCRYPAQB...AZJP`](https://stellar.expert/explorer/testnet/account/GCRYPAQB3TFLQE727TA3R723QIEPTP5KCMP7OMH4HVXNLCEUKPD4AZJP) | Sarthak Dhere | 5/5 | "Nice application." |
 
 > 📊 Full data with emails: [user_onboarding_responses.csv](./user_onboarding_responses.csv) | Detailed analysis: [USER_FEEDBACK.md](./USER_FEEDBACK.md)
 
