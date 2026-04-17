@@ -129,7 +129,7 @@ export const simulateAndPrepare = async (
   if (rpc.Api.isSimulationError(simResponse)) {
     const errorMsg =
       "error" in simResponse
-        ? String((simResponse as any).error)
+        ? String((simResponse as { error: unknown }).error)
         : "Simulation failed";
         
     let friendlyMsg = errorMsg;
