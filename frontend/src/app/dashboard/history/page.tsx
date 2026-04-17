@@ -44,10 +44,7 @@ export default function HistoryPage() {
     const loadHistory = async () => {
       try {
         setLoading(true);
-        // Fetch local deals to maintain parity with un-deployed/fallback environments
-        const stored = localStorage.getItem('safedeal_deals');
-        const localDeals: DealData[] = stored ? JSON.parse(stored) : [];
-        const relatedLocalDeals = localDeals.filter(d => d.sellerKey === publicKey || d.buyerKey === publicKey);
+        // Fetch indexed on-chain deals instantaneously from the new Backend API instead of pulling raw Soroban RPC mapping
 
         // Fetch indexed on-chain deals instantaneously from the new Backend API instead of pulling raw Soroban RPC mapping
         let sellerDeals: DealData[] = [];
@@ -69,11 +66,11 @@ export default function HistoryPage() {
         } catch (error) {
           console.warn("Indexer fetch failed, defaulting to local cache logic", error);
         }
-        
-        // Combine and deduplicate
-        const allDeals = [...relatedLocalDeals, ...sellerDeals, ...buyerDeals];
+
+        // Merge and sort all on-chain deals
+        const combined = [...sellerDeals, ...buyerDeals];
         const uniqueMap = new Map<string, DealData>();
-        for (const d of allDeals) {
+        for (const d of combined) {
            if (!uniqueMap.has(d.id)) {
               uniqueMap.set(d.id, d);
            }

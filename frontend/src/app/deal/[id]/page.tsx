@@ -171,8 +171,10 @@ export default function BuyerPaymentPage({ params }: { params: { id: string } })
       const result = await raiseDispute(
         params.id,
         publicKey,
+        deal.sellerKey,
+        deal.amountUSDC,
         disputeReason,
-        ''
+        disputeDesc
       );
 
       toast.success("Dispute raised — funds frozen pending review");

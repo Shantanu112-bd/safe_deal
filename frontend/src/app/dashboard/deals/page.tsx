@@ -32,17 +32,7 @@ export default function ActiveDealsPage() {
         );
         setDeals(activeDeals.reverse());
       } else {
-        const raw = localStorage.getItem("safedeal_deals");
-        if (raw) {
-          const allLocal = JSON.parse(raw) as DealData[];
-          const activeLocal = allLocal.filter(d => 
-            d.status === 'WaitingForPayment' || 
-            d.status === 'Locked' ||
-            d.status === 'Disputed'
-          );
-          setDeals(activeLocal.reverse());
-        }
-        else setDeals([]);
+        setDeals([]);
       }
     } catch {
       setDeals([]);

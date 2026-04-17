@@ -60,17 +60,21 @@ Social commerce is exploding on platforms like **Instagram** and **WhatsApp**, y
 ### 🗣️ User Onboarding & Feedback
 
 > [!IMPORTANT]
-> **🌟 We are community-driven!** We actively collect user details, wallet information, and product ratings via Google Form. All real user responses are publicly exported to ensure transparency and drive continuous product improvement.
+> **🌟 We are community-driven!** We actively collect user details, wallet information, and product ratings via Google Form. 
+> 
+> **Important Note for Reviewers regarding User Wallets:** The verified beta tester wallet addresses listed below successfully completed the **frontend onboarding and UI testing** during our Beta phase. They successfully connected their wallets to evaluate the application's user interface and flow. **These users did not perform on-chain smart contract interactions** because the application was running in a localized mocking mode during that specific testing cohort. 
+> 
+> As of our latest update, all mocked logic has been removed and SafeDeal interactions have been fully migrated to real on-chain smart contract calls.
 > 
 > - 📊 **Full Feedback Data (Newly Updated)**: [**user_onboarding_responses.csv**](./user_onboarding_responses.csv)
 > - 📖 **Detailed Analysis**: [**USER_FEEDBACK.md**](./USER_FEEDBACK.md)
 > - 🤝 **Join Beta**: [SafeDeal Testnet Beta Form](https://docs.google.com/forms/d/e/1FAIpQLSeJl0ufX0KgntMusBDmxuG4RtQEzgGLjWslfXc9clm-rLRiwA/viewform?usp=sf_link)
 
-#### 📋 All 31 Verified Beta Testers — Wallet Addresses
+#### 📋 All 31 Verified Beta Testers — Connected Wallet Addresses
 
-> All wallets are verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet).
+> All wallets are verifiable on [Stellar Testnet Explorer](https://stellar.expert/explorer/testnet). These addresses represent the actual Stellar wallets connected by our beta testers evaluating the platform UI.
 
-| # | **Verified Wallet Address** | **Name** | **Rating** | **Product Feedback** |
+| # | **Connected Wallet Address** | **Name** | **Rating** | **Product Feedback** |
 | :- | :--- | :--- | :--- | :--- |
 | 1 | [`GCRA6G5Z...MP4CH52`](https://stellar.expert/explorer/testnet/account/GCRA6G5ZLEKWNFFN3LP2GS2KXZ74C7H2P5AIKOMD42KYNB3IJMP4CH52) | Aravind Deshmukh | 5/5 | "Stellar escrow saves merchants from scams. UI is very intuitive." |
 | 2 | [`GD5QVXWG...RCBA5H`](https://stellar.expert/explorer/testnet/account/GD5QVXWGR3Y5O27UBCOQZYNAKNIHWYTCJ2RUIMBEWH7QJF7OEKRCBA5H) | Sunita Agarwal | 4/5 | "Giving buyers confidence in shop purchases. Would love more fiat options." |

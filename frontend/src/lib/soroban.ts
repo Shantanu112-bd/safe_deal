@@ -74,6 +74,13 @@ export const toScAddress = (address: string): xdr.ScVal => {
   return new Address(address).toScVal();
 };
 
+/**
+ * Convert a JS string to Soroban Symbol ScVal
+ */
+export const toScSymbol = (str: string): xdr.ScVal => {
+  return nativeToScVal(str, { type: "symbol" });
+};
+
 // ─────────────────────────────────────────────
 // Contract Client Builders
 // ─────────────────────────────────────────────
@@ -122,9 +129,14 @@ export const simulateAndPrepare = async (
   if (rpc.Api.isSimulationError(simResponse)) {
     const errorMsg =
       "error" in simResponse
-        ? String(simResponse.error)
+        ? String((simResponse as any).error)
         : "Simulation failed";
-    throw new Error(`Contract simulation error: ${errorMsg}`);
+        
+    let friendlyMsg = errorMsg;
+    if (errorMsg.includes("UnreachableCodeReached")) {
+      friendlyMsg = `${errorMsg} - This usually means the Deal ID does not exist on-chain or you have insufficient testnet USDC balance.`;
+    }
+    throw new Error(`Contract simulation error: ${friendlyMsg}`);
   }
 
   // Add a 20% margin to the fee to prevent tx_insufficient_fee due to ledger fluctuations
